@@ -1,0 +1,25 @@
+source_version,summary,pattern_name,count
+Original code,per_pattern,Singleton,1
+Original code,per_pattern,Factory Method,1
+Original code,per_pattern,Observer,1
+Original code,per_pattern,Strategy,1
+Original code,per_pattern,State,1
+Original code,per_pattern,Command,1
+Original code,per_pattern,Adapter,1
+Original code,total_pattern_types,,7
+Original code,total_pattern_instances,,7
+Original code,total_implemented_gof,,0
+Original code,total_pattern_like,,2
+Original code,total_refactoring_opportunities,,5
+Evolution v2,per_pattern,Adapter,1
+Evolution v2,per_pattern,Strategy,1
+Evolution v2,per_pattern,Observer,1
+Evolution v2,per_pattern,Singleton,1
+Evolution v2,per_pattern,Factory Method,1
+Evolution v2,per_pattern,State,1
+Evolution v2,per_pattern,Command,1
+Evolution v2,total_pattern_types,,7
+Evolution v2,total_pattern_instances,,7
+Evolution v2,total_implemented_gof,,3
+Evolution v2,total_pattern_like,,2
+Evolution v2,total_refactoring_opportunities,,2
