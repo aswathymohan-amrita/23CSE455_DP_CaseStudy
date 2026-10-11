@@ -3,8 +3,7 @@
 Project: DaPlanStan (Rails 8.1.3)
 Source version: `baseline` (frozen P01-P09 unchanged)
 Working branch: `member3/evolution` at `cd306ec`
-Scope: CH02 only. CH01 (personalized itinerary generation) was completed earlier and is
-preserved. CH03 (different cancellation policies) was not started.
+Scope: CH02 (multiple booking providers). CH01 (personalized itinerary generation) was completed earlier and is preserved. In the combined evolved repository, CH03 (different cancellation policies) is also implemented and has its own evidence file.
 
 This record is an AFTER note for an extension to existing booking behavior. It does not
 modify or re-count the frozen P01-P09 baseline.
