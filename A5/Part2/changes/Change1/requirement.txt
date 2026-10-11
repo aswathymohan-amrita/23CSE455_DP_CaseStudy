@@ -1,0 +1,9 @@
+External laboratory integration.
+
+Current path: DiagnosticBookingController::store writes a BookingDiagnostic row and sets payment_status to pending.
+
+Requirement: a booking must also be sent to an outside laboratory without putting that vendor's JSON in the controller.
+
+Proposed classes, which are not in the repository: LaboratoryIntegrationService, LaboratoryIntegrationInterface, QuestDiagnosticsAdapter.
+
+This change was not applied to commit 1e7420e431771e3f5eec470d8a005e8255fa5fe8.

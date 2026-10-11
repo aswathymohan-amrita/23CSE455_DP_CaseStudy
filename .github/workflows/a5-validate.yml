@@ -1,0 +1,83 @@
+name: A5 pattern validation and report PDF
+on:
+  push:
+    branches: [feature/a5-eight-pattern-study, fix/a5-faculty-evidence-audit, format/a5-readable-java-cpp, format/a5-all-language-readability]
+  workflow_dispatch:
+concurrency:
+  group: a5-validation-${{ github.ref }}
+  cancel-in-progress: true
+permissions:
+  contents: write
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: PHP syntax and contract assertions
+        run: |
+          set -euo pipefail
+          php -l A5/Part2/eight_patterns/HealthcarePatterns.php
+          php A5/Part2/eight_patterns/test.php
+          php A5/Part2/tests/integration_contracts.php
+      - name: Verify 32 cross-language implementations
+        run: |
+          set -euo pipefail
+          for pattern in facade repository adapter strategy proxy observer factory_method decorator; do
+            python3 "A5/Part3/eight_patterns/$pattern/python/$pattern.py"
+            node "A5/Part3/eight_patterns/$pattern/javascript/$pattern.js"
+            (cd "A5/Part3/eight_patterns/$pattern/java" && javac Demo.java && java Demo)
+            g++ -std=c++17 -O2 "A5/Part3/eight_patterns/$pattern/cpp/$pattern.cpp" -o "/tmp/a5-$pattern"
+            "/tmp/a5-$pattern"
+          done
+      - name: Install complexity analyzer
+        run: python3 -m pip install --user lizard==1.21.0
+      - name: Benchmark 32 portable implementations
+        run: |
+          python3 A5/Part3/eight_patterns/benchmark.py
+          python3 A5/Part3/eight_patterns/audit_faculty_dataset.py
+      - name: Check out inspected Laravel upstream
+        uses: actions/checkout@v4
+        with:
+          repository: esteham/hospital-management
+          ref: 1e7420e431771e3f5eec470d8a005e8255fa5fe8
+          path: _upstream
+      - name: Apply Laravel integration overlay
+        run: |
+          python3 A5/laravel_integration/install.py _upstream
+          for f in _upstream/app/Services/CaseStudy/Integrations.php _upstream/app/Http/Controllers/CaseStudy/IntegrationController.php _upstream/app/Providers/CaseStudyIntegrationProvider.php _upstream/tests/Feature/CaseStudyIntegrationsTest.php; do php -l "$f"; done
+      - name: Install Laravel dependencies and test integration
+        working-directory: _upstream
+        run: |
+          composer install --no-interaction --prefer-dist --no-progress
+          cp .env.example .env
+          php artisan key:generate
+          php artisan test --filter=CaseStudyIntegrationsTest
+      - name: Install TeX
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq texlive-latex-extra texlive-fonts-recommended texlive-latex-recommended
+      - name: Compile report
+        run: |
+          cd A5
+          pdflatex -interaction=nonstopmode -halt-on-error A5_Report.tex
+          pdflatex -interaction=nonstopmode -halt-on-error A5_Report.tex
+      - uses: actions/upload-artifact@v4
+        with:
+          name: A5-compiled-report
+          path: A5/A5_Report.pdf
+      - name: Commit regenerated faculty dataset and report to audit branch
+        if: github.ref == 'refs/heads/format/a5-all-language-readability'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add A5/A5_Report.pdf A5/Part3/eight_patterns/measured_results.csv A5/Part3/eight_patterns/cross_language.csv A5/data/cross_language.csv
+          if ! git diff --cached --quiet; then
+            git commit -m "docs(A5): rebuild PDF and record measured runtimes [skip ci]"
+            git pull --rebase origin format/a5-all-language-readability
+            git push origin HEAD:format/a5-all-language-readability
+          fi

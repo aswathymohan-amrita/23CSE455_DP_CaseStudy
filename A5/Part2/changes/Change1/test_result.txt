@@ -1,0 +1,4 @@
+Not run. This change is a proposal only.
+
+Part 3 does not implement LaboratoryIntegrationService or QuestDiagnosticsAdapter.
+The Laravel application at commit 1e7420e431771e3f5eec470d8a005e8255fa5fe8 was not modified, so there is no new Laravel test.

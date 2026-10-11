@@ -1,0 +1,19 @@
+source_version,summary,pattern_name,count
+original,per_pattern,Active Record,3
+original,per_pattern,Facade,2
+original,total_pattern_types,,2
+original,total_pattern_instances,,5
+standalone_eight_pattern_extension,per_pattern,Facade,1
+standalone_eight_pattern_extension,per_pattern,Repository,1
+standalone_eight_pattern_extension,per_pattern,Adapter,1
+standalone_eight_pattern_extension,per_pattern,Strategy,1
+standalone_eight_pattern_extension,per_pattern,Proxy,1
+standalone_eight_pattern_extension,per_pattern,Observer,1
+standalone_eight_pattern_extension,per_pattern,Factory Method,1
+standalone_eight_pattern_extension,per_pattern,Decorator,1
+standalone_eight_pattern_extension,total_pattern_types,,8
+standalone_eight_pattern_extension,total_pattern_instances,,8
+laravel_overlay,per_pattern,Adapter,2
+laravel_overlay,per_pattern,Strategy,1
+laravel_overlay,total_pattern_types,,2
+laravel_overlay,total_pattern_instances,,3

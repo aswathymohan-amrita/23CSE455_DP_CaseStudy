@@ -1,0 +1,9 @@
+New billing provider.
+
+Current path: DiagnosticBookingController accepts payment_method as cash, card, or online and stores payment_status as pending. composer.json has no payment SDK.
+
+Requirement: Stripe and PayPal must be interchangeable without a provider switch inside the booking controller.
+
+Proposed classes: BillingService, PaymentStrategy, StripePayment, PayPalPayment.
+
+The runnable versions are in Part3/strategy. They were not added to the Laravel repository.

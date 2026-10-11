@@ -1,0 +1,5 @@
+Original: DiagnosticBookingController calls BookingDiagnostic::create and does not call an external laboratory.
+
+Proposed: the controller calls LaboratoryIntegrationService, which saves the local row and then calls LaboratoryIntegrationInterface. QuestDiagnosticsAdapter is the only class that would format the vendor payload.
+
+No patch was applied to commit 1e7420e431771e3f5eec470d8a005e8255fa5fe8.

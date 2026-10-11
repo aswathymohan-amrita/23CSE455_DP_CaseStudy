@@ -1,0 +1,9 @@
+New patient-data service.
+
+Current path: patient fields are columns on users and appointments. Clinical text is prescriptions.prescription_text. Nothing reads an external health record.
+
+Requirement: a FHIR payload must be translated into first_name, last_name, and phone before a controller sees it.
+
+Proposed classes: PatientDataService, EHRProvider, EpicEHRAdapter, EpicFHIRApi. CachedPatientRecordProxy is a further proposal and is not implemented.
+
+The runnable versions are in Part3/adapter.

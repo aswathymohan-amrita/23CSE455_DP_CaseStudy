@@ -1,0 +1,11 @@
+phase,pattern_name,category,instance_name,source_file,status,team_assignment
+baseline,Active Record,Architectural,Eloquent model collaborations,data/code/app/Models/,observed,baseline
+baseline,Facade,Structural,Laravel framework facades,data/code/app/Http/Controllers/,observed,baseline
+proposed,Facade,Structural,Appointment workflow facade,Part2/eight_patterns/HealthcarePatterns.php,standalone,Nemali Ashrith Reddy
+proposed,Repository,Architectural,Patient repository,Part2/eight_patterns/HealthcarePatterns.php,standalone,Nemali Ashrith Reddy
+proposed,Adapter,Structural,External laboratory adapter,Part2/eight_patterns/HealthcarePatterns.php,standalone,Akshay Reddy Velugati
+proposed,Strategy,Behavioral,Payment strategies,Part2/eight_patterns/HealthcarePatterns.php,standalone,Akshay Reddy Velugati
+proposed,Proxy,Structural,Cached patient data source,Part2/eight_patterns/HealthcarePatterns.php,standalone,B. Pravallika
+proposed,Observer,Behavioral,Clinical event publisher,Part2/eight_patterns/HealthcarePatterns.php,standalone,B. Pravallika
+proposed,Factory Method,Creational,Medical record exporter factories,Part2/eight_patterns/HealthcarePatterns.php,standalone,Daripineni Manogna
+proposed,Decorator,Structural,Medical record audit wrapper,Part2/eight_patterns/HealthcarePatterns.php,standalone,Daripineni Manogna

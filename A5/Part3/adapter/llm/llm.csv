@@ -1,0 +1,2 @@
+part,model_and_date,prompt_file,input_file,output_file,evaluation,verification_file
+Cross-language Adapter,Gemini share thread zjKon9gmTNO8; languages set to Java Python JavaScript and C++ on 2026-10-09,Part3/adapter/llm/part3_prompt.txt,Part2/code/PatientDataService.php,Part3/adapter/,The four programs print first_name John last_name Smith and phone 555-1234 for PT-98765. None of them opens a network connection.,data/test_result/adapter_java.txt

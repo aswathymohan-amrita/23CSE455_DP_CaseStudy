@@ -1,0 +1,2 @@
+part,model_and_date,prompt_file,input_file,output_file,evaluation,verification_file
+Cross-language Strategy,Gemini share thread zjKon9gmTNO8; languages set to Java Python JavaScript and C++ on 2026-10-09,Part3/strategy/llm/part3_prompt.txt,Part2/code/BillingService.php,Part3/strategy/,The four programs print stripe for DX-1001 and paypal for DX-1002. The context does not contain a provider if/else.,data/test_result/strategy_java.txt

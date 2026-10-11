@@ -1,0 +1,64 @@
+\documentclass[tikz,border=14pt]{standalone}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usetikzlibrary{positioning,arrows.meta,fit,backgrounds,calc}
+\begin{document}
+\begin{tikzpicture}[
+  font=\small,
+  have/.style={draw, fill=white, align=center, inner sep=4pt, minimum height=9mm},
+  prop/.style={draw, dashed, fill=white, align=center, inner sep=4pt, minimum height=9mm, text width=3.3cm},
+  arr/.style={-{Stealth[length=2.2mm]}, semithick},
+  darr/.style={-{Stealth[length=2.2mm]}, semithick, dashed},
+  band/.style={draw, fill=black!5, inner sep=8pt},
+  pband/.style={draw, dashed, fill=black!3, inner sep=8pt}
+]
+  \node[font=\normalsize\bfseries] at (7.4,1.7) {Evolved architecture};
+  \node[font=\scriptsize, text=black!70] at (7.4,1.2)
+    {Solid boxes exist in the commit. Dashed boxes are proposed.};
+
+  \node[have, minimum width=4.4cm] (vue) at (0,0) {Vue 3 and Inertia};
+  \node[have, minimum width=4.4cm] (router) at (0,-1.45) {Laravel router};
+  \node[have, minimum width=4.4cm] (ctrl) at (0,-2.9) {Controllers};
+  \node[have, minimum width=4.4cm] (fac) at (0,-4.35) {Framework facades};
+  \node[have, minimum width=4.4cm] (model) at (0,-5.8) {Eloquent models};
+  \node[have, minimum width=4.4cm] (db) at (0,-7.25) {MySQL};
+
+  \node[prop] (pds) at (6.3,-1.45) {PatientDataService};
+  \node[prop] (lab) at (6.3,-2.9) {Laboratory\\IntegrationService};
+  \node[prop] (bill) at (6.3,-4.35) {BillingService};
+
+  \node[prop] (ehr) at (10.6,-1.45) {EHRProvider\\EpicEHRAdapter};
+  \node[prop] (quest) at (10.6,-2.9) {Laboratory interface\\Quest adapter};
+  \node[prop] (pay) at (10.6,-4.35) {PaymentStrategy\\Stripe and PayPal};
+
+  \node[prop] (epic) at (14.7,-1.45) {Epic\\example only};
+  \node[prop] (qext) at (14.7,-2.9) {Quest\\example only};
+  \node[prop] (pext) at (14.7,-4.35) {Stripe, PayPal\\examples only};
+
+  \begin{scope}[on background layer]
+    \node[band, fit=(vue)(db)] (kept) {};
+    \node[pband, fit=(pds)(lab)(bill)(ehr)(quest)(pay)(epic)(qext)(pext)] (proposed) {};
+  \end{scope}
+  \node[font=\scriptsize\bfseries, anchor=south west] at (kept.north west) {Kept};
+  \node[font=\scriptsize\bfseries, anchor=south west] at (proposed.north west) {Proposed};
+
+  \draw[arr] (vue) -- (router);
+  \draw[arr] (router) -- (ctrl);
+  \draw[arr] (ctrl) -- (fac);
+  \draw[arr] (fac) -- (model);
+  \draw[arr] (model) -- (db);
+  \draw[darr] (ctrl.east) -- (lab.west);
+  \draw[darr] (ctrl.east) -- (pds.west);
+  \draw[darr] (ctrl.east) -- (bill.west);
+  \draw[darr] (pds.east) -- (ehr.west);
+  \draw[darr] (lab.east) -- (quest.west);
+  \draw[darr] (bill.east) -- (pay.west);
+  \draw[darr] (ehr.east) -- (epic.west);
+  \draw[darr] (quest.east) -- (qext.west);
+  \draw[darr] (pay.east) -- (pext.west);
+
+  \node[font=\scriptsize, anchor=west, align=left] at (kept.south west) [yshift=-10pt]
+    {Part 3 runs EpicEHRAdapter and the two payment strategies.
+     The Quest adapter and the cache proxy are not implemented.};
+\end{tikzpicture}
+\end{document}

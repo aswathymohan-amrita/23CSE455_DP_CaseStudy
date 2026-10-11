@@ -1,0 +1,7 @@
+Implement the Adapter already designed for the patient-data service.
+
+Roles: PatientDataService is the client, EHRProvider is the target, EpicEHRAdapter is the adapter, EpicFHIRApi is the adaptee.
+
+EpicFHIRApi returns a nested sample and must not call a network. The adapter maps that sample to first_name, last_name, and phone. The client depends on the target, injected through the constructor.
+
+Write the same roles in Java, Python, JavaScript, and C++. Do not change the role names except for normal language spelling such as get_patient_record in Python.

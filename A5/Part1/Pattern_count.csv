@@ -1,0 +1,11 @@
+source_version,summary,pattern_name,count
+original,per_pattern,Active Record,3
+original,per_pattern,Facade,2
+original,total_pattern_types,,2
+original,total_pattern_instances,,5
+original,not_identified,Adapter,0
+original,not_identified,Proxy,0
+original,not_identified,Strategy,0
+original,not_identified,Repository,0
+original,not_identified,Observer,0
+original,not_identified,Service layer,0

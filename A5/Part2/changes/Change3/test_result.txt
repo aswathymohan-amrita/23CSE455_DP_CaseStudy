@@ -1,0 +1,5 @@
+Checked by the four Adapter programs in Part3/adapter.
+Expected for patient PT-98765: first_name John, last_name Smith, phone 555-1234.
+Captured output: data/test_result/adapter_java.txt, adapter_python.txt, adapter_javascript.txt, adapter_cpp.txt.
+The JavaScript and C++ programs exit with code 1 if those three fields are wrong.
+CachedPatientRecordProxy was not implemented. The Laravel controllers were not modified.

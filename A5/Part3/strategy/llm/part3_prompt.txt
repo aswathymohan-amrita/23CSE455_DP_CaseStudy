@@ -1,0 +1,7 @@
+Implement the Strategy already designed for billing.
+
+Roles: BillingService is the context, PaymentStrategy is the interface, StripePayment and PayPalPayment are the concrete strategies.
+
+The context must not contain an if/else that chooses the provider. The concrete strategy is injected through the constructor. Stripe and PayPal are simulated and must not call a network.
+
+Write the same roles in Java, Python, JavaScript, and C++.

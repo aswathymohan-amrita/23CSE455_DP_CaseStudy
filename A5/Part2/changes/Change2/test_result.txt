@@ -1,0 +1,5 @@
+Checked by the four Strategy programs in Part3/strategy.
+Expected: provider stripe for DX-1001 and provider paypal for DX-1002.
+Captured output: data/test_result/strategy_java.txt, strategy_python.txt, strategy_javascript.txt, strategy_cpp.txt.
+The JavaScript and C++ programs exit with code 1 if the provider name is wrong.
+The Laravel booking controller was not modified.

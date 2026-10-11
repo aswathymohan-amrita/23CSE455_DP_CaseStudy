@@ -1,0 +1,5 @@
+Original: payment_method is validated as cash, card, or online, and payment_status is set to pending in the controller.
+
+Proposed: BillingService.charge delegates to the injected PaymentStrategy. StripePayment and PayPalPayment are the concrete strategies. The controller does not branch on the provider name.
+
+Runnable code: Part3/strategy. Not applied to the Laravel commit.

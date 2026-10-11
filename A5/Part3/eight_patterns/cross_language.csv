@@ -1,0 +1,33 @@
+pattern_name,language,source_path,test_command,test_status,median_process_ms,source_loc,max_function_cc,measurement_status
+facade,python,Part3/eight_patterns/facade/python/facade.py,python3 Part3/eight_patterns/facade/python/facade.py,passed,13.2023,23,3,runtime_loc_cc_measured_lizard_1_21_0
+facade,javascript,Part3/eight_patterns/facade/javascript/facade.js,node Part3/eight_patterns/facade/javascript/facade.js,passed,21.852,37,3,runtime_loc_cc_measured_lizard_1_21_0
+facade,java,Part3/eight_patterns/facade/java/Demo.java,cd Part3/eight_patterns/facade/java && javac Demo.java && java Demo,passed,34.2296,40,3,runtime_loc_cc_measured_lizard_1_21_0
+facade,cpp,Part3/eight_patterns/facade/cpp/facade.cpp,g++ -std=c++17 -O2 Part3/eight_patterns/facade/cpp/facade.cpp -o /tmp/a5_facade && /tmp/a5_facade,passed,1.003,28,2,runtime_loc_cc_measured_lizard_1_21_0
+repository,python,Part3/eight_patterns/repository/python/repository.py,python3 Part3/eight_patterns/repository/python/repository.py,passed,13.2795,18,1,runtime_loc_cc_measured_lizard_1_21_0
+repository,javascript,Part3/eight_patterns/repository/javascript/repository.js,node Part3/eight_patterns/repository/javascript/repository.js,passed,22.0484,28,2,runtime_loc_cc_measured_lizard_1_21_0
+repository,java,Part3/eight_patterns/repository/java/Demo.java,cd Part3/eight_patterns/repository/java && javac Demo.java && java Demo,passed,29.4933,35,3,runtime_loc_cc_measured_lizard_1_21_0
+repository,cpp,Part3/eight_patterns/repository/cpp/repository.cpp,g++ -std=c++17 -O2 Part3/eight_patterns/repository/cpp/repository.cpp -o /tmp/a5_repository && /tmp/a5_repository,passed,0.9426,28,2,runtime_loc_cc_measured_lizard_1_21_0
+adapter,python,Part3/eight_patterns/adapter/python/adapter.py,python3 Part3/eight_patterns/adapter/python/adapter.py,passed,13.1668,15,4,runtime_loc_cc_measured_lizard_1_21_0
+adapter,javascript,Part3/eight_patterns/adapter/javascript/adapter.js,node Part3/eight_patterns/adapter/javascript/adapter.js,passed,21.4724,27,4,runtime_loc_cc_measured_lizard_1_21_0
+adapter,java,Part3/eight_patterns/adapter/java/Demo.java,cd Part3/eight_patterns/adapter/java && javac Demo.java && java Demo,passed,30.1446,27,3,runtime_loc_cc_measured_lizard_1_21_0
+adapter,cpp,Part3/eight_patterns/adapter/cpp/adapter.cpp,g++ -std=c++17 -O2 Part3/eight_patterns/adapter/cpp/adapter.cpp -o /tmp/a5_adapter && /tmp/a5_adapter,passed,0.944,24,2,runtime_loc_cc_measured_lizard_1_21_0
+strategy,python,Part3/eight_patterns/strategy/python/strategy.py,python3 Part3/eight_patterns/strategy/python/strategy.py,passed,13.1294,16,3,runtime_loc_cc_measured_lizard_1_21_0
+strategy,javascript,Part3/eight_patterns/strategy/javascript/strategy.js,node Part3/eight_patterns/strategy/javascript/strategy.js,passed,20.892,28,3,runtime_loc_cc_measured_lizard_1_21_0
+strategy,java,Part3/eight_patterns/strategy/java/Demo.java,cd Part3/eight_patterns/strategy/java && javac Demo.java && java Demo,passed,30.8613,28,3,runtime_loc_cc_measured_lizard_1_21_0
+strategy,cpp,Part3/eight_patterns/strategy/cpp/strategy.cpp,g++ -std=c++17 -O2 Part3/eight_patterns/strategy/cpp/strategy.cpp -o /tmp/a5_strategy && /tmp/a5_strategy,passed,0.9602,30,2,runtime_loc_cc_measured_lizard_1_21_0
+proxy,python,Part3/eight_patterns/proxy/python/proxy.py,python3 Part3/eight_patterns/proxy/python/proxy.py,passed,13.252,25,2,runtime_loc_cc_measured_lizard_1_21_0
+proxy,javascript,Part3/eight_patterns/proxy/javascript/proxy.js,node Part3/eight_patterns/proxy/javascript/proxy.js,passed,21.3527,37,2,runtime_loc_cc_measured_lizard_1_21_0
+proxy,java,Part3/eight_patterns/proxy/java/Demo.java,cd Part3/eight_patterns/proxy/java && javac Demo.java && java Demo,passed,34.9998,36,3,runtime_loc_cc_measured_lizard_1_21_0
+proxy,cpp,Part3/eight_patterns/proxy/cpp/proxy.cpp,g++ -std=c++17 -O2 Part3/eight_patterns/proxy/cpp/proxy.cpp -o /tmp/a5_proxy && /tmp/a5_proxy,passed,0.9506,29,2,runtime_loc_cc_measured_lizard_1_21_0
+observer,python,Part3/eight_patterns/observer/python/observer.py,python3 Part3/eight_patterns/observer/python/observer.py,passed,13.235,23,2,runtime_loc_cc_measured_lizard_1_21_0
+observer,javascript,Part3/eight_patterns/observer/javascript/observer.js,node Part3/eight_patterns/observer/javascript/observer.js,passed,20.793,34,2,runtime_loc_cc_measured_lizard_1_21_0
+observer,java,Part3/eight_patterns/observer/java/Demo.java,cd Part3/eight_patterns/observer/java && javac Demo.java && java Demo,passed,59.2718,33,3,runtime_loc_cc_measured_lizard_1_21_0
+observer,cpp,Part3/eight_patterns/observer/cpp/observer.cpp,g++ -std=c++17 -O2 Part3/eight_patterns/observer/cpp/observer.cpp -o /tmp/a5_observer && /tmp/a5_observer,passed,0.9423,27,2,runtime_loc_cc_measured_lizard_1_21_0
+factory_method,python,Part3/eight_patterns/factory_method/python/factory_method.py,python3 Part3/eight_patterns/factory_method/python/factory_method.py,passed,17.4957,21,2,runtime_loc_cc_measured_lizard_1_21_0
+factory_method,javascript,Part3/eight_patterns/factory_method/javascript/factory_method.js,node Part3/eight_patterns/factory_method/javascript/factory_method.js,passed,21.8054,28,2,runtime_loc_cc_measured_lizard_1_21_0
+factory_method,java,Part3/eight_patterns/factory_method/java/Demo.java,cd Part3/eight_patterns/factory_method/java && javac Demo.java && java Demo,passed,121.087,34,3,runtime_loc_cc_measured_lizard_1_21_0
+factory_method,cpp,Part3/eight_patterns/factory_method/cpp/factory_method.cpp,g++ -std=c++17 -O2 Part3/eight_patterns/factory_method/cpp/factory_method.cpp -o /tmp/a5_factory_method && /tmp/a5_factory_method,passed,0.9666,36,2,runtime_loc_cc_measured_lizard_1_21_0
+decorator,python,Part3/eight_patterns/decorator/python/decorator.py,python3 Part3/eight_patterns/decorator/python/decorator.py,passed,13.1823,14,1,runtime_loc_cc_measured_lizard_1_21_0
+decorator,javascript,Part3/eight_patterns/decorator/javascript/decorator.js,node Part3/eight_patterns/decorator/javascript/decorator.js,passed,21.2837,21,1,runtime_loc_cc_measured_lizard_1_21_0
+decorator,java,Part3/eight_patterns/decorator/java/Demo.java,cd Part3/eight_patterns/decorator/java && javac Demo.java && java Demo,passed,141.3419,26,3,runtime_loc_cc_measured_lizard_1_21_0
+decorator,cpp,Part3/eight_patterns/decorator/cpp/decorator.cpp,g++ -std=c++17 -O2 Part3/eight_patterns/decorator/cpp/decorator.cpp -o /tmp/a5_decorator && /tmp/a5_decorator,passed,0.9563,25,2,runtime_loc_cc_measured_lizard_1_21_0

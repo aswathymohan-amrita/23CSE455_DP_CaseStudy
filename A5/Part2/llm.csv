@@ -1,0 +1,2 @@
+part,model_and_date,prompt_file,input_file,output_file,evaluation,verification_file
+Evolution (Part 2),Gemini share thread zjKon9gmTNO8; checked against commit 1e7420e on 2026-10-09,Part1/llm/verification.md,Part1/patterns.csv,A5_Report.tex section 3,Billing kept as Strategy. The Quest adapter and the cache proxy stay proposals. The laboratory service was renamed because DiagnosticService is already a model.,Part1/llm/verification.md

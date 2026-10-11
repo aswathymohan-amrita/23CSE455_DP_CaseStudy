@@ -1,0 +1,57 @@
+\documentclass[tikz,border=14pt]{standalone}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usetikzlibrary{positioning,arrows.meta,fit,backgrounds}
+\begin{document}
+\begin{tikzpicture}[
+  font=\small,
+  comp/.style={draw, fill=white, align=center, inner sep=5pt, minimum height=10mm},
+  note/.style={draw, fill=white, align=center, inner sep=4pt, font=\footnotesize},
+  arr/.style={-{Stealth[length=2.3mm]}, semithick},
+  band/.style={draw, fill=black!5, inner sep=8pt}
+]
+  \node[font=\normalsize\bfseries] (title) at (6.15,1.55) {Current architecture};
+  \node[font=\scriptsize, text=black!70] (sub) at (6.15,1.05)
+    {esteham/hospital-management, commit 1e7420e};
+
+  \node[comp, minimum width=4.3cm] (vue) at (3.5,0) {Vue 3 pages};
+  \node[comp, minimum width=4.3cm] (inertia) at (8.4,0) {Inertia responses};
+  \node[comp, minimum width=9.2cm] (router) at (5.95,-2.05) {Laravel router};
+  \node[comp, text width=3.4cm] (c1) at (1.7,-4.25) {Appointment\\Controller};
+  \node[comp, text width=3.6cm] (c2) at (5.95,-4.25) {DiagnosticBooking\\Controller};
+  \node[comp, text width=4.0cm] (c3) at (10.35,-4.25) {Doctor\\AppointmentController};
+  \node[note, text width=3.3cm] (fac) at (15.15,-4.25)
+    {Framework facades\\Auth, Mail, Validator\\DB, Log, Pdf};
+  \node[comp, text width=3.5cm] (m1) at (1.7,-6.85) {User, Doctor\\Appointment, Prescription};
+  \node[comp, text width=3.6cm] (m3) at (5.95,-6.85) {DiagnosticService\\BookingDiagnostic};
+  \node[comp, text width=3.2cm] (m4) at (10.35,-6.85) {PackageBooking\\TestResult};
+  \node[comp, minimum width=12.4cm] (db) at (6.15,-8.85) {MySQL};
+
+  \begin{scope}[on background layer]
+    \node[band, fit=(vue)(inertia)] (b1) {};
+    \node[band, fit=(router)] (b2) {};
+    \node[band, fit=(c1)(c2)(c3)(fac)] (b3) {};
+    \node[band, fit=(m1)(m3)(m4)] (b4) {};
+    \node[band, fit=(db)] (b5) {};
+  \end{scope}
+  \node[font=\scriptsize\bfseries, anchor=east] at ([xshift=-3pt]b1.west) {Client};
+  \node[font=\scriptsize\bfseries, anchor=east] at ([xshift=-3pt]b2.west) {HTTP};
+  \node[font=\scriptsize\bfseries, anchor=east] at ([xshift=-3pt]b3.west) {Application};
+  \node[font=\scriptsize\bfseries, anchor=east] at ([xshift=-3pt]b4.west) {Domain};
+  \node[font=\scriptsize\bfseries, anchor=east] at ([xshift=-3pt]b5.west) {Database};
+
+  \draw[arr] (vue.south) -- (vue.south |- router.north);
+  \draw[arr] (inertia.south) -- (inertia.south |- router.north);
+  \draw[arr] (router.south) -- (c2.north);
+  \draw[arr] (c1.south) -- (m1.north);
+  \draw[arr] (c2.south) -- (m3.north);
+  \draw[arr] (c3.south) -- (m4.north);
+  \draw[arr] (c3.east) -- (fac.west);
+  \draw[arr] (m1.south) -- (m1.south |- db.north);
+  \draw[arr] (m3.south) -- (m3.south |- db.north);
+  \draw[arr] (m4.south) -- (m4.south |- db.north);
+
+  \node[font=\scriptsize, anchor=west] at (b5.south west) [yshift=-8pt]
+    {Every box is in the examined commit. There is no service layer, adapter, or proxy.};
+\end{tikzpicture}
+\end{document}

@@ -1,0 +1,5 @@
+Original: patient fields and prescriptions are read from local Eloquent models.
+
+Proposed: PatientDataService.fetchPatient calls EHRProvider.getPatientRecord. EpicEHRAdapter translates the nested FHIR sample into first_name, last_name, and phone.
+
+Runnable code: Part3/adapter. Not applied to the Laravel commit.
