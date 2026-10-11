@@ -1,0 +1,235 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=22mm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{tabularx,booktabs,hyperref,xcolor,array,xurl}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,fit,shapes.geometric}
+\usepackage{enumitem}
+\usepackage{listings}
+\hypersetup{colorlinks=true,linkcolor=blue,urlcolor=blue,citecolor=blue}
+\setlength{\parindent}{0pt}\sloppy
+\setlength{\parskip}{6pt}
+\renewcommand{\arraystretch}{1.15}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcommand{\code}[1]{\nolinkurl{#1}}
+\newcommand{\status}[1]{\textbf{#1}}
+\lstset{basicstyle=\ttfamily\small,columns=fullflexible,frame=single,framerule=0.4pt,xleftmargin=4pt,numbers=left,numberstyle=\tiny,numbersep=6pt,showstringspaces=false}
+\title{}
+\author{}
+\date{}
+
+\begin{document}
+\begin{center}
+{\Large\textbf{23CSE455 Design Patterns}}\\[4pt]
+{\LARGE\textbf{Part 1 Findings: Pattern Discovery}}\\[6pt]
+{\large Design Pattern Identification and Evolution in a Spring MVC-Based Warehouse Management Application}
+\end{center}
+
+\textbf{Team: B9}\\
+\textbf{Date: 11 October 2026} (re-audited findings)\\
+\textbf{Team working repository:} \href{https://github.com/akdswordguy/Team_B9_DP}{akdswordguy/Team\_B9\_DP}\\
+\textbf{Companion documents:} \code{report/main.tex} (full report), \code{report/part2_findings.tex}, \code{report/part3_findings.tex}
+
+
+\begin{tabularx}{\linewidth}{@{}P{0.25\linewidth}P{0.19\linewidth}P{0.10\linewidth}X@{}}
+\toprule
+Roll number & Student name & Batch \\
+\midrule
+AM.SC.U4CSE23215 & D Aditya Kiran & CSE C \\
+AM.SC.U4CSE23235 & Mithun Krishna & CSE C \\
+AM.SC.U4CSE23248 & Sai Kishen K M & CSE C\\
+AM.SC.U4CSE23359 & Sivadev Smijith & CSE D \\
+\bottomrule
+\end{tabularx}
+
+Evidence paths in this document are relative to \code{Team_B7_Findings/} in the team working repository unless stated otherwise. OpenWMS source paths are relative to \code{org.openwms.core.util/src/main/java/org/openwms/core/} in the upstream repository.
+
+\section{Scope and baseline}
+
+\begin{tabularx}{\linewidth}{@{}P{0.30\linewidth}Y@{}}
+\toprule
+Item & Value\\
+\midrule
+Application & OpenWMS.org, an open-source warehouse management system\\
+Repository & \href{https://github.com/openwms/org.openwms}{\nolinkurl{openwms/org.openwms}} (CORE)\\
+Baseline commit & \code{9d263bf65ec75301e0302539ae7bf581412742b8}\\
+Commit message and date & \texttt{\#185 development version 4.1.0-SNAPSHOT}, 13 July 2026\\
+Module inspected & \code{org.openwms.core.util} (utilities, exception types, shared event types)\\
+Java files at baseline & 64\\
+Licence & Apache License 2.0\\
+\bottomrule
+\end{tabularx}
+
+\textbf{Architecture context.} OpenWMS uses a microservice architecture: each business component (Common, Inventory, Picking, Receiving, Shipping, and others) is a Spring Boot service in its own repository. The CORE README describes RabbitMQ with Spring Integration as the event broker for asynchronous events and commands. The CORE repository itself is a library, not a service, so Part 1 makes no source-level claim about services whose code is not in it. The README lists the Picking Library as a private GPLv3 repository and the Inventory Service as private preview, which is why Part 2 uses reference implementations for those changes.
+
+\begin{center}
+\includegraphics[width=0.85\linewidth]{figures/architecture_scope.png}\\
+{\small Figure 1. Architecture scope (\code{Part1_Findings/diagrams/architecture_scope.puml}).}
+\end{center}
+
+\section{Method and verification}
+Candidates were identified from the Java source at the baseline commit. A candidate was confirmed only when the source demonstrated the relationships and behavior the pattern requires; class names, Spring annotations, framework-generated proxies, or an LLM assertion alone were not accepted. Each candidate was classified as a GoF pattern, an architectural/framework mechanism, or rejected.
+
+\textbf{Re-audit (11 October 2026).} The upstream repository was cloned afresh and checked out at the baseline. Every line range cited in \code{Part1_Findings/Part1_Findings.md} and \code{Part1_Findings/data/patterns.csv} was compared with the source and found exact. The ten files under \code{Part1_Findings/evidence/source/} are byte-identical to upstream. The 64-file count was confirmed. The corrections made are listed in Section~8.
+
+\section{Summary of results}
+
+\begin{tabularx}{\linewidth}{@{}l r Y@{}}
+\toprule
+Measure & Count & Detail\\
+\midrule
+Confirmed GoF pattern types & 2 & Observer, Composite\\
+Confirmed GoF pattern instances & 2 & P01 Core event subscription and dispatch; P02 \code{TreeNode} composite tree\\
+Concrete participant classes & 2 & \code{SimpleEventDispatcher}, \code{TreeNodeImpl<T>}\\
+Unique participant symbols & 7 & \code{EventBroker}, \code{EventDispatcher}, \code{SimpleEventDispatcher}, \code{EventListener}, \code{RootApplicationEvent}, \code{TreeNode}, \code{TreeNodeImpl}\\
+Non-GoF mechanisms recorded & 3 & N01 async publish/subscribe; N02 Spring listener idiom; N03 AOP advice (partially confirmed)\\
+Rejected GoF candidates & 2 & Singleton, Proxy\\
+Uncertain candidates & 0 & None recorded in the frozen inventory\\
+\bottomrule
+\end{tabularx}
+
+These are repository-scope counts. They do not claim that these are the only patterns in the whole OpenWMS product.
+
+\section{P01 --- Observer: core event subscription and dispatch}
+
+\textbf{Category.} GoF behavioral pattern. \textbf{Origin.} OpenWMS source, not introduced by this case study.
+
+\textbf{Purpose.} Decouple code that raises application events from the listeners that react to them, through explicit subscription, unsubscription, and dispatch.
+
+\subsection{Participant mapping}
+\noindent\begin{tabularx}{\linewidth}{@{}P{0.20\linewidth}P{0.24\linewidth}Y@{}}
+\toprule
+GoF role & Symbol & Source evidence\\
+\midrule
+Subject: attach/detach & \code{EventBroker} (interface) & \code{event/EventBroker.java:19-56}. Two \code{subscribe} and two \code{unsubscribe} methods, keyed by event class, taking a listener instance or a Spring bean name.\\
+Subject: notify & \code{EventDispatcher} (interface) & \code{event/EventDispatcher.java:19-34}. Extends \code{EventBroker}; adds \code{<T extends RootApplicationEvent> void dispatch(T event)}. Its Javadoc leaves sync/async delivery undefined.\\
+ConcreteSubject & \code{SimpleEventDispatcher} (class) & \code{event/SimpleEventDispatcher.java:27-38} (in-memory \code{Map<Class, Set<EventListener>>}, documented as sequential and synchronous); \code{:54-56} subscribe; \code{:75-79} unsubscribe; \code{:99-106} dispatch.\\
+Observer & \code{EventListener} (interface) & \code{event/EventListener.java:19-31}. Single update method \code{onEvent(RootApplicationEvent)}.\\
+Notification payload & \code{RootApplicationEvent} (class) & \code{event/RootApplicationEvent.java:23-29}. Base event type; extends Spring \code{ApplicationEvent}.\\
+ConcreteObserver & --- & None: no class in the 64 Java files implements \code{EventListener}.\\
+\bottomrule
+\end{tabularx}
+
+\subsection{Key behavior}
+The notification step is the core of the pattern. In \code{SimpleEventDispatcher} (excerpt from OpenWMS, Apache License 2.0):
+
+\begin{lstlisting}[language=Java,firstnumber=99]
+public <T extends RootApplicationEvent> void dispatch(T event) {
+    if (event == null) {
+        return;
+    }
+    var listeners = subscriptions.get(event.getClass());
+    if (listeners != null) {
+        listeners.forEach(l -> l.onEvent(event));
+    }
+\end{lstlisting}
+
+The subject iterates its registered observers and calls the common update method, without knowing any concrete listener type. Registration (\code{subscribe}) adds to a concurrent set per event class; \code{unsubscribe} removes from it.
+
+\begin{center}
+\includegraphics[width=0.92\linewidth]{figures/observer_uml.png}\\
+{\small Figure 2. Observer roles (\code{Part1_Findings/diagrams/observer_uml.puml}).}
+\end{center}
+
+\subsection{Verification, observations and limitations}
+\begin{itemize}[nosep]
+\item \textbf{Confirmed from source.} Runtime attach/detach and notification through a common interface are both present. The GoF Subject role is distributed across \code{EventBroker} (attach/detach), \code{EventDispatcher} (notify) and \code{SimpleEventDispatcher} (ConcreteSubject); no extra \code{Subject} type is invented.
+\item \textbf{Exact-type matching.} Line 103 looks up listeners by \code{event.getClass()}. A listener subscribed to \code{RootApplicationEvent} is not notified of a subclass event such as \code{UserChangedEvent}.
+\item \textbf{Synchronous delivery.} Observers are called sequentially in the dispatching thread. Asynchrony is added only by the separate publisher (N01).
+\item \textbf{No ConcreteObserver in scope.} The repository supplies the infrastructure; concrete listeners are expected in the service repositories. The instance is confirmed at library level.
+\item \textbf{Publisher is a client.} \code{NonBlockingEventPublisherImpl} calls \code{dispatch}; in GoF terms that is a client that triggers notification, so it is recorded as N01 and not counted as a participant.
+\end{itemize}
+
+\section{P02 --- Composite: \texorpdfstring{\code{TreeNode}}{TreeNode} composite tree}
+
+\textbf{Category.} GoF structural pattern (transparent variant, single implementation class). \textbf{Origin.} OpenWMS source.
+
+\textbf{Purpose.} Represent a recursive tree in which every node stores its children through the same \code{TreeNode} abstraction, and leaves are distinguished from containers by whether the child collection is empty.
+
+\subsection{Participant mapping}
+\noindent\begin{tabularx}{\linewidth}{@{}P{0.20\linewidth}P{0.24\linewidth}Y@{}}
+\toprule
+GoF role & Symbol & Source evidence\\
+\midrule
+Component & \code{TreeNode<T>} (interface) & \code{util/TreeNode.java:23-28} abstraction; \code{:45-49} \code{isLeaf}; \code{:51-72} \code{getChildren}; \code{:75-115} \code{getChild}, \code{addChild}, \code{removeChild}, \code{getParent}, \code{setParent}. Children are typed \code{TreeNode<T>}.\\
+Leaf and Composite & \code{TreeNodeImpl<T>} (class) & \code{util/TreeNodeImpl.java:29-33} \code{parent} and \code{LinkedHashMap} \code{childrenMap}; \code{:47-57} \code{addChild} sets \code{child.setParent(this)}; \code{:64-68} \code{removeChild} clears the parent; \code{:83-108} parent access, \code{getChildren}, \code{isLeaf()} = \code{childrenMap.isEmpty()}.\\
+Client & --- & None: no class in the repository uses \code{TreeNode} or \code{TreeNodeImpl}.\\
+\bottomrule
+\end{tabularx}
+
+\begin{lstlisting}[language=Java,firstnumber=54]
+@Override
+public void addChild(Object identifier, TreeNode<T> child) {
+    child.setParent(this);
+    childrenMap.put(identifier, child);
+\end{lstlisting}
+
+\begin{center}
+\includegraphics[width=0.85\linewidth]{figures/composite_uml.png}\\
+{\small Figure 3. Composite roles (\code{Part1_Findings/diagrams/composite_uml.puml}).}
+\end{center}
+
+\subsection{Verification, observations and limitations}
+\begin{itemize}[nosep]
+\item \textbf{Confirmed from source.} Part--whole recursion (children are themselves \code{TreeNode<T>}) and uniform treatment (child management declared on the component interface) are both present.
+\item \textbf{Transparent, single-class variant.} Declaring child management on the Component is the GoF transparent form. There are no separate Leaf and Composite classes; "leaf" is a runtime state.
+\item \textbf{No recursive component operation.} GoF Composite normally has an operation that a composite forwards to its children. \code{TreeNode} declares only data access, navigation and child management, and leaves traversal to the client. The classification therefore rests on recursive structure and uniform interface, not recursive behavior.
+\item \textbf{No client in scope.} This is a confirmed utility-level instance, not evidence that a warehouse workflow uses Composite.
+\end{itemize}
+
+\section{Non-GoF mechanisms (kept out of the GoF totals)}
+
+\begin{tabularx}{\linewidth}{@{}P{0.06\linewidth}P{0.22\linewidth}YP{0.15\linewidth}@{}}
+\toprule
+ID & Mechanism & Evidence and reasoning & Status\\
+\midrule
+N01 & Asynchronous publish/subscribe & \code{event/EventPublisher.java:19-33} declares \code{publish(T)}. \code{event/NonBlockingEventPublisherImpl.java:22-50} receives an \code{EventDispatcher} by constructor and its \code{@Async publish} calls \code{dispatcher.dispatch(event)}. An eventing mechanism layered on P01, not a second Observer instance. & Confirmed\\
+N02 & Spring application-event listener & \code{startup/LocalServiceInitializer.java:27-33} implements \code{ApplicationListener<ContextRefreshedEvent>}; \code{:50-53} publishes a \code{MergePropertiesEvent} through the \code{ApplicationContext}. The subscription infrastructure is Spring's, so it is a framework idiom. & Confirmed\\
+N03 & Fire-after-transaction AOP advice & \code{aop/FireAfterTransactionAspect.java:30-36} documents firing events after a transaction; \code{:76-86} and \code{:95-107} publish configured events, the second with \code{@Async}. However, the class is a plain \code{@Component}: no \code{@Aspect}, pointcut, advice annotation, XML \code{aop:} configuration or AspectJ dependency exists in the repository. The advice methods exist; the interception wiring must live in a consuming service. & Partially confirmed\\
+\bottomrule
+\end{tabularx}
+
+\section{Rejected candidates}
+
+\begin{tabularx}{\linewidth}{@{}lY@{}}
+\toprule
+Candidate & Reason for rejection\\
+\midrule
+Singleton & Spring \code{@Component} scope alone does not establish GoF Singleton. The candidate beans (\code{SimpleEventDispatcher}, \code{NonBlockingEventPublisherImpl}, \code{LocalServiceInitializer}, \code{FireAfterTransactionAspect}) all have public constructors and no static instance or accessor; they are single only because the container scopes them that way.\\
+Proxy & Framework-generated proxies and AOP behavior are not counted as an application-level GoF Proxy, and no application class controls access to a separate subject through the same interface.\\
+\bottomrule
+\end{tabularx}
+
+These are scope-bounded rejections, preserved in \code{Part1_Findings/data/rejected_candidates.csv}; they do not prove the patterns are absent from the wider ecosystem.
+
+\section{Corrections made in the re-audit}
+
+\begin{tabularx}{\linewidth}{@{}P{0.22\linewidth}YY@{}}
+\toprule
+Item & Previously & Now\\
+\midrule
+N03 AOP mechanism & Recorded as a confirmed AOP mechanism. & Partially confirmed: advice methods exist, but no aspect or pointcut wiring is in the repository.\\
+Observer limitations & Not recorded. & Exact-type matching, synchronous delivery, and absence of a ConcreteObserver recorded.\\
+Composite limitations & Only the missing client was recorded. & Transparent single-class variant and absence of a recursive component operation recorded.\\
+Singleton rejection & General statement about Spring scope. & Reason now names the candidate beans and the missing static instance/accessor.\\
+\code{composite_uml.puml} & Placed \code{parent}/\code{children} on the interface with unclear multiplicity. & Members and multiplicities match the source; limitations noted on the diagram.\\
+\code{observer_uml.puml} & Role names and the publisher client were not shown. & GoF role stereotypes, the N01 client and the exact-type note added.\\
+\code{main.tex} (Part 1) & Evidence column said only "see findings"; diagram text claimed recursive traversal. & Exact file:line evidence; traversal claim removed; N01--N03 summarised.\\
+\bottomrule
+\end{tabularx}
+
+The totals (2 types, 2 instances, 2 concrete classes, 7 symbols, 2 rejected) are unchanged by the corrections.
+
+\section{Evidence files}
+\begin{itemize}[nosep]
+\item \code{Part1_Findings/Part1_Findings.md} --- full findings with line citations.
+\item \code{Part1_Findings/data/patterns.csv}, \code{pattern_counts.csv}, \code{rejected_candidates.csv} --- machine-readable inventory.
+\item \code{Part1_Findings/evidence/verification_notes.md} --- human verification notes and re-audit record.
+\item \code{Part1_Findings/evidence/source/org.openwms/} --- byte-identical upstream excerpts with the Apache 2.0 \code{LICENSE}.
+\item \code{Part1_Findings/diagrams/} --- PlantUML sources and rendered PNGs.
+\item \code{LLM_RECORDS/LLM_RECORDS.md} --- records P1-01 and AUDIT-01.
+\end{itemize}
+
+\end{document}

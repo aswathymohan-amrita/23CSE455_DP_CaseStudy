@@ -1,0 +1,30 @@
+@startuml
+title Composite - org.openwms.core.util @ 9d263bf
+skinparam nodesep 80
+skinparam ranksep 70
+interface "TreeNode<T>" as TreeNode {
+  +getData() : T
+  +setData(data : T)
+  +isLeaf() : boolean
+  +getChildren() : Iterator<Map.Entry<Object, TreeNode<T>>>
+  +getChild(id : Object) : TreeNode<T>
+  +addChild(id : Object, child : TreeNode<T>)
+  +removeChild(id : Object)
+  +getParent() : TreeNode<T>
+  +setParent(parent : TreeNode<T>)
+}
+class "TreeNodeImpl<T>" as TreeNodeImpl {
+  -data : T
+  -parent : TreeNode<T>
+  -childrenMap : LinkedHashMap<Object, TreeNode<T>>
+  +isLeaf() : childrenMap.isEmpty()
+}
+TreeNodeImpl .up.|> TreeNode : implements
+TreeNodeImpl "0..1" o-up-- "0..*" TreeNode : children
+TreeNodeImpl "0..*" -up--> "0..1" TreeNode : parent
+note right of TreeNodeImpl
+  Plays both Leaf and Composite roles (transparent Composite).
+  No recursive component operation is declared; traversal is
+  left to clients. No client in the inspected repository.
+end note
+@enduml

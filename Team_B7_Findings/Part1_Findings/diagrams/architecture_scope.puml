@@ -1,0 +1,21 @@
+@startuml
+rectangle "OpenWMS.org ecosystem" {
+  rectangle "Spring Boot microservices" as services
+  rectangle "Common / business services\n(Inventory, Picking, Receiving, Shipping)" as business
+  rectangle "Core utility module\norg.openwms.core.util" as core
+  queue "RabbitMQ + Spring Integration" as broker
+  database "Service-specific data stores" as db
+
+  services --> business
+  services --> core
+  business --> broker : async events/commands
+  business --> db
+}
+
+note right of core
+  Part 1 source-level scope:
+  root repository and core.util module.
+  Business-service source is maintained
+  in separate repositories.
+end note
+@enduml

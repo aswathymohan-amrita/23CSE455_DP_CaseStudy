@@ -1,0 +1,2 @@
+snapshot,confirmed_pattern_types,confirmed_pattern_instances,concrete_participant_classes,unique_participant_symbols,rejected_or_uncertain_candidates,scope
+baseline_9d263bf,2,2,2,7,2,"org.openwms root repository; primarily org.openwms.core.util; 64 Java source files"

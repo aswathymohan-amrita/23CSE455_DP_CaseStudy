@@ -1,0 +1,3 @@
+candidate,classification,reason,scope
+Singleton,Rejected,Spring-managed component scope alone does not establish intentional GoF Singleton structure; candidate beans have public constructors and no static instance or accessor,baseline repository
+Proxy,Rejected,Framework-generated proxies/AOP behavior is not counted as application-level GoF Proxy,baseline repository

@@ -1,0 +1,197 @@
+/*
+ * Copyright 2005-2025 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.openwms.common.location.impl;
+
+import jakarta.persistence.EntityManager;
+import org.ameba.exception.NotFoundException;
+import org.ameba.exception.ServiceLayerException;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.openwms.common.CommonApplicationTest;
+import org.openwms.common.TestBase;
+import org.openwms.common.TestData;
+import org.openwms.common.location.Location;
+import org.openwms.common.location.LocationPK;
+import org.openwms.common.location.LocationService;
+import org.openwms.common.location.LocationMapper;
+import org.openwms.common.location.LocationTypeService;
+import org.openwms.common.warehouse.Warehouse;
+import org.openwms.common.warehouse.WarehouseService;
+import org.openwms.common.location.api.messages.LocationMO;
+import org.openwms.common.spi.transactions.commands.AsyncTransactionApi;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
+
+import java.util.Locale;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.openwms.common.TestData.SECOND_WAREHOUSE_CODE;
+import static org.openwms.common.TestData.WAREHOUSE_CODE;
+import static org.openwms.common.location.Location.DEF_CONSIDERED_IN_ALLOCATION;
+import static org.openwms.common.location.Location.DEF_INCOMING_ACTIVE;
+import static org.openwms.common.location.Location.DEF_LG_COUNTING_ACTIVE;
+import static org.openwms.common.location.Location.DEF_OUTGOING_ACTIVE;
+import static org.openwms.common.location.Location.DEF_PLC_STATE;
+
+/**
+ * A LocationServiceIT.
+ *
+ * @author Heiko Scherrer
+ */
+@CommonApplicationTest
+class LocationServiceImplIT extends TestBase {
+
+    @Autowired
+    private LocationTypeService locationTypeService;
+    @Autowired
+    private WarehouseService warehouseService;
+    @Autowired
+    private LocationMapper locationMapper;
+    @Autowired
+    private LocationService testee;
+    @MockitoBean
+    private AsyncTransactionApi transactionApi;
+    @Autowired
+    private EntityManager em;
+
+    /**
+     * Specify the Locale explicitly because translated exception messages are verified.
+     */
+    @BeforeAll
+    static void onBeforeAll() {
+        Locale.setDefault(Locale.ENGLISH);
+    }
+
+    @Test void shall_throw_create_with_null() {
+        assertThatThrownBy(() -> testee.create(null)).isInstanceOf(ServiceLayerException.class);
+    }
+
+    @Test void shall_throw_create_with_existing() {
+        var location = location("EXT_/0000/0000/0000/0000", WAREHOUSE_CODE);
+        assertThatThrownBy(() -> testee.create(location)).hasMessageContaining("already exists");
+    }
+
+    @Test void shall_create_Location() {
+        var location = location("NEW_/NEW_/NEW_/NEW_/NEW_", WAREHOUSE_CODE);
+        var result = testee.create(location);
+        assertThat(result.getLocationId()).isEqualTo(LocationPK.fromString("NEW_/NEW_/NEW_/NEW_/NEW_"));
+        assertThat(result.getNoMaxTransportUnits()).isEqualTo(Location.DEF_MAX_TU);
+        assertThat(result.isLocationGroupCountingActive()).isEqualTo(DEF_LG_COUNTING_ACTIVE);
+        assertThat(result.isInfeedActive()).isEqualTo(DEF_INCOMING_ACTIVE);
+        assertThat(result.isOutfeedActive()).isEqualTo(DEF_OUTGOING_ACTIVE);
+        assertThat(result.getPlcState()).isEqualTo(DEF_PLC_STATE);
+        assertThat(result.isConsideredInAllocation()).isEqualTo(DEF_CONSIDERED_IN_ALLOCATION);
+    }
+
+    @Test void shall_create_Location_with_LocationType() {
+        var locationType = locationTypeService.findByTypeName("PG").orElseThrow();
+        var location = location("NEW_/NEW_/NEW_/NEW_/NEW_", WAREHOUSE_CODE);
+        location.setLocationType(locationType);
+        var result = testee.create(location);
+        assertThat(result.getLocationId()).isEqualTo(LocationPK.fromString("NEW_/NEW_/NEW_/NEW_/NEW_"));
+        assertThat(result.getNoMaxTransportUnits()).isEqualTo(Location.DEF_MAX_TU);
+        assertThat(result.isLocationGroupCountingActive()).isEqualTo(DEF_LG_COUNTING_ACTIVE);
+        assertThat(result.isInfeedActive()).isEqualTo(DEF_INCOMING_ACTIVE);
+        assertThat(result.isOutfeedActive()).isEqualTo(DEF_OUTGOING_ACTIVE);
+        assertThat(result.getPlcState()).isEqualTo(DEF_PLC_STATE);
+        assertThat(result.isConsideredInAllocation()).isEqualTo(DEF_CONSIDERED_IN_ALLOCATION);
+    }
+
+    @Test void test_finder_with_null() {
+        assertThatThrownBy(() -> testee.findByLocationPk(null)).hasMessageContaining("findByLocationPk.locationId");
+    }
+
+    @Test void test_finder_with_invalid() {
+        assertThatThrownBy(() -> testee.findByLocationId("FOOBAR")).hasMessageContaining("is not valid");
+    }
+
+    @Test void test_finder_with_empty() {
+        assertThatThrownBy(() -> testee.findByLocationId("")).hasMessageContaining("findByLocationId.locationId");
+    }
+
+    @Test void shall_find_existing_by_ID() {
+        var byLocationId = testee.findByLocationPk(LocationPK.fromString(TestData.LOCATION_ID_EXT));
+
+        assertThat(byLocationId).isNotEmpty();
+        assertThat(byLocationId.get().getLocationId()).isEqualTo(LocationPK.fromString(TestData.LOCATION_ID_EXT));
+        assertThat(byLocationId.get().getWarehouse().getCode()).isEqualTo(WAREHOUSE_CODE);
+    }
+
+    @Test void shall_allow_same_location_id_in_different_warehouses_and_find_by_warehouse() {
+        var firstId = LocationPK.fromString(TestData.LOCATION_ID_EXT);
+        var second = testee.create(location(TestData.LOCATION_ID_EXT, SECOND_WAREHOUSE_CODE));
+
+        assertThat(second.getWarehouse().getCode()).isEqualTo(SECOND_WAREHOUSE_CODE);
+        assertThat(testee.findByLocationPk(WAREHOUSE_CODE, firstId)).isPresent()
+                .get().extracting(loc -> loc.getWarehouse().getCode()).isEqualTo(WAREHOUSE_CODE);
+        assertThat(testee.findByLocationPk(SECOND_WAREHOUSE_CODE, firstId)).isPresent()
+                .get().extracting(loc -> loc.getWarehouse().getCode()).isEqualTo(SECOND_WAREHOUSE_CODE);
+        assertThatThrownBy(() -> testee.findByLocationPk(firstId))
+                .hasMessageContaining("more than one warehouse");
+    }
+
+    @Test void shall_reject_location_with_unknown_warehouse() {
+        var location = location("NEW_/NEW_/NEW_/NEW_/NEW_", "UNKNOWN");
+        assertThatThrownBy(() -> testee.create(location))
+                .hasMessageContaining("Warehouse with code [UNKNOWN] does not exist");
+    }
+
+    @Test void location_api_and_message_carry_warehouse_code() {
+        var location = testee.findByLocationPk(WAREHOUSE_CODE, LocationPK.fromString(TestData.LOCATION_ID_EXT)).orElseThrow();
+
+        assertThat(locationMapper.convertToVO(location).getWarehouseCode()).isEqualTo(WAREHOUSE_CODE);
+        assertThat(locationMapper.convertToMO(location).warehouseCode()).isEqualTo(WAREHOUSE_CODE);
+        assertThat(LocationMO.ofId(WAREHOUSE_CODE, TestData.LOCATION_ID_EXT).warehouseCode()).isEqualTo(WAREHOUSE_CODE);
+    }
+
+    @Test void shall_throw_update_with_unknown() {
+        var location = location("UNKN/UNKN/UNKN/UNKN/UNKN", WAREHOUSE_CODE);
+        assertThatThrownBy(() -> testee.save(location)).hasMessageContaining("does not exist");
+    }
+
+    @Test void shall_modify_existing_one() {
+        // arrange
+        var existing = em.find(Location.class, TestData.LOCATION_PK_EXT);
+        existing.setPlcState(111);
+        existing = em.merge(existing);
+
+        // act
+        var updated = testee.save(existing);
+
+        // assert
+        assertThat(updated.getPlcState()).isEqualTo(111);
+    }
+
+    @Test void shall_fail_modifying_new_one() {
+        // arrange
+        var newOne = location("UNKOWN/UNKOWN/UNKOWN/UNKOWN/UNKOWN", WAREHOUSE_CODE);
+
+        // act & assert
+        assertThrows(NotFoundException.class, () -> testee.save(newOne));
+    }
+
+    private Location location(String locationId, String warehouseCode) {
+        var location = Location.create(LocationPK.fromString(locationId));
+        if (warehouseService.findByCode(warehouseCode).isPresent()) {
+            location.setWarehouse(warehouseService.findByCodeOrThrow(warehouseCode));
+        } else {
+            location.setWarehouse(new Warehouse(warehouseCode, "Unknown warehouse"));
+        }
+        return location;
+    }
+}

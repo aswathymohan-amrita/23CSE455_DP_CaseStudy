@@ -1,0 +1,32 @@
+@startuml
+title Observer - org.openwms.core.event @ 9d263bf
+interface EventBroker <<Subject: attach/detach>> {
+  +subscribe(event : Class, listener : EventListener)
+  +subscribe(event : Class, listenerBeanName : String)
+  +unsubscribe(event : Class, listener : EventListener)
+  +unsubscribe(event : Class, listenerBeanName : String)
+}
+interface EventDispatcher <<Subject: notify>> {
+  +dispatch(event : T)
+}
+class SimpleEventDispatcher <<ConcreteSubject>> {
+  -subscriptions : Map<Class, Set<EventListener>>
+}
+interface EventListener <<Observer>> {
+  +onEvent(event : RootApplicationEvent)
+}
+class RootApplicationEvent <<payload>>
+class "NonBlockingEventPublisherImpl<T>" as NBP <<client (N01)>>
+
+EventDispatcher --|> EventBroker
+SimpleEventDispatcher ..|> EventDispatcher
+SimpleEventDispatcher "1" o-- "0..*" EventListener : subscriptions
+EventListener ..> RootApplicationEvent : onEvent(event)
+EventDispatcher ..> RootApplicationEvent : dispatch
+NBP --> EventDispatcher : dispatch (async)
+note bottom of SimpleEventDispatcher
+  dispatch() looks up listeners by event.getClass():
+  exact-type match, synchronous delivery.
+  No ConcreteObserver exists in the inspected repository.
+end note
+@enduml

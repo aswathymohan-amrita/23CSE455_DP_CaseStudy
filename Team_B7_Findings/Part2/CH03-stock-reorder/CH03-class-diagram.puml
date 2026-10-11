@@ -1,0 +1,37 @@
+@startuml
+class StockItem
+class ReorderRule
+class ReorderRequest
+enum ReorderStatus
+
+interface StockRepository
+class InMemoryStockRepository
+interface ReorderRuleRepository
+class InMemoryReorderRuleRepository
+interface ReorderRequestRepository
+class InMemoryReorderRequestRepository
+
+class StockService
+class ReorderService
+class StockController
+class ReorderRuleController
+class ReorderController
+class ReorderExceptionHandler
+
+StockController --> StockService
+StockService --> StockRepository
+StockService --> ReorderService : evaluate after consume
+ReorderRuleController --> ReorderService
+ReorderController --> ReorderService
+ReorderService --> StockRepository
+ReorderService --> ReorderRuleRepository
+ReorderService --> ReorderRequestRepository
+ReorderService ..> ReorderRule
+ReorderService ..> ReorderRequest
+StockService ..> StockItem
+ReorderRequest --> ReorderStatus
+InMemoryStockRepository ..|> StockRepository
+InMemoryReorderRuleRepository ..|> ReorderRuleRepository
+InMemoryReorderRequestRepository ..|> ReorderRequestRepository
+ReorderExceptionHandler ..> InvalidReorderRuleException
+@enduml

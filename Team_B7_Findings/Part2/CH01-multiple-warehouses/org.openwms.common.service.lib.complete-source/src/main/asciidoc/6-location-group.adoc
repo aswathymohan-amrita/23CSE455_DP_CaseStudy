@@ -1,0 +1,134 @@
+[[section-locationgroup]]
+== LocationGroup
+A `LocationGroup` is used to group `Locations` with same characteristics or to define a warehouse area that can be seen as one cohesive
+block controlled by one single subsystem.
+
+[[locationgroups-index]]
+=== LocationGroup Index
+The index with all possible operations on `LocationGroups` can be retrieved with a GET request
+include::{generated}/lg/shall_return_index/http-request.adoc[]
+
+The response lists all the operations with a name and the corresponding link
+include::{generated}/lg/shall_return_index/http-response.adoc[]
+
+[[location-groups-create]]
+=== Create a LocationGroup
+The API allows also to create a `LocationGroup`. In former releases this was only possible with the data loader mechanism. The client must
+pass the minimum required fields of a `LocationGroup` in the request body of a `POST` request to the primary `LocationGroup` resource:
+
+include::{generated}/lg/lg-created/http-request.adoc[]
+include::{generated}/lg/lg-created/request-fields.adoc[]
+
+If the resource has been created successfully, the server responds with:
+include::{generated}/lg/lg-created/http-response.adoc[]
+include::{generated}/lg/lg-created/response-fields.adoc[]
+
+A request with all accepted fields to create a `LocationGroup` is shown in the next example. Child `LocationGroups` must not exist and are
+created along the parent. The references parent `LocationGroup` must already exist.
+
+include::{generated}/lg/lg-created-full/http-request.adoc[]
+include::{generated}/lg/lg-created-full/request-fields.adoc[]
+
+If the resource has been created successfully, the server responds with:
+include::{generated}/lg/lg-created-full/http-response.adoc[]
+include::{generated}/lg/lg-created-full/response-fields.adoc[]
+
+[[location-groups-findbyname]]
+=== Find LocationGroup by Name
+Send a HTTP `GET` request with the unique name of the `LocationGroup`
+include::{generated}/lg/shall_findby_name/http-request.adoc[]
+
+Request parameters:
+include::{generated}/lg/shall_findby_name/query-parameters.adoc[]
+
+If the `LocationGroup` exists the server responds with
+include::{generated}/lg/shall_findby_name/http-response.adoc[]
+include::{generated}/lg/shall_findby_name/response-fields.adoc[]
+
+If the `LocationGroup` with the given name does not exist, the server responds with
+include::{generated}/lg/shall_findby_name_404/http-response.adoc[]
+
+[[location-groups-findbynames]]
+=== Find multiple LocationGroups by Name
+Send a HTTP `GET` request with a list of unique `LocationGroup` names
+include::{generated}/lg/shall_findby_names/http-request.adoc[]
+
+Request parameters:
+include::{generated}/lg/shall_findby_names/query-parameters.adoc[]
+
+The server sends back a list of all `LocationGroups` or an empty list if no `LocationGroups` exist.
+include::{generated}/lg/shall_findby_names/http-response.adoc[]
+
+[[location-groups-findall]]
+=== Find all LocationGroups
+To retrieve a list of all existing `LocationGroups` a client must send a `GET` request to the server
+include::{generated}/lg/shall_find-all/http-request.adoc[]
+
+If no `LocationGroups` exist the returned array is empty otherwise the response looks like
+include::{generated}/lg/shall_find-all/http-response.adoc[]
+
+Each `LocationGroup` has a link to its parent `LocationGroup` except the root `LocationGroup` that doesn't have that link.
+
+[[location-groups-changestate]]
+=== Change a LocationGroup's State
+A `LocationGroup` has an inbound and an outbound state, sometimes also referred as infeed or outfeed state. Both states can be set to
+`AVAILABLE` or `NOT_AVAILABLE` independent from each other. Is a `LocationGroup` not available for infeed, then no transports towards this
+`LocationGroup` are created, similar is true for the outbound state.
+
+To change the state of a `LocationGroup` a `PATCH` request on the identified resource is accepted
+include::{generated}/lg/shall_change_state_p-key/http-request.adoc[]
+
+Request path variables
+include::{generated}/lg/shall_change_state_p-key/path-parameters.adoc[]
+
+Request parameters
+include::{generated}/lg/shall_change_state_p-key/query-parameters.adoc[]
+
+If the state change operation could be processed successfully, the server responds with
+include::{generated}/lg/shall_change_state_p-key/http-response.adoc[]
+
+If the resource can't be identified the server response looks like:
+include::{generated}/lg/shall_change_state_p-key_404/http-response.adoc[]
+
+Instead of passing both state values for inbound and outbound directly as query parameters it is also possible to encode the state into a
+8-digit bitmap field and pass it with the request. This is very handy when the subsystem (aka. PLC) sends an error bitmap to the server that
+is directly passed to the API.
+include::{generated}/lg/shall_change_state/http-request.adoc[]
+
+Request parameters:
+include::{generated}/lg/shall_change_state/query-parameters.adoc[]
+
+The server response is:
+include::{generated}/lg/shall_change_state/http-response.adoc[]
+
+[[location-groups-modify]]
+=== Modify fields of a LocationGroup
+Selected fields of an existing `LocationGroup` can be changed. Therefor the client sends a `PATCH` request to the identified primary resource with the minimum required fields in the request body.
+
+If the description shall be changed, the request looks like:
+include::{generated}/lg/shall_change_description/http-request.adoc[]
+
+If the parent `LocationGroup` shall be changed the request looks like:
+include::{generated}/lg/shall_change_parent/http-request.adoc[]
+
+In case the operation goes well, the server responds with:
+include::{generated}/lg/shall_change_description/http-response.adoc[]
+
+[[location-groups-delete]]
+=== Delete a LocationGroup
+An existing `LocationGroup` with all child `LocationGroups` and `Locations` can be deleted via the API. Therefor a client sends an HTTP
+`DELETE` request to the identifying URI of the resource.
+
+include::{generated}/lg/lg-deleted/http-request.adoc[]
+
+The server tries to delete the resource with all embedded related resources. If all can be deleted successfully the server responds with:
+include::{generated}/lg/lg-deleted/http-response.adoc[]
+
+If a `LocationGroup` with a `Location` is not allowed to be deleted because there is either a `TransportUnit` or a `PackagingUnit` booked
+onto it, or it is used somehow else in the system (for example in routing definitions etc.) the server declines the request.
+
+In this case a request to a forbidden resource looks like:
+include::{generated}/lg/lg-deleted-403/http-request.adoc[]
+
+Then the server rejects to delete the `Location` and also the `LocationGroup` it belongs to and responds with:
+include::{generated}/lg/lg-deleted-403/http-response.adoc[]

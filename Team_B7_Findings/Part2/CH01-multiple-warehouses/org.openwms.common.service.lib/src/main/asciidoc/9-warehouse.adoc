@@ -1,0 +1,34 @@
+[[section-warehouse]]
+== Warehouse
+
+A `Warehouse` is a physical facility identified by a stable, unique `code` and a descriptive `name`. It owns `Locations`; it is distinct
+from `Account` and from the hierarchical, operational `LocationGroup`.
+
+Create a warehouse with `POST /v1/warehouses` and a JSON representation containing `code` and `name`. Retrieve it with
+`GET /v1/warehouses?code={code}`. Warehouse codes are immutable after creation.
+
+A `Location` is identified by the composite business identity `(warehouseCode, locationId)`. The existing
+`AREA/AISLE/X/Y/Z` `locationId` format is unchanged. Location creation requires `warehouseCode`. An update identified by persistent `pKey`
+may omit it to preserve the existing Warehouse; if supplied, it must match. Coordinate lookup and state changes accept `warehouseCode` as
+a qualifier. Existing unqualified coordinate calls are retained only when the coordinate resolves to at most one
+warehouse. They fail with a conflict if the coordinate exists in multiple warehouses. Wildcard searches can omit `warehouseCode` because
+they return a list; including it scopes the results to one facility.
+
+=== Existing database rollout
+
+The repositories do not contain a versioned schema migration framework. Do not rely on Hibernate schema update to infer which facility owns
+existing rows. Before deploying the library/service version that requires a warehouse:
+
+. Create `COM_WAREHOUSE` and `com_warehouse_seq` with dialect-appropriate DDL matching the `Warehouse` entity and its inherited
+  `ApplicationEntity` columns. Provision each real warehouse with a unique `C_CODE` and its descriptive `C_NAME`.
+. Add `COM_LOCATION.C_WAREHOUSE` as a nullable column referencing `COM_WAREHOUSE.C_CODE`.
+. Apply a deployment-provided mapping that assigns every existing location row to its actual warehouse. Do not assign all rows to an
+  invented default warehouse.
+. Verify that no `COM_LOCATION.C_WAREHOUSE` value is null or references an unknown warehouse, and that no two rows share
+  `(C_WAREHOUSE, C_AREA, C_AISLE, C_X, C_Y, C_Z)`.
+. Replace the old global `UC_LOC_ID` constraint on `(C_AREA, C_AISLE, C_X, C_Y, C_Z)` with `UC_LOC_ID` on
+  `(C_WAREHOUSE, C_AREA, C_AISLE, C_X, C_Y, C_Z)`, add the `FK_LOC_WHS` foreign key, and enforce `C_WAREHOUSE` as non-null.
+. Deploy the updated Common Service Library and Common Service together. Keep the global PLC-code and ERP-code uniqueness constraints.
+
+The SQL syntax and DDL for the `ApplicationEntity` base columns must follow the production database dialect. The application does not create
+a default warehouse or backfill production locations automatically.

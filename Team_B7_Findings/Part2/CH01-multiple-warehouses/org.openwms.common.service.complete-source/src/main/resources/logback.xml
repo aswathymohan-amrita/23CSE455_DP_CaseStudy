@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration debug="false" scan="true" scanPeriod="30 seconds">
+
+    <property name="LOG_TEMP" value="/tmp/owms"/>
+    <property name="MODULE_NAME" value="COMMON-Service"/>
+
+    <include resource="logback-loki.xml"/>
+    <include resource="logback-appenders.xml"/>
+    <include resource="logback-loggers.xml"/>
+
+    <statusListener class="ch.qos.logback.core.status.NopStatusListener"/>
+
+    <logger name="com.netflix.discovery" level="OFF"/>
+    <logger name="org.ameba" level="WARN"/>
+    <logger name="org.hibernate.boot.internal.InFlightMetadataCollectorImpl" level="ERROR"/>
+    <logger name="org.hibernate.SQL" level="OFF"/>
+    <logger name="org.hibernate.SQL_SLOW" level="OFF"/>
+    <logger name="org.hibernate.type" level="OFF"/>
+    <logger name="org.springframework" level="WARN"/>
+    <logger name="org.openwms" level="DEBUG"/>
+
+    <logger name="CALLCONTEXT" level="ERROR"/>
+
+    <springProfile name="ELK">
+        <appender name="ELK" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
+            <destination>elk:5000</destination>
+            <encoder class="net.logstash.logback.encoder.LogstashEncoder"/>
+        </appender>
+        <logger name="PRESENTATION_LAYER_EXCEPTION" level="ERROR" additivity="true"/>
+        <logger name="SERVICE_LAYER_EXCEPTION" level="ERROR" additivity="true"/>
+        <logger name="INTEGRATION_LAYER_EXCEPTION" level="ERROR" additivity="true"/>
+        <logger name="PRESENTATION_LAYER_ACCESS" level="INFO" additivity="false">
+            <!-- Not additive, because only send to TSL and ELK -->
+            <appender-ref ref="TSL"/>
+            <appender-ref ref="ELK"/>
+        </logger>
+        <logger name="SERVICE_LAYER_ACCESS" level="INFO" additivity="false">
+            <!-- Not additive, because only send to TSL and ELK -->
+            <appender-ref ref="TSL"/>
+            <appender-ref ref="ELK"/>
+        </logger>
+        <logger name="INTEGRATION_LAYER_ACCESS" level="INFO" additivity="false">
+            <!-- Not additive, because only send to TSL and ELK -->
+            <appender-ref ref="TSL"/>
+            <appender-ref ref="ELK"/>
+        </logger>
+        <logger name="MEASURED" level="INFO" additivity="false">
+            <!-- Not additive, because only send to TSL and ELK -->
+            <appender-ref ref="TSL"/>
+            <appender-ref ref="ELK"/>
+        </logger>
+        <root level="INFO">
+            <appender-ref ref="STDOUT"/>
+            <appender-ref ref="LOGFILE"/>
+            <appender-ref ref="ELK"/>
+        </root>
+    </springProfile>
+    <springProfile name="LOKI">
+        <logger name="PRESENTATION_LAYER_EXCEPTION" level="ERROR" additivity="true"/>
+        <logger name="SERVICE_LAYER_EXCEPTION" level="ERROR" additivity="true"/>
+        <logger name="INTEGRATION_LAYER_EXCEPTION" level="ERROR" additivity="true"/>
+        <logger name="PRESENTATION_LAYER_ACCESS" level="INFO" additivity="false">
+            <!-- Not additive, because only send to TSL and LOKI -->
+            <appender-ref ref="TSL"/>
+            <appender-ref ref="LOKI"/>
+        </logger>
+        <logger name="SERVICE_LAYER_ACCESS" level="INFO" additivity="false">
+            <!-- Not additive, because only send to TSL and LOKI -->
+            <appender-ref ref="TSL"/>
+            <appender-ref ref="LOKI"/>
+        </logger>
+        <logger name="INTEGRATION_LAYER_ACCESS" level="INFO" additivity="false">
+            <!-- Not additive, because only send to TSL and LOKI -->
+            <appender-ref ref="TSL"/>
+            <appender-ref ref="LOKI"/>
+        </logger>
+        <logger name="MEASURED" level="INFO" additivity="false">
+            <!-- Not additive, because only send to TSL and LOKI -->
+            <appender-ref ref="TSL"/>
+            <appender-ref ref="LOKI"/>
+        </logger>
+        <root level="INFO">
+            <appender-ref ref="STDOUT"/>
+            <appender-ref ref="LOGFILE"/>
+            <appender-ref ref="LOKI"/>
+        </root>
+    </springProfile>
+    <root level="INFO">
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="LOGFILE"/>
+    </root>
+</configuration>
