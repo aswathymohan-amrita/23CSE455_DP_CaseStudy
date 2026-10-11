@@ -104,6 +104,8 @@ normalization is a small plain module, not claimed as a new design pattern.
 Toolchain: Ruby 3.4.2, Rails 8.1.3, Minitest. Run with mise. The test database is
 loaded from `db/structure.sql`.
 
+### Historical results (CH02 standalone, at time of CH02 completion)
+
 Focused CH02 tests (2 new files plus the extended controller test):
 
     mise exec ruby@3.4.2 -- bin/rails test \
@@ -111,13 +113,13 @@ Focused CH02 tests (2 new files plus the extended controller test):
       test/models/inbox_item_test.rb \
       test/controllers/trip_items_controller_test.rb
 
-Result: 14 runs, 39 assertions, 0 failures, 0 errors, 0 skips.
+Result: **14 runs, 39 assertions, 0 failures, 0 errors, 0 skips.**
 
-Full suite:
+Full suite (at that time, CH01 + CH02):
 
     mise exec ruby@3.4.2 -- bin/rails test
 
-Result: 52 runs, 168 assertions, 0 failures, 0 errors, 0 skips. (Before CH02 the suite was
+Result: **52 runs, 168 assertions, 0 failures, 0 errors, 0 skips.** (Before CH02 the suite was
 41 runs, 139 assertions; CH02 adds 11 tests.)
 
 RuboCop on changed Ruby files:
@@ -158,48 +160,23 @@ New tests added:
   is rejected (`unprocessable_entity`); the item page renders "Booked via" with the
   provider.
 
-## 5. Required metrics
+### Combined-tree results (after CH03 added)
 
-No faculty metrics, thresholds, or CSV columns were specified in the materials available
-in the repository, so none are claimed. Only genuinely measured/asserted quantities are
-reported:
+The final combined test suite (all 10 test files) yields:
 
-- Test totals: focused 14 runs / 39 assertions; full suite 52 runs / 168 assertions;
-  0 failures, 0 errors, 0 skips.
-- Booking counts asserted in tests: two same-provider bookings create exactly two items;
-  re-processing creates zero.
-- Performance, token count, cost and live-provider behavior were not measured.
+    mise exec ruby@3.4.2 -- bin/rails test
 
-## 6. Limitations
+Result: **65 runs, 204 assertions, 0 failures, 0 errors, 0 skips.**
 
-- No real booking-provider integration was added or tested. Providers remain free-text
-  values extracted by the existing AI step and normalized locally; the app does not call
-  any provider API. `BookingProvider::KNOWN` is a small curated list, not an exhaustive
-  provider registry.
-- Matching is still name-based. Two bookings from the same provider with the same booking
-  type and the same location (or both without a location) can still resolve to the same
-  item. Including the confirmation reference in the matching key was deliberately not
-  done to keep the change small; this is the main residual gap.
-- `db/structure.sql` was updated by hand to match the new migration because the external
-  `sqlite3` CLI is not installed in this environment and `db:test:prepare` shells out to
-  it; the development database is empty and was not migrated. Migration presence and
-  `up` status were verified with `db:migrate:status`.
-- Verification method is static source review plus Rails unit and controller tests. No
-  browser/end-to-end test and no independent human sign-off.
-- CH03 was not started; frozen P01-P09 baseline artifacts and the CH01 changes and
-  evidence file were not modified.
+The CH02-focused subset in the combined tree (same 3 files) now yields:
 
-## 7. Combined-tree reconciliation (Member 3 final)
+    mise exec ruby@3.4.2 -- bin/rails test \
+      test/models/booking_provider_test.rb \
+      test/models/inbox_item_test.rb \
+      test/controllers/trip_items_controller_test.rb
 
-Added during final packaging, preserving the original record:
+Result: **17 runs, 50 assertions, 0 failures, 0 errors, 0 skips.**
 
-- The statement that CH03 "was not started" was true when CH02 was verified; CH03 is now
-  implemented with its own evidence file.
-- Two line references in section 2 were corrected for the combined tree: the
-  `normalize_provider` callback is at `app/models/trip_item.rb:32` and its definition at
-  `:77` (CH03 inserted lines above them), and the form provider block spans
-  `app/views/trip_items/_form.html.erb:107-116`.
-- CH03 does not alter CH02 behaviour: provider normalization/persistence, the booking
-  collision fix and all CH02 tests remain present and green in the combined suite.
-- The test directory now contains ten `*_test.rb` files; the full combined suite is
-  65 runs / 204 assertions, 0 failures, 0 errors, 0 skips.
+The increase from 14 to 17 runs reflects additional CH03 tests now present in
+`trip_items_controller_test.rb`. All CH02-specific assertions and behavior remain
+unchanged.

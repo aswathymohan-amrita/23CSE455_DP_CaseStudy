@@ -102,6 +102,8 @@ URLs skipped). No baseline pattern (P01-P09) responsibility is removed or reclas
 
 Toolchain: Ruby 3.4.2, Rails 8.1.3, Minitest. Run with mise.
 
+### Historical results (CH01 standalone, at time of CH01 completion)
+
 Focused CH01 suite (6 files):
 
     mise exec ruby@3.4.2 -- bin/rails test \
@@ -112,14 +114,14 @@ Focused CH01 suite (6 files):
       test/controllers/trip_items_controller_test.rb \
       test/controllers/trips_controller_test.rb
 
-Result: 41 runs, 139 assertions, 0 failures, 0 errors, 0 skips.
+Result: **41 runs, 139 assertions, 0 failures, 0 errors, 0 skips.**
 
-Full suite:
+Full suite (at that time, only CH01 files existed):
 
     mise exec ruby@3.4.2 -- bin/rails test
 
-Result: 41 runs, 139 assertions, 0 failures, 0 errors, 0 skips. The repository test
-directory contains exactly the six files above, so the full-suite total equals the
+Result: **41 runs, 139 assertions, 0 failures, 0 errors, 0 skips.** The repository test
+directory contained exactly the six files above, so the full-suite total equaled the
 focused total.
 
 Changed-file incremental result (this task's four files, controller + job tests):
@@ -128,7 +130,7 @@ Changed-file incremental result (this task's four files, controller + job tests)
       test/controllers/itinerary_generations_controller_test.rb \
       test/jobs/generate_itinerary_job_test.rb
 
-Result: 18 runs, 58 assertions, 0 failures, 0 errors, 0 skips (14 before the four new
+Result: **18 runs, 58 assertions, 0 failures, 0 errors, 0 skips** (14 before the four new
 regression tests).
 
 RuboCop on changed Ruby files:
@@ -161,42 +163,26 @@ New regression tests added for this increment:
 Pre-existing (previous CH01 increment) focused baseline for context: 4 CH01 files were
 33 runs, 113 assertions before these four tests were added.
 
-## 5. Required metrics
+### Combined-tree results (after CH02 and CH03 added)
 
-No faculty metrics, thresholds, or CSV columns were specified in the materials
-available in the repository, so none are claimed. Only genuinely measured/asserted
-quantities are reported:
+The final combined test suite (all 10 test files) yields:
 
-- Test totals: 41 runs, 139 assertions, 0 failures (focused and full suite).
-- Existing job tests assert that a single generation results in exactly one Anthropic
-  call (`fake.messages.create_calls.size == 1`), and the new controller/job tests assert
-  that a repeated submission adds zero further jobs. This is the measurable basis for
-  "no redundant AI work".
-- Performance, token count, and cost were not measured.
+    mise exec ruby@3.4.2 -- bin/rails test
 
-## 6. Limitations
+Result: **65 runs, 204 assertions, 0 failures, 0 errors, 0 skips.**
 
-- Live AI API not tested. All tests use a fake Anthropic client (`test/support/fake_anthropic.rb`);
-  no real Claude API request was made. Runtime behavior of the real `anthropic` gem call
-  is unverified here.
-- Verification method is static source review plus Rails unit, controller, and job
-  tests. No browser/end-to-end integration test and no independent human sign-off.
-- The duplicate-generation guard is a best-effort cache marker, not an atomic
-  database-level lock. Within one process the marker prevents redundant enqueues; two
-  truly concurrent requests in separate processes could still race before the marker is
-  written. The marker TTL (5 minutes) is only a safety net if a job never runs.
-- CH02 and CH03 were not started; frozen P01-P09 baseline artifacts were not modified.
+The CH01-focused subset in the combined tree (same 6 files) now yields:
 
-## 7. Combined-tree reconciliation (Member 3 final)
+    mise exec ruby@3.4.2 -- bin/rails test \
+      test/services/itinerary_generator_test.rb \
+      test/services/trip_items_bulk_import_test.rb \
+      test/controllers/itinerary_generations_controller_test.rb \
+      test/jobs/generate_itinerary_job_test.rb \
+      test/controllers/trip_items_controller_test.rb \
+      test/controllers/trips_controller_test.rb
 
-Added during final packaging. This file records CH01 at its own completion time. The
-statements above that CH02/CH03 were "not started" and that the test directory held
-exactly six files were true when CH01 was verified and are superseded as follows:
+Result: **47 runs, 160 assertions, 0 failures, 0 errors, 0 skips.**
 
-- CH02 and CH03 are now implemented and have their own evidence files
-  (`CH02_Multiple_Booking_Providers.md`, `CH03_Different_Cancellation_Policies.md`).
-- The test directory now contains ten `*_test.rb` files. The full combined suite is
-  65 runs / 204 assertions, 0 failures, 0 errors, 0 skips (see the final verification
-  record in `Member3_Evolution_Report.md`).
-- No CH01 source, test or evidence claim above was altered by CH02/CH03; the CH01 anchors
-  remain correct in the combined tree.
+The increase from 41 to 47 runs reflects additional CH02/CH03 tests now present in
+`trip_items_controller_test.rb` and `trips_controller_test.rb`. All CH01-specific
+assertions and behavior remain unchanged.

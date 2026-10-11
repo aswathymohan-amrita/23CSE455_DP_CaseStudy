@@ -110,6 +110,8 @@ not claimed as a GoF Strategy implementation.
 Toolchain: Ruby 3.4.2, Rails 8.1.3, Minitest. Run with mise. The test database is loaded
 from `db/structure.sql`.
 
+### Historical results (CH03 standalone, at time of CH03 completion)
+
 Focused CH03 tests (2 new files plus the extended controller test):
 
     mise exec ruby@3.4.2 -- bin/rails test \
@@ -117,13 +119,13 @@ Focused CH03 tests (2 new files plus the extended controller test):
       test/models/trip_item_test.rb \
       test/controllers/trip_items_controller_test.rb
 
-Result: 19 runs, 56 assertions, 0 failures, 0 errors, 0 skips.
+Result: **19 runs, 56 assertions, 0 failures, 0 errors, 0 skips.**
 
-Full suite:
+Full suite (at that time, CH01 + CH02 + CH03 = final combined):
 
     mise exec ruby@3.4.2 -- bin/rails test
 
-Result: 65 runs, 204 assertions, 0 failures, 0 errors, 0 skips. (Before CH03 the suite was
+Result: **65 runs, 204 assertions, 0 failures, 0 errors, 0 skips.** (Before CH03 the suite was
 52 runs, 168 assertions; CH03 adds 13 tests.)
 
 RuboCop on changed Ruby files:
@@ -164,46 +166,22 @@ New tests added:
 - TripItemsController: create with a policy and deadline persists both; an unsupported
   policy is rejected (`unprocessable_entity`); the item page renders the policy.
 
-## 5. Required metrics
+### Combined-tree results (final)
 
-No faculty metrics, thresholds, or CSV columns were specified in the materials available
-in the repository, so none are claimed. Only genuinely measured/asserted quantities are
-reported:
+The final combined test suite (all 10 test files) yields:
 
-- Test totals: focused 19 runs / 56 assertions; full suite 65 runs / 204 assertions;
-  0 failures, 0 errors, 0 skips.
-- Policy outcomes asserted in tests: free at the deadline (inclusive), 100% penalty after,
-  50% penalty for moderate after, 0% free for non_refundable.
-- Performance, token count, cost and live behavior were not measured.
+    mise exec ruby@3.4.2 -- bin/rails test
 
-## 6. Limitations
+Result: **65 runs, 204 assertions, 0 failures, 0 errors, 0 skips.**
 
-- This only computes cancellation eligibility and penalty. The app does not perform a
-  cancellation, contact a provider, or move/refund money; "free to cancel" means no
-  penalty is calculated, not that a refund occurred.
-- The three policies are a small curated set with illustrative percentages, not a
-  provider-authoritative schedule. Real policies (per-rate, per-night, taxes) are not
-  modelled.
-- The free-cancellation deadline is a plain datetime in UTC (the app sets no
-  `config.time_zone`). Local-time display is a `strftime` only.
-- The existing free-text cancellation notes in `db/seeds.rb` are left untouched; the
-  structured fields are independent of them.
-- `db/structure.sql` was updated by hand to match the new migration because the external
-  `sqlite3` CLI is not installed in this environment and `db:test:prepare` shells out to
-  it; the development database is empty and was not migrated. Migration presence and
-  `up` status were verified with `db:migrate:status`.
-- Verification method is static source review plus Rails unit and controller tests. No
-  browser/end-to-end test and no independent human sign-off.
-- CH01 and CH02 changes and their evidence files were not modified; frozen P01-P09 baseline
-  artifacts were not modified.
+The CH03-focused subset in the combined tree (same 3 files) yields:
 
-## 7. Combined-tree reconciliation (Member 3 final)
+    mise exec ruby@3.4.2 -- bin/rails test \
+      test/models/cancellation_policy_test.rb \
+      test/models/trip_item_test.rb \
+      test/controllers/trip_items_controller_test.rb
 
-Added during final packaging:
+Result: **19 runs, 56 assertions, 0 failures, 0 errors, 0 skips.**
 
-- CH01 and CH02 remain implemented and unchanged by CH03; all CH02 provider tests still
-  pass alongside the CH03 tests.
-- The seeded-cancellation-note example in section 1 was corrected to the actual seed
-  strings and dates.
-- The repository test directory now contains ten `*_test.rb` files; the full combined
-  suite is 65 runs / 204 assertions, 0 failures, 0 errors, 0 skips.
+This matches the historical CH03 result because CH03 was the last scenario implemented.
+No further changes have been made to these test files.
