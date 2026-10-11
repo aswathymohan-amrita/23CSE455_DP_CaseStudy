@@ -1,0 +1,208 @@
+class InboxItem < ApplicationRecord
+  belongs_to :trip
+  belongs_to :reviewed_by, class_name: "User", optional: true
+
+  broadcasts_refreshes_to :trip
+
+  has_many :trip_items, dependent: :nullify
+  has_many :expenses, dependent: :nullify
+
+  has_many_attached :email_attachments
+
+  enum :sender_status, { pending_approval: "pending_approval", approved: "approved", rejected: "rejected" }
+  enum :parse_status,  { unparsed: "unparsed", parsed: "parsed", failed: "failed" }
+  enum :review_status, { pending_review: "pending_review", confirmed: "confirmed", discarded: "discarded" }
+
+  validates :from_email, presence: true
+  validates :received_at, presence: true
+
+  def parsed_data
+    JSON.parse(parsed_data_json) if parsed_data_json.present?
+  end
+
+  def parsed_data=(hash)
+    self.parsed_data_json = hash.to_json
+  end
+
+  # Creates trip_items and expenses from parsed AI data.
+  # Called when the user clicks "Add to trip" on the email detail page.
+  # Bookings/legs/accommodations → status: confirmed (they are confirmed reservations).
+  # Shortlist suggestions → status: idea.
+  # Expenses are auto-confirmed (confirmed_at = now) since booking emails are confirmed reservations.
+  # Delegates to fill_missing_links! (idempotent) then adds shortlist ideas.
+  # Safe to call multiple times — no duplicates created.
+  def confirm_and_create_items!(added_by)
+    fill_missing_links!(added_by)
+
+    data = parsed_data
+    return unless data.is_a?(Hash)
+
+    shortlist_kind  = { "eat" => "eat", "see" => "do", "do" => "do",
+                        "scout" => "do", "stay" => "stay" }
+    existing_names  = trip.trip_items.pluck(:name).map(&:downcase).to_set
+
+    Array(data["shortlist_items"]).each do |si|
+      next if si["name"].blank? || existing_names.include?(si["name"].downcase)
+      trip.trip_items.create!(
+        inbox_item: self,
+        added_by:   added_by,
+        kind:       shortlist_kind[si["category"]] || "other",
+        name:       si["name"],
+        status:     :idea,
+        address:    si["address"],
+        notes:      si["notes"]
+      )
+    rescue => e
+      Rails.logger.error "[InboxItem#confirm] shortlist item failed: #{e.message}"
+    end
+  end
+
+  # Idempotent counterpart to confirm_and_create_items!.
+  # For each item in parsed_data:
+  #   - finds an existing trip_item linked to this inbox_item OR matched by name in the trip
+  #   - fills in missing address / confirmation_ref on the existing item
+  #   - creates an expense only if the trip_item has none yet
+  #   - creates a new trip_item only when no name match exists at all
+  # Safe to call multiple times; never creates duplicates.
+  def fill_missing_links!(added_by)
+    data = parsed_data
+    return unless data.is_a?(Hash)
+
+    paid_by_traveler = trip.trip_members.joins(:traveler)
+                           .find_by(travelers: { email: from_email })&.traveler
+    paid_by_traveler ||= trip.trip_members.joins(:traveler)
+                             .find_by(travelers: { user_id: added_by.id })&.traveler
+
+    leg_mode_to_kind = { "plane" => "flight", "train" => "train",
+                         "ferry" => "ferry",  "bus"   => "car",  "car" => "car" }
+
+    linked_items = trip.trip_items.where(inbox_item: self).index_by { |i| i.name.downcase }
+    all_items    = trip.trip_items.index_by { |i| i.name.downcase }
+
+    find_or_upsert = lambda do |name, kind, attrs|
+      key      = name.to_s.downcase
+      existing = linked_items[key] || all_items[key]
+      if existing
+        updates = {}
+        updates[:inbox_item_id]    = id                       if existing.inbox_item_id.nil?
+        updates[:address]          = attrs[:address]          if existing.address.blank? && attrs[:address].present?
+        updates[:confirmation_ref] = attrs[:confirmation_ref] if existing.confirmation_ref.blank? && attrs[:confirmation_ref].present?
+        existing.update_columns(updates) if updates.any?
+        existing
+      else
+        item = trip.trip_items.create!(
+          attrs.merge(inbox_item: self, added_by: added_by, name: name, kind: kind, status: :confirmed)
+        )
+        all_items[key] = item
+        item
+      end
+    end
+
+    # Travel legs
+    legs_data  = Array(data["travel_legs"])
+    round_trip = legs_data.size == 2 &&
+      legs_data[0]["arrival_location"].to_s.split(/[\s,]+/).first.to_s.casecmp?(
+        legs_data[1]["departure_location"].to_s.split(/[\s,]+/).first.to_s
+      )
+
+    flight_items = []
+    legs_data.each_with_index do |leg, i|
+      kind         = leg_mode_to_kind[leg["mode"]] || "other"
+      name         = [ leg["carrier"].presence,
+                       "#{leg["departure_location"]} → #{leg["arrival_location"]}" ].compact.join(" ")
+      geocode_addr = (round_trip && i > 0) ? leg["departure_location"] : leg["arrival_location"]
+      item = find_or_upsert.call(name, kind, {
+        starts_at:        leg["departure_datetime"].presence,
+        ends_at:          leg["arrival_datetime"].presence,
+        address:          geocode_addr.presence,
+        amount:           leg["total_price"],
+        currency:         leg["currency"],
+        confirmation_ref: leg["booking_reference"]
+      })
+      flight_items << { item: item, data: leg }
+    rescue => e
+      Rails.logger.error "[InboxItem#fill_missing_links] travel leg failed: #{e.message}"
+    end
+
+    if paid_by_traveler
+      priced_leg = flight_items.find { |f| f[:data]["total_price"].present? }
+      if priced_leg && !Expense.exists?(trip_item_id: priced_leg[:item].id)
+        origins = legs_data.map { |l| l["departure_location"] }.uniq
+        carrier = priced_leg[:data]["carrier"].presence
+        desc    = origins.length > 1 ? "#{origins.first} ⇄ #{origins.last}" : origins.first.to_s
+        desc   += " (#{carrier})" if carrier
+        build_expense(priced_leg[:item], added_by, paid_by_traveler,
+                      priced_leg[:data]["total_price"], priced_leg[:data]["currency"],
+                      desc, :flight, priced_leg[:data]["departure_datetime"])
+      end
+    end
+
+    # Accommodations
+    Array(data["accommodations"]).each do |acc|
+      item = find_or_upsert.call(acc["name"], "stay", {
+        starts_at:        acc["check_in"].presence,
+        ends_at:          acc["check_out"].presence,
+        address:          acc["address"],
+        amount:           acc["total_price"],
+        currency:         acc["currency"],
+        confirmation_ref: acc["confirmation_number"],
+        notes:            acc["notes"]
+      })
+      if paid_by_traveler && acc["total_price"].present? && !Expense.exists?(trip_item_id: item.id)
+        build_expense(item, added_by, paid_by_traveler,
+                      acc["total_price"], acc["currency"], acc["name"],
+                      :stay, acc["check_in"])
+      end
+    rescue => e
+      Rails.logger.error "[InboxItem#fill_missing_links] accommodation failed: #{e.message}"
+    end
+
+    # Bookings (tours, car hire, restaurants, etc.)
+    booking_kind = ->(type) {
+      t = type.to_s.downcase
+      return "eat" if t =~ /restaurant|dining|food|eat/
+      return "car" if t =~ /car|hire|rental/
+      "do"
+    }
+
+    Array(data["bookings"]).each do |booking|
+      kind = booking_kind.call(booking["booking_type"])
+      item = find_or_upsert.call(booking["provider"], kind, {
+        starts_at:        booking["datetime"].presence,
+        ends_at:          booking["end_datetime"].presence,
+        address:          booking["location"],
+        amount:           booking["total_price"],
+        currency:         booking["currency"],
+        confirmation_ref: booking["confirmation_reference"],
+        notes:            booking["notes"]
+      })
+      if paid_by_traveler && booking["total_price"].present? && !Expense.exists?(trip_item_id: item.id)
+        build_expense(item, added_by, paid_by_traveler,
+                      booking["total_price"], booking["currency"], booking["provider"],
+                      kind.to_sym, booking["datetime"])
+      end
+    rescue => e
+      Rails.logger.error "[InboxItem#fill_missing_links] booking failed: #{e.message}"
+    end
+  end
+
+  private
+
+  def build_expense(trip_item, added_by, paid_by, amount, currency, description, category, date)
+    trip.expenses.create!(
+      trip_item:    trip_item,
+      inbox_item:   self,
+      added_by:     added_by,
+      paid_by:      paid_by,
+      amount:       amount,
+      currency:     currency.presence || "EUR",
+      description:  description,
+      category:     category,
+      expense_date: date.present? ? Date.parse(date.to_s) : Date.today,
+      source:       :booking,
+      confirmed_at: Time.current
+    )
+  rescue => e
+    Rails.logger.error "[InboxItem#confirm] expense failed: #{e.message}"
+  end
+end

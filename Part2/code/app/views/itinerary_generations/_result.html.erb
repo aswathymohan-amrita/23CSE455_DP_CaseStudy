@@ -1,0 +1,125 @@
+<%# Locals: generation (Hash or nil), trip %>
+<div id="itinerary-generation-result">
+  <div class="bg-base-200 border border-base-content/10 rounded-3xl overflow-hidden">
+
+    <% if generation.blank? %>
+      <%# ── GENERATING ── %>
+      <div class="px-5 py-10 flex flex-col items-center text-center gap-3">
+        <span class="loading loading-spinner loading-lg text-primary"></span>
+        <p class="text-sm font-semibold text-base-content">Generating ideas…</p>
+        <p class="text-xs text-base-content/50 leading-relaxed max-w-xs">
+          Tailoring suggestions for <strong class="text-base-content/70"><%= trip.title %></strong>.
+          This page updates automatically when they're ready.
+        </p>
+      </div>
+
+    <% elsif generation["status"] == "ready" %>
+      <% items = generation["items"] %>
+
+      <%# Header %>
+      <div class="px-5 pt-5 pb-4">
+        <p class="text-xl font-bold text-base-content">Suggested ideas</p>
+        <p class="text-xs text-base-content/50 mt-1">
+          <%= items.size %> suggestion(s) ready
+          <% if Array(generation["rejected"]).any? %>
+            · <span class="text-base-content/40"><%= generation["rejected"].size %> filtered out</span>
+          <% end %>
+        </p>
+      </div>
+
+      <%# Perforation %>
+      <div class="relative flex items-center h-5 shrink-0">
+        <div class="absolute -left-2.5 w-5 h-5 rounded-full bg-base-100 z-10 shadow-[inset_0_2px_4px_rgba(0,0,0,0.3)]"></div>
+        <div class="flex-1 border-t-2 border-dashed border-base-content/15 mx-3"></div>
+        <div class="absolute -right-2.5 w-5 h-5 rounded-full bg-base-100 z-10 shadow-[inset_0_2px_4px_rgba(0,0,0,0.3)]"></div>
+      </div>
+
+      <%# List %>
+      <div class="px-5 py-4 space-y-2">
+        <% items.each do |item| %>
+          <% kind = TripItem.kinds.key?(item["kind"].to_s) ? item["kind"].to_s : "other" %>
+          <div class="flex items-start gap-3 px-3 py-3 rounded-xl bg-base-300/30 border border-base-content/5">
+            <span class="shrink-0 mt-0.5 text-base-content/40">
+              <%= trip_item_kind_icon(kind, css_class: "h-4 w-4") %>
+            </span>
+            <div class="flex-1 min-w-0">
+              <p class="text-sm font-semibold text-base-content leading-tight"><%= item["name"] %></p>
+              <% if item["address"].present? %>
+                <p class="text-xs text-base-content/50 mt-0.5 truncate"><%= item["address"] %></p>
+              <% end %>
+              <% if item["starts_at"].present? %>
+                <p class="text-xs text-primary/70 mt-0.5"><%= item["starts_at"] %></p>
+              <% end %>
+              <% if item["notes"].present? %>
+                <p class="text-xs text-base-content/40 mt-0.5 leading-snug line-clamp-2"><%= item["notes"] %></p>
+              <% end %>
+            </div>
+            <span class="shrink-0 text-[10px] text-base-content/40 font-medium mt-0.5 capitalize"><%= trip_item_kind_label(kind) %></span>
+          </div>
+        <% end %>
+      </div>
+
+      <%# Perforation %>
+      <div class="relative flex items-center h-5 shrink-0">
+        <div class="absolute -left-2.5 w-5 h-5 rounded-full bg-base-100 z-10 shadow-[inset_0_2px_4px_rgba(0,0,0,0.3)]"></div>
+        <div class="flex-1 border-t-2 border-dashed border-base-content/15 mx-3"></div>
+        <div class="absolute -right-2.5 w-5 h-5 rounded-full bg-base-100 z-10 shadow-[inset_0_2px_4px_rgba(0,0,0,0.3)]"></div>
+      </div>
+
+      <%# Actions %>
+      <div class="px-5 py-4 flex flex-col gap-2">
+        <%= button_to confirm_trip_itinerary_generation_path(trip),
+              method: :post,
+              form: { class: "w-full" },
+              class: "btn btn-primary w-full" do %>
+          Add these to itinerary
+        <% end %>
+        <%= button_to trip_itinerary_generation_path(trip),
+              method: :post,
+              form: { class: "w-full" },
+              class: "btn btn-sm w-full" do %>
+          Generate again
+        <% end %>
+      </div>
+
+    <% else %>
+      <%# ── EMPTY / UNUSABLE / ERROR ── %>
+      <% title, body = case generation["status"]
+           when "error"    then [ "Something went wrong", generation["error"] ]
+           when "unusable" then [ "No usable suggestions", generation["reason"] ]
+           else                 [ "No suggestions yet", generation["reason"] ]
+           end %>
+
+      <div class="px-5 py-10 flex flex-col items-center text-center gap-3">
+        <div class="w-12 h-12 rounded-full bg-base-300/50 flex items-center justify-center">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-base-content/40" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/>
+          </svg>
+        </div>
+        <p class="text-sm font-semibold text-base-content"><%= title %></p>
+        <% if body.present? %>
+          <p class="text-xs text-base-content/50 leading-relaxed max-w-xs"><%= body %></p>
+        <% end %>
+
+        <% if Array(generation["rejected"]).any? %>
+          <div class="w-full mt-1 text-left space-y-1">
+            <% generation["rejected"].first(5).each do |rej| %>
+              <p class="text-[11px] text-base-content/40">
+                <span class="font-medium text-base-content/60"><%= rej["name"].presence || "Unnamed" %></span>
+                — <%= rej["reason"] %>
+              </p>
+            <% end %>
+          </div>
+        <% end %>
+
+        <%= button_to trip_itinerary_generation_path(trip),
+              method: :post,
+              form: { class: "w-full mt-1" },
+              class: "btn btn-primary w-full" do %>
+          Try again
+        <% end %>
+      </div>
+    <% end %>
+
+  </div>
+</div>
