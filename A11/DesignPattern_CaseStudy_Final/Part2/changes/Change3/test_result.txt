@@ -1,0 +1,2 @@
+PASS: QuizResultPublisherTest (2 test methods) and QuizServiceIntegrationTest. Result is persisted, and the Spring-wired publisher dispatches to the registered student and instructor observers. Auth state update code is covered by the frontend unit spec, but browser execution was unavailable because Chrome is not installed.
+Backend full suite: 6 tests, 0 failures, 0 errors. Angular production build: passed. Angular unit execution: not run; no Chrome binary. Logs are in ../evidence/.

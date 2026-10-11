@@ -1,0 +1,157 @@
+diff --git a/elearning-backend/src/main/java/com/elearning/controller/QuizController.java b/elearning-backend/src/main/java/com/elearning/controller/QuizController.java
+new file mode 100644
+index 0000000..6899845
+--- /dev/null
++++ b/elearning-backend/src/main/java/com/elearning/controller/QuizController.java
+@@ -0,0 +1,6 @@
++package com.elearning.controller;
++import com.elearning.model.*; import com.elearning.service.QuizService; import org.springframework.web.bind.annotation.*; import java.util.List;
++@RestController @RequestMapping("/api") public class QuizController {private final QuizService service;public QuizController(QuizService s){service=s;}
++ @PostMapping("/courses/{courseId}/quizzes") public QuizView create(@PathVariable Long courseId,@RequestBody CreateQuizRequest r){List<Question> qs=r.questions().stream().map(x->new Question(x.prompt(),x.correctAnswer(),x.points())).toList();return QuizView.from(service.createQuiz(courseId,r.instructorId(),r.title(),qs));}
++ @GetMapping("/courses/{courseId}/quizzes") public List<QuizView> list(@PathVariable Long courseId){return service.quizzesForCourse(courseId).stream().map(QuizView::from).toList();}
++ public record CreateQuizRequest(Long instructorId,String title,List<QuestionRequest> questions){} public record QuestionRequest(String prompt,String correctAnswer,double points){} public record QuizView(Long id,String title,List<QuestionView> questions){static QuizView from(Quiz q){return new QuizView(q.getId(),q.getTitle(),q.getQuestions().stream().map(x->new QuestionView(x.getId(),x.getPrompt(),x.getPoints())).toList());}} public record QuestionView(Long id,String prompt,double points){}}
+diff --git a/elearning-backend/src/main/java/com/elearning/model/Course.java b/elearning-backend/src/main/java/com/elearning/model/Course.java
+index 20d4d5b..2af83c0 100644
+--- a/elearning-backend/src/main/java/com/elearning/model/Course.java
++++ b/elearning-backend/src/main/java/com/elearning/model/Course.java
+@@ -1,7 +1,9 @@
+ package com.elearning.model;
+ 
+ import jakarta.persistence.*;
++import com.fasterxml.jackson.annotation.JsonIgnore;
+ import java.util.List;
++import java.util.ArrayList;
+ 
+ @Entity
+ public class Course {
+@@ -33,6 +35,11 @@ public class Course {
+   @ElementCollection
+   private List<String> lessons;
+ 
++  // A course owns its quizzes; deleting a course also deletes its quiz records.
++  @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
++  @JsonIgnore
++  private List<Quiz> quizzes = new ArrayList<>();
++
+   // Constructors
+   public Course() {}
+ 
+@@ -60,4 +67,7 @@ public class Course {
+ 
+   public List<String> getLessons() { return lessons; }
+   public void setLessons(List<String> lessons) { this.lessons = lessons; }
++
++  public List<Quiz> getQuizzes() { return quizzes; }
++  public void setQuizzes(List<Quiz> quizzes) { this.quizzes = quizzes; }
+ }
+diff --git a/elearning-backend/src/main/java/com/elearning/model/Question.java b/elearning-backend/src/main/java/com/elearning/model/Question.java
+new file mode 100644
+index 0000000..1904426
+--- /dev/null
++++ b/elearning-backend/src/main/java/com/elearning/model/Question.java
+@@ -0,0 +1,34 @@
++package com.elearning.model;
++
++import com.fasterxml.jackson.annotation.JsonIgnore;
++import jakarta.persistence.*;
++
++@Entity
++public class Question {
++  @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
++  private Long id;
++  @Column(nullable = false, length = 2000)
++  private String prompt;
++  @Column(nullable = false)
++  private String correctAnswer;
++  @Column(nullable = false)
++  private double points;
++  @ManyToOne(optional = false)
++  @JoinColumn(name = "quiz_id", nullable = false)
++  @JsonIgnore
++  private Quiz quiz;
++
++  public Question() {}
++  public Question(String prompt, String correctAnswer, double points) {
++    this.prompt = prompt; this.correctAnswer = correctAnswer; this.points = points;
++  }
++  public Long getId() { return id; }
++  public String getPrompt() { return prompt; }
++  public void setPrompt(String prompt) { this.prompt = prompt; }
++  public String getCorrectAnswer() { return correctAnswer; }
++  public void setCorrectAnswer(String correctAnswer) { this.correctAnswer = correctAnswer; }
++  public double getPoints() { return points; }
++  public void setPoints(double points) { this.points = points; }
++  public Quiz getQuiz() { return quiz; }
++  public void setQuiz(Quiz quiz) { this.quiz = quiz; }
++}
+diff --git a/elearning-backend/src/main/java/com/elearning/model/Quiz.java b/elearning-backend/src/main/java/com/elearning/model/Quiz.java
+new file mode 100644
+index 0000000..8506950
+--- /dev/null
++++ b/elearning-backend/src/main/java/com/elearning/model/Quiz.java
+@@ -0,0 +1,31 @@
++package com.elearning.model;
++
++import com.fasterxml.jackson.annotation.JsonIgnore;
++import jakarta.persistence.*;
++import java.util.ArrayList;
++import java.util.List;
++
++@Entity
++public class Quiz {
++  @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
++  private Long id;
++  private String title;
++
++  @ManyToOne(optional = false)
++  @JoinColumn(name = "course_id", nullable = false)
++  @JsonIgnore
++  private Course course;
++
++  @OneToMany(mappedBy = "quiz", cascade = CascadeType.ALL, orphanRemoval = true)
++  private List<Question> questions = new ArrayList<>();
++
++  public Quiz() {}
++  public Quiz(String title, Course course) { this.title = title; this.course = course; }
++  public Long getId() { return id; }
++  public String getTitle() { return title; }
++  public void setTitle(String title) { this.title = title; }
++  public Course getCourse() { return course; }
++  public void setCourse(Course course) { this.course = course; }
++  public List<Question> getQuestions() { return questions; }
++  public void setQuestions(List<Question> questions) { this.questions = questions; }
++}
+diff --git a/elearning-backend/src/main/java/com/elearning/repository/QuizRepository.java b/elearning-backend/src/main/java/com/elearning/repository/QuizRepository.java
+new file mode 100644
+index 0000000..7c40c61
+--- /dev/null
++++ b/elearning-backend/src/main/java/com/elearning/repository/QuizRepository.java
+@@ -0,0 +1,16 @@
++package com.elearning.repository;
++
++import com.elearning.model.Quiz;
++import org.springframework.data.jpa.repository.JpaRepository;
++import org.springframework.data.jpa.repository.EntityGraph;
++import java.util.Optional;
++import java.util.List;
++
++public interface QuizRepository extends JpaRepository<Quiz, Long> {
++  @EntityGraph(attributePaths = "questions")
++  List<Quiz> findByCourseId(Long courseId);
++
++  @Override
++  @EntityGraph(attributePaths = "questions")
++  Optional<Quiz> findById(Long id);
++}
+diff --git a/elearning-backend/src/main/java/com/elearning/service/QuizService.java b/elearning-backend/src/main/java/com/elearning/service/QuizService.java
+new file mode 100644
+index 0000000..5d3bce2
+--- /dev/null
++++ b/elearning-backend/src/main/java/com/elearning/service/QuizService.java
+@@ -0,0 +1,5 @@
++package com.elearning.service;
++import com.elearning.model.*; import com.elearning.repository.CourseRepository; import com.elearning.repository.QuizRepository; import org.springframework.http.HttpStatus; import org.springframework.stereotype.Service; import org.springframework.web.server.ResponseStatusException; import java.util.List;
++@Service public class QuizService { private final QuizRepository quizzes; private final CourseRepository courses; public QuizService(QuizRepository q,CourseRepository c){quizzes=q;courses=c;}
++ public Quiz createQuiz(Long courseId,Long instructorId,String title,List<Question> questions){Course course=courses.findById(courseId).orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND));if(course.getInstructor()==null||instructorId==null||!instructorId.equals(course.getInstructor().getId()))throw new ResponseStatusException(HttpStatus.FORBIDDEN);if(title==null||title.isBlank()||questions==null||questions.isEmpty())throw new ResponseStatusException(HttpStatus.BAD_REQUEST);Quiz quiz=new Quiz(title.trim(),course);for(Question x:questions){if(x.getPrompt()==null||x.getPrompt().isBlank()||x.getCorrectAnswer()==null||x.getCorrectAnswer().isBlank()||!Double.isFinite(x.getPoints())||x.getPoints()<=0)throw new ResponseStatusException(HttpStatus.BAD_REQUEST);x.setQuiz(quiz);}quiz.setQuestions(questions);return quizzes.save(quiz);}
++ public List<Quiz> quizzesForCourse(Long id){if(!courses.existsById(id))throw new ResponseStatusException(HttpStatus.NOT_FOUND);return quizzes.findByCourseId(id);}}
+

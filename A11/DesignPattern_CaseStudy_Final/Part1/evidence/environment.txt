@@ -1,0 +1,9 @@
+Baseline archive: A11/E-Learning-App-main.zip
+Upstream URL: https://github.com/dinhbachnguyen/E-Learning-App
+Git commit: unavailable; supplied ZIP contains no Git metadata
+Archive SHA-256: be7e3e582ee1c0f9f4dbeb0dc70891f2cdea3042fbc074eccf0c9a83cdbcd164
+Inspected application areas: Angular src/app; backend src/main/java/com/elearning; backend src/main/resources; backend pom.xml
+Frontend dependencies declared: Angular 20.3.x, RxJS ~7.8.0, TypeScript ~5.9.2
+Backend declared: Java 17, Spring Boot 3.5.6, Spring Data JPA, H2 (runtime)
+Baseline tests/build: not run as part of baseline classification; original dependencies are not installed in the snapshot.
+Pattern review: manual source/participant verification; line ranges refer to Part1/code.

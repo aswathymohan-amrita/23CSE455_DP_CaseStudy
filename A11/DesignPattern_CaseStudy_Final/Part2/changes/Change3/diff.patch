@@ -1,0 +1,613 @@
+diff --git a/README.md b/README.md
+index 0116bb8..4c70166 100644
+--- a/README.md
++++ b/README.md
+@@ -1,91 +1,30 @@
++# Evolved application source
+ 
+-# E-Learning Platform
++This is the original Angular/Spring Boot application with the Part 2 quiz, scoring and result-notification changes integrated. The untouched baseline is in `../../Part1/code/`.
+ 
+-**E-Learning Platform** is a full-stack web application designed for online learning. It allows instructors to create and manage courses while students can browse, enroll, and track their learning progress. Built with **Angular** for the frontend and **Spring Boot** for the backend, this app provides a responsive, interactive experience.
+-
+----
+-
+-## Features
+-
+-- **User Authentication**: Secure login and registration for students and instructors.  
+-- **Instructor Dashboard**: Create, edit, and manage courses.  
+-- **Student Dashboard**: Browse available courses and enroll.  
+-- **Course Enrollment**: Prevent duplicate enrollments and manage enrolled students.  
+-- **Real-time Updates**: Navbar and course information automatically update on login/logout.  
+-- **Responsive UI**: Mobile-friendly design using Bootstrap.  
+-- **Backend**: Spring Boot REST API with H2 in-memory database (or other relational DB).  
+-- **CORS Support**: Smooth interaction between frontend and backend during development.
+-
+----
+-
+-## Tech Stack
+-
+-- **Frontend**: Angular, TypeScript, Bootstrap  
+-- **Backend**: Java, Spring Boot, Spring Data JPA, H2 Database  
+-- **API**: RESTful endpoints for users, courses, and enrollments  
+-- **Build Tools**: Maven for backend, Angular CLI for frontend  
+-
+----
+-
+-## Project Structure
+-
+-```
+-
+-project-root/
+-├─ elearning-project/        ← Angular application
+-  └─ elearning-backend/      ← Spring Boot application
++## Backend
+ 
++```bash
++cd elearning-backend
++bash ./mvnw spring-boot:run
+ ```
+ 
+----
++Quiz endpoints:
+ 
+-## Getting Started
++- `POST /api/courses/{courseId}/quizzes` — create `{ "instructorId": 2, "title": "...", "questions": [{ "prompt": "...", "correctAnswer": "...", "points": 5 }] }`. The supplied instructor must own the course.
++- `GET /api/courses/{courseId}/quizzes` — list quizzes and public question fields (answer keys are omitted).
++- `POST /api/quizzes/{quizId}/grade` — submit `{ "studentId": 7, "answers": { "1": "A" }, "negativeMarking": false }`; saves a result and notifies registered observers.
+ 
+-### Prerequisites
++The bundled backend uses an in-memory H2 database. Quiz results are persisted only for the lifetime of that database. Result observers currently write availability messages to the application log.
+ 
+-- Java 17+  
+-- Node.js 16+  
+-- Angular CLI 16+  
+-- Maven
++## Frontend
+ 
+-### Installation
+-
+-1. Clone the repository:  
+-   ```bash
+-   git clone https://github.com/dinhbachnguyen/E-Learning-App.git
+-   cd elearning-project
+-   ```
+-
+-2. **Backend**:
+-
+-   ```bash
+-   cd elearning-backend
+-   mvn spring-boot:run   
+-   ```
+-
+-3. **Frontend**:
+-
+-   ```bash
+-   cd ../elearning-project
+-   npm install
+-   ng serve
+-   ```
+-
+-4. Open your browser at [http://localhost:4200](http://localhost:4200)
+-
+----
+-
+-## Usage
+-
+-* Register as a **Student** or **Instructor**.
+-* Instructors can create new courses and manage existing ones.
+-* Students can enroll in courses and view enrolled students.
+-* UI dynamically updates to show the current user and logout option.
+-* Duplicate enrollments are prevented and students are notified if they are already enrolled.
+-
+----
++```bash
++npm ci
++npm run build
++npm test
++```
+ 
+-## Notes
++The Part 2 change updates the existing login/logout state flow. Quiz authoring and submission UI has not been added; the quiz feature is exposed through the backend REST API.
+ 
+-* The backend uses an **H2 in-memory database** by default; data is reset on restart.
+-* For production, configure a persistent database like MySQL or PostgreSQL.
++The staged source patches are in `../changes/Change1-3/diff.patch`. They are proposed source snapshots reconstructed from the supplied ZIP, not verified Git commits. The full baseline-to-evolved file diff is `../changes/evolved_source.diff`.
+diff --git a/elearning-backend/src/main/java/com/elearning/controller/QuizController.java b/elearning-backend/src/main/java/com/elearning/controller/QuizController.java
+index b889d92..0de8ef8 100644
+--- a/elearning-backend/src/main/java/com/elearning/controller/QuizController.java
++++ b/elearning-backend/src/main/java/com/elearning/controller/QuizController.java
+@@ -1,7 +1,44 @@
+ package com.elearning.controller;
+-import com.elearning.model.*;import com.elearning.service.QuizService;import org.springframework.web.bind.annotation.*;import java.util.List;import java.util.Map;
+-@RestController @RequestMapping("/api") public class QuizController {private final QuizService service;public QuizController(QuizService s){service=s;}
+- @PostMapping("/courses/{courseId}/quizzes") public QuizView create(@PathVariable Long courseId,@RequestBody CreateQuizRequest r){List<Question> qs=r.questions().stream().map(x->new Question(x.prompt(),x.correctAnswer(),x.points())).toList();return QuizView.from(service.createQuiz(courseId,r.instructorId(),r.title(),qs));}
+- @GetMapping("/courses/{courseId}/quizzes") public List<QuizView> list(@PathVariable Long courseId){return service.quizzesForCourse(courseId).stream().map(QuizView::from).toList();}
+- @PostMapping("/quizzes/{quizId}/score") public double score(@PathVariable Long quizId,@RequestBody ScoreRequest r){return service.calculateScore(quizId,r.answers(),r.negativeMarking());}
+- public record CreateQuizRequest(Long instructorId,String title,List<QuestionRequest> questions){}public record QuestionRequest(String prompt,String correctAnswer,double points){}public record ScoreRequest(Map<Long,String> answers,boolean negativeMarking){}public record QuizView(Long id,String title,List<QuestionView> questions){static QuizView from(Quiz q){return new QuizView(q.getId(),q.getTitle(),q.getQuestions().stream().map(x->new QuestionView(x.getId(),x.getPrompt(),x.getPoints())).toList());}}public record QuestionView(Long id,String prompt,double points){}}
++
++import com.elearning.model.Question;
++import com.elearning.model.Quiz;
++import com.elearning.model.QuizResult;
++import com.elearning.service.QuizService;
++import org.springframework.web.bind.annotation.*;
++import java.util.List;
++import java.util.Map;
++
++@RestController
++@RequestMapping("/api")
++public class QuizController {
++  private final QuizService quizService;
++  public QuizController(QuizService quizService) { this.quizService = quizService; }
++
++  @PostMapping("/courses/{courseId}/quizzes")
++  public QuizView createQuiz(@PathVariable Long courseId, @RequestBody CreateQuizRequest request) {
++    List<Question> questions = request.questions() == null ? null : request.questions().stream()
++        .map(q -> q == null ? null : new Question(q.prompt(), q.correctAnswer(), q.points())).toList();
++    return QuizView.from(quizService.createQuiz(courseId, request.instructorId(), request.title(), questions));
++  }
++
++  @GetMapping("/courses/{courseId}/quizzes")
++  public List<QuizView> quizzesForCourse(@PathVariable Long courseId) {
++    return quizService.quizzesForCourse(courseId).stream().map(QuizView::from).toList();
++  }
++
++  @PostMapping("/quizzes/{quizId}/grade")
++  public QuizResult grade(@PathVariable Long quizId, @RequestBody GradeQuizRequest request) {
++    return quizService.grade(quizId, request.studentId(), request.answers(), request.negativeMarking());
++  }
++
++  public record CreateQuizRequest(Long instructorId, String title, List<QuestionRequest> questions) {}
++  public record QuestionRequest(String prompt, String correctAnswer, double points) {}
++  public record GradeQuizRequest(Long studentId, Map<Long, String> answers, boolean negativeMarking) {}
++  public record QuizView(Long id, String title, List<QuestionView> questions) {
++    public static QuizView from(Quiz quiz) {
++      return new QuizView(quiz.getId(), quiz.getTitle(), quiz.getQuestions().stream()
++          .map(question -> new QuestionView(question.getId(), question.getPrompt(), question.getPoints())).toList());
++    }
++  }
++  public record QuestionView(Long id, String prompt, double points) {}
++}
+diff --git a/elearning-backend/src/main/java/com/elearning/model/QuizResult.java b/elearning-backend/src/main/java/com/elearning/model/QuizResult.java
+new file mode 100644
+index 0000000..fc316ce
+--- /dev/null
++++ b/elearning-backend/src/main/java/com/elearning/model/QuizResult.java
+@@ -0,0 +1,21 @@
++package com.elearning.model;
++
++import jakarta.persistence.*;
++
++@Entity
++public class QuizResult {
++  @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
++  private Long id;
++  @Column(nullable = false) private Long quizId;
++  @Column(nullable = false) private Long studentId;
++  @Column(nullable = false) private double score;
++
++  protected QuizResult() {}
++  public QuizResult(Long quizId, Long studentId, double score) {
++    this.quizId = quizId; this.studentId = studentId; this.score = score;
++  }
++  public Long getId() { return id; }
++  public Long getQuizId() { return quizId; }
++  public Long getStudentId() { return studentId; }
++  public double getScore() { return score; }
++}
+diff --git a/elearning-backend/src/main/java/com/elearning/repository/QuizResultRepository.java b/elearning-backend/src/main/java/com/elearning/repository/QuizResultRepository.java
+new file mode 100644
+index 0000000..4c1a9b4
+--- /dev/null
++++ b/elearning-backend/src/main/java/com/elearning/repository/QuizResultRepository.java
+@@ -0,0 +1,6 @@
++package com.elearning.repository;
++
++import com.elearning.model.QuizResult;
++import org.springframework.data.jpa.repository.JpaRepository;
++
++public interface QuizResultRepository extends JpaRepository<QuizResult, Long> {}
+diff --git a/elearning-backend/src/main/java/com/elearning/service/QuizService.java b/elearning-backend/src/main/java/com/elearning/service/QuizService.java
+index 0e21e52..afad3ce 100644
+--- a/elearning-backend/src/main/java/com/elearning/service/QuizService.java
++++ b/elearning-backend/src/main/java/com/elearning/service/QuizService.java
+@@ -1,7 +1,81 @@
+ package com.elearning.service;
+-import com.elearning.model.*; import com.elearning.repository.CourseRepository; import com.elearning.repository.QuizRepository; import com.elearning.service.scoring.*; import org.springframework.beans.factory.annotation.Qualifier; import org.springframework.http.HttpStatus; import org.springframework.stereotype.Service; import org.springframework.web.server.ResponseStatusException; import java.util.List; import java.util.Map;
+-@Service public class QuizService {private final QuizRepository quizzes;private final CourseRepository courses;private final ScoringStrategy standard,negative;
+- public QuizService(QuizRepository q,CourseRepository c,@Qualifier("standardScoring") ScoringStrategy s,@Qualifier("negativeMarkingScoring") ScoringStrategy n){quizzes=q;courses=c;standard=s;negative=n;}
+- public Quiz createQuiz(Long courseId,Long instructorId,String title,List<Question> questions){Course course=courses.findById(courseId).orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND));if(course.getInstructor()==null||instructorId==null||!instructorId.equals(course.getInstructor().getId()))throw new ResponseStatusException(HttpStatus.FORBIDDEN);if(title==null||title.isBlank()||questions==null||questions.isEmpty())throw new ResponseStatusException(HttpStatus.BAD_REQUEST);Quiz quiz=new Quiz(title.trim(),course);for(Question x:questions){if(x.getPrompt()==null||x.getPrompt().isBlank()||x.getCorrectAnswer()==null||x.getCorrectAnswer().isBlank()||!Double.isFinite(x.getPoints())||x.getPoints()<=0)throw new ResponseStatusException(HttpStatus.BAD_REQUEST);x.setQuiz(quiz);}quiz.setQuestions(questions);return quizzes.save(quiz);}
+- public List<Quiz> quizzesForCourse(Long id){if(!courses.existsById(id))throw new ResponseStatusException(HttpStatus.NOT_FOUND);return quizzes.findByCourseId(id);}
+- public double calculateScore(Long id,Map<Long,String> answers,boolean negativeMarking){Quiz quiz=quizzes.findById(id).orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND));return(negativeMarking?negative:standard).score(quiz.getQuestions(),answers==null?Map.of():answers);}}
++
++import com.elearning.model.*;
++import com.elearning.repository.*;
++import com.elearning.service.results.QuizResultPublisher;
++import com.elearning.service.scoring.ScoringStrategy;
++import jakarta.transaction.Transactional;
++import org.springframework.beans.factory.annotation.Qualifier;
++import org.springframework.http.HttpStatus;
++import org.springframework.stereotype.Service;
++import org.springframework.web.server.ResponseStatusException;
++import java.util.List;
++import java.util.Map;
++
++@Service
++public class QuizService {
++  private final QuizRepository quizRepository;
++  private final CourseRepository courseRepository;
++  private final UserRepository userRepository;
++  private final QuizResultRepository resultRepository;
++  private final ScoringStrategy standardScoring;
++  private final ScoringStrategy negativeMarkingScoring;
++  private final QuizResultPublisher resultPublisher;
++
++  public QuizService(QuizRepository quizRepository, CourseRepository courseRepository,
++      UserRepository userRepository, QuizResultRepository resultRepository,
++      @Qualifier("standardScoring") ScoringStrategy standardScoring,
++      @Qualifier("negativeMarkingScoring") ScoringStrategy negativeMarkingScoring,
++      QuizResultPublisher resultPublisher) {
++    this.quizRepository = quizRepository;
++    this.courseRepository = courseRepository;
++    this.userRepository = userRepository;
++    this.resultRepository = resultRepository;
++    this.standardScoring = standardScoring;
++    this.negativeMarkingScoring = negativeMarkingScoring;
++    this.resultPublisher = resultPublisher;
++  }
++
++  @Transactional
++  public Quiz createQuiz(Long courseId, Long instructorId, String title, List<Question> questions) {
++    if (title == null || title.isBlank() || questions == null || questions.isEmpty())
++      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "A title and at least one question are required");
++    Course course = courseRepository.findById(courseId)
++        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Course not found"));
++    if (instructorId == null || course.getInstructor() == null
++        || !instructorId.equals(course.getInstructor().getId()))
++      throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Only the course instructor may create quizzes");
++    Quiz quiz = new Quiz(title.trim(), course);
++    for (Question question : questions) {
++      if (question == null || question.getPrompt() == null || question.getPrompt().isBlank()
++          || question.getCorrectAnswer() == null || question.getCorrectAnswer().isBlank()
++          || !Double.isFinite(question.getPoints()) || question.getPoints() <= 0)
++        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Questions need a prompt, answer, and positive points");
++      question.setQuiz(quiz);
++    }
++    quiz.setQuestions(questions);
++    return quizRepository.save(quiz);
++  }
++
++  public List<Quiz> quizzesForCourse(Long courseId) {
++    if (!courseRepository.existsById(courseId))
++      throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Course not found");
++    return quizRepository.findByCourseId(courseId);
++  }
++
++  @Transactional
++  public QuizResult grade(Long quizId, Long studentId, Map<Long, String> answers, boolean negativeMarking) {
++    Quiz quiz = quizRepository.findById(quizId)
++        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Quiz not found"));
++    User student = userRepository.findById(studentId)
++        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Student not found"));
++    if (!"STUDENT".equalsIgnoreCase(student.getRole()))
++      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Only students may submit quiz answers");
++    Map<Long, String> safeAnswers = answers == null ? Map.of() : answers;
++    double score = (negativeMarking ? negativeMarkingScoring : standardScoring)
++        .score(quiz.getQuestions(), safeAnswers);
++    QuizResult result = resultRepository.save(new QuizResult(quizId, studentId, score));
++    resultPublisher.publish(result);
++    return result;
++  }
++}
+diff --git a/elearning-backend/src/main/java/com/elearning/service/results/InstructorResultObserver.java b/elearning-backend/src/main/java/com/elearning/service/results/InstructorResultObserver.java
+new file mode 100644
+index 0000000..8f55278
+--- /dev/null
++++ b/elearning-backend/src/main/java/com/elearning/service/results/InstructorResultObserver.java
+@@ -0,0 +1,14 @@
++package com.elearning.service.results;
++
++import com.elearning.model.QuizResult;
++import org.slf4j.Logger;
++import org.slf4j.LoggerFactory;
++import org.springframework.stereotype.Component;
++
++@Component
++public class InstructorResultObserver implements QuizResultObserver {
++  private static final Logger log = LoggerFactory.getLogger(InstructorResultObserver.class);
++  @Override public void onResult(QuizResult result) {
++    log.info("Quiz {} result {} for student {} is available to the instructor", result.getQuizId(), result.getScore(), result.getStudentId());
++  }
++}
+diff --git a/elearning-backend/src/main/java/com/elearning/service/results/QuizResultObserver.java b/elearning-backend/src/main/java/com/elearning/service/results/QuizResultObserver.java
+new file mode 100644
+index 0000000..5ea6752
+--- /dev/null
++++ b/elearning-backend/src/main/java/com/elearning/service/results/QuizResultObserver.java
+@@ -0,0 +1,7 @@
++package com.elearning.service.results;
++
++import com.elearning.model.QuizResult;
++
++public interface QuizResultObserver {
++  void onResult(QuizResult result);
++}
+diff --git a/elearning-backend/src/main/java/com/elearning/service/results/QuizResultPublisher.java b/elearning-backend/src/main/java/com/elearning/service/results/QuizResultPublisher.java
+new file mode 100644
+index 0000000..f20f94b
+--- /dev/null
++++ b/elearning-backend/src/main/java/com/elearning/service/results/QuizResultPublisher.java
+@@ -0,0 +1,12 @@
++package com.elearning.service.results;
++
++import com.elearning.model.QuizResult;
++import org.springframework.stereotype.Component;
++import java.util.List;
++
++@Component
++public class QuizResultPublisher {
++  private final List<QuizResultObserver> observers;
++  public QuizResultPublisher(List<QuizResultObserver> observers) { this.observers = List.copyOf(observers); }
++  public void publish(QuizResult result) { observers.forEach(observer -> observer.onResult(result)); }
++}
+diff --git a/elearning-backend/src/main/java/com/elearning/service/results/StudentResultObserver.java b/elearning-backend/src/main/java/com/elearning/service/results/StudentResultObserver.java
+new file mode 100644
+index 0000000..1072ae7
+--- /dev/null
++++ b/elearning-backend/src/main/java/com/elearning/service/results/StudentResultObserver.java
+@@ -0,0 +1,14 @@
++package com.elearning.service.results;
++
++import com.elearning.model.QuizResult;
++import org.slf4j.Logger;
++import org.slf4j.LoggerFactory;
++import org.springframework.stereotype.Component;
++
++@Component
++public class StudentResultObserver implements QuizResultObserver {
++  private static final Logger log = LoggerFactory.getLogger(StudentResultObserver.class);
++  @Override public void onResult(QuizResult result) {
++    log.info("Quiz {} result {} is available to student {}", result.getQuizId(), result.getScore(), result.getStudentId());
++  }
++}
+diff --git a/elearning-backend/src/test/java/com/ElearningBackendApplicationTests.java b/elearning-backend/src/test/java/com/ElearningBackendApplicationTests.java
+index 308b71b..c8f93bf 100644
+--- a/elearning-backend/src/test/java/com/ElearningBackendApplicationTests.java
++++ b/elearning-backend/src/test/java/com/ElearningBackendApplicationTests.java
+@@ -1,4 +1,4 @@
+-package com;
++package com.elearning;
+ 
+ import org.junit.jupiter.api.Test;
+ import org.springframework.boot.test.context.SpringBootTest;
+diff --git a/elearning-backend/src/test/java/com/elearning/service/QuizServiceIntegrationTest.java b/elearning-backend/src/test/java/com/elearning/service/QuizServiceIntegrationTest.java
+new file mode 100644
+index 0000000..d531a32
+--- /dev/null
++++ b/elearning-backend/src/test/java/com/elearning/service/QuizServiceIntegrationTest.java
+@@ -0,0 +1,54 @@
++package com.elearning.service;
++
++import com.elearning.controller.QuizController;
++import com.elearning.model.Course;
++import com.elearning.model.Question;
++import com.elearning.model.QuizResult;
++import com.elearning.model.User;
++import com.elearning.repository.CourseRepository;
++import com.elearning.repository.QuizRepository;
++import com.elearning.repository.QuizResultRepository;
++import com.elearning.repository.UserRepository;
++import org.junit.jupiter.api.Test;
++import org.springframework.beans.factory.annotation.Autowired;
++import org.springframework.boot.test.context.SpringBootTest;
++import java.util.List;
++import java.util.Map;
++import static org.junit.jupiter.api.Assertions.*;
++import static org.junit.jupiter.api.Assertions.assertThrows;
++
++@SpringBootTest
++class QuizServiceIntegrationTest {
++  @Autowired QuizService quizService;
++  @Autowired CourseRepository courseRepository;
++  @Autowired QuizRepository quizRepository;
++  @Autowired QuizResultRepository resultRepository;
++  @Autowired UserRepository userRepository;
++
++  @Test void createsCourseQuizGradesPersistsAndPublishesResult() throws Exception {
++    Course course = courseRepository.findAll().get(0);
++    User student = userRepository.save(new User("Quiz Student", "quiz-student@example.com", "test", "STUDENT"));
++    assertThrows(org.springframework.web.server.ResponseStatusException.class,
++        () -> quizService.createQuiz(course.getId(), -1L, "Unauthorized", List.of(new Question("Q", "A", 1))));
++    assertThrows(org.springframework.web.server.ResponseStatusException.class,
++        () -> quizService.createQuiz(course.getId(), course.getInstructor().getId(), "Invalid", List.of(new Question(" ", "A", 1))));
++    var quiz = quizService.createQuiz(course.getId(), course.getInstructor().getId(), "Basics", List.of(
++        new Question("Two plus two?", "4", 10), new Question("Capital of France?", "Paris", 5)));
++
++    String publicQuizJson = new com.fasterxml.jackson.databind.ObjectMapper()
++        .writeValueAsString(QuizController.QuizView.from(quiz));
++    assertFalse(publicQuizJson.contains("correctAnswer"));
++
++    assertEquals(1, quizService.quizzesForCourse(course.getId()).stream()
++        .filter(item -> "Basics".equals(item.getTitle())).count());
++    var saved = quizRepository.findById(quiz.getId()).orElseThrow();
++    Map<Long, String> answers = Map.of(saved.getQuestions().get(0).getId(), "4",
++        saved.getQuestions().get(1).getId(), "London");
++    QuizResult result = quizService.grade(quiz.getId(), student.getId(), answers, true);
++
++    assertEquals(7.5, result.getScore());
++    assertTrue(resultRepository.findById(result.getId()).isPresent());
++    assertEquals(quiz.getId(), result.getQuizId());
++    assertEquals(student.getId(), result.getStudentId());
++  }
++}
+diff --git a/elearning-backend/src/test/java/com/elearning/service/results/QuizResultPublisherTest.java b/elearning-backend/src/test/java/com/elearning/service/results/QuizResultPublisherTest.java
+new file mode 100644
+index 0000000..68c062d
+--- /dev/null
++++ b/elearning-backend/src/test/java/com/elearning/service/results/QuizResultPublisherTest.java
+@@ -0,0 +1,26 @@
++package com.elearning.service.results;
++
++import com.elearning.model.QuizResult;
++import org.junit.jupiter.api.Test;
++import java.util.ArrayList;
++import java.util.List;
++import static org.junit.jupiter.api.Assertions.assertEquals;
++
++class QuizResultPublisherTest {
++  @Test void publishesTheSameResultOnceToEveryObserver() {
++    List<QuizResult> studentEvents = new ArrayList<>();
++    List<QuizResult> instructorEvents = new ArrayList<>();
++    QuizResultObserver student = studentEvents::add;
++    QuizResultObserver instructor = instructorEvents::add;
++    QuizResult result = new QuizResult(101L, 7L, 15);
++
++    new QuizResultPublisher(List.of(student, instructor)).publish(result);
++
++    assertEquals(List.of(result), studentEvents);
++    assertEquals(List.of(result), instructorEvents);
++  }
++
++  @Test void anEmptyObserverListIsAllowed() {
++    new QuizResultPublisher(List.of()).publish(new QuizResult(101L, 7L, 15));
++  }
++}
+diff --git a/elearning-backend/src/test/java/com/elearning/service/scoring/ScoringStrategyTest.java b/elearning-backend/src/test/java/com/elearning/service/scoring/ScoringStrategyTest.java
+new file mode 100644
+index 0000000..8206f7f
+--- /dev/null
++++ b/elearning-backend/src/test/java/com/elearning/service/scoring/ScoringStrategyTest.java
+@@ -0,0 +1,30 @@
++package com.elearning.service.scoring;
++
++import com.elearning.model.Question;
++import org.junit.jupiter.api.Test;
++import org.springframework.test.util.ReflectionTestUtils;
++import java.util.List;
++import java.util.Map;
++import static org.junit.jupiter.api.Assertions.assertEquals;
++
++class ScoringStrategyTest {
++  private Question question(long id, String answer, double points) {
++    Question question = new Question("Question " + id, answer, points);
++    ReflectionTestUtils.setField(question, "id", id);
++    return question;
++  }
++
++  @Test void standardScoringAwardsOnlyCorrectAnswersAndIgnoresMissingOrUnknownAnswers() {
++    var questions = List.of(question(1, "A", 10), question(2, "B", 5), question(3, "C", 5));
++    assertEquals(15, new StandardScoringStrategy().score(questions, Map.of(1L, "A", 2L, "B", 99L, "A")));
++    assertEquals(0, new StandardScoringStrategy().score(questions, Map.of()));
++  }
++
++  @Test void negativeScoringPenalizesAnsweredWrongAnswersButNeverGoesBelowZero() {
++    var questions = List.of(question(1, "A", 10), question(2, "B", 5), question(3, "C", 5));
++    var strategy = new NegativeMarkingScoringStrategy();
++    assertEquals(12.5, strategy.score(questions, Map.of(1L, "A", 2L, "X", 3L, "C")));
++    assertEquals(0, strategy.score(questions, Map.of(1L, "X", 2L, "X", 3L, "X")));
++    assertEquals(0, strategy.score(questions, Map.of()));
++  }
++}
+diff --git a/elearning-backend/src/test/resources/mockito-extensions/org.mockito.plugins.MockMaker b/elearning-backend/src/test/resources/mockito-extensions/org.mockito.plugins.MockMaker
+new file mode 100644
+index 0000000..fdbd0b1
+--- /dev/null
++++ b/elearning-backend/src/test/resources/mockito-extensions/org.mockito.plugins.MockMaker
+@@ -0,0 +1 @@
++mock-maker-subclass
+diff --git a/src/app/components/login/login.component.ts b/src/app/components/login/login.component.ts
+index 982d495..e507d05 100644
+--- a/src/app/components/login/login.component.ts
++++ b/src/app/components/login/login.component.ts
+@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
+ import { UserService } from '../../services/user/user.service';
+ import { Router } from '@angular/router';
+ import { AppModule } from '../../app.module';
++import { AuthService } from '../../services/auth/auth.service';
+ 
+ @Component({
+   selector: 'app-login',
+@@ -17,7 +18,7 @@ export class LoginComponent {
+   message: string = '';
+   errorMessage: string = '';
+ 
+-  constructor(private userService: UserService, private router: Router) { }
++  constructor(private userService: UserService, private authService: AuthService, private router: Router) { }
+ 
+   login(): void {
+     this.message = ""
+@@ -26,8 +27,7 @@ export class LoginComponent {
+     this.userService.getUserByEmail(this.email).subscribe({
+       next: (user) => {
+         if (user && user.password === this.password) {
+-          // Save user info in localStorage or sessionStorage
+-          localStorage.setItem('currentUser', JSON.stringify(user));
++          this.authService.setUser(user);
+           // this.router.navigate(['/courses']);
+           console.log("login success")
+           setTimeout(() => {
+diff --git a/src/app/services/auth/auth.service.spec.ts b/src/app/services/auth/auth.service.spec.ts
+index ecddea4..c7ff561 100644
+--- a/src/app/services/auth/auth.service.spec.ts
++++ b/src/app/services/auth/auth.service.spec.ts
+@@ -1,16 +1,43 @@
+ import { TestBed } from '@angular/core/testing';
+-
+-import { AuthService } from '../auth/auth.service';
++import { provideHttpClient } from '@angular/common/http';
++import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
++import { AuthService } from './auth.service';
+ 
+ describe('AuthService', () => {
+   let service: AuthService;
++  let http: HttpTestingController;
++  const savedUser = { id: 3, name: 'Student' };
+ 
+   beforeEach(() => {
+-    TestBed.configureTestingModule({});
++    spyOn(localStorage, 'getItem').and.returnValue(null);
++    spyOn(localStorage, 'setItem');
++    spyOn(localStorage, 'removeItem');
++    TestBed.configureTestingModule({ providers: [provideHttpClient(), provideHttpClientTesting()] });
+     service = TestBed.inject(AuthService);
++    http = TestBed.inject(HttpTestingController);
+   });
+ 
++  afterEach(() => http.verify());
++
+   it('should be created', () => {
+     expect(service).toBeTruthy();
+   });
++
++  it('publishes login state through the shared subject', () => {
++    const updates: unknown[] = [];
++    service.currentUser$.subscribe(user => updates.push(user));
++    service.setUser(savedUser);
++    expect(localStorage.setItem).toHaveBeenCalledWith('currentUser', JSON.stringify(savedUser));
++    expect(updates).toEqual([null, savedUser]);
++  });
++
++  it('clears persisted and published state after a successful logout', () => {
++    service.setUser(savedUser);
++    const updates: unknown[] = [];
++    service.currentUser$.subscribe(user => updates.push(user));
++    service.logout().subscribe();
++    http.expectOne('http://localhost:8080/api/logout').flush({});
++    expect(localStorage.removeItem).toHaveBeenCalledWith('currentUser');
++    expect(updates).toEqual([savedUser, null]);
++  });
+ });
+diff --git a/src/app/services/auth/auth.service.ts b/src/app/services/auth/auth.service.ts
+index ce0bac7..b2da6ed 100644
+--- a/src/app/services/auth/auth.service.ts
++++ b/src/app/services/auth/auth.service.ts
+@@ -43,7 +43,7 @@ export class AuthService {
+   logout() {
+     return this.http.post(`${this.apiUrl}/logout`, {}, { withCredentials: true }).pipe(
+       tap(() => {
+-        localStorage.removeItem('currentUser'); // 🔥 clear from localStorage
++        this.clearUser();
+       })
+     );
+   }
+

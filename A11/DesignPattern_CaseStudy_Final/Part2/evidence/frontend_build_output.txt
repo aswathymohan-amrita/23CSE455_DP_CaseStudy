@@ -1,0 +1,24 @@
+npm notice run elearning-project@0.0.0 build
+npm notice run ng build
+[baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
+❯ Building...
+[baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
+[baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
+[baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
+[baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
+✔ Building...
+Initial chunk files   | Names         |  Raw size | Estimated transfer size
+main-3Y5CRZ6Q.js      | main          | 306.72 kB |                78.05 kB
+styles-VRDYZCWE.css   | styles        | 230.97 kB |                22.48 kB
+scripts-TTWY4XDY.js   | scripts       |  80.45 kB |                21.60 kB
+polyfills-5CFQRCPP.js | polyfills     |  34.59 kB |                11.33 kB
+
+                      | Initial total | 652.72 kB |               133.46 kB
+
+Application bundle generation complete. [8.781 seconds] - 2026-10-11T11:19:59.282Z
+
+▲ [WARNING] bundle initial exceeded maximum budget. Budget 500.00 kB was not met by 152.72 kB with a total of 652.72 kB.
+
+
+Output location: /home/abhinav/Documents/23CSE455_DP_CaseStudy/A11/DesignPattern_CaseStudy_Final/Part2/code/dist/elearning-project
+

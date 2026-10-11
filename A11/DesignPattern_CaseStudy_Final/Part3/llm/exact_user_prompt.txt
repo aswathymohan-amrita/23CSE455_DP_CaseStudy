@@ -1,0 +1,12 @@
+I want you to complete Part 3 of the "Design Pattern Case Study" assignment by comparing two selected design patterns across Java, Python, JavaScript, and C++. The purpose is to analyze how different language features affect the structure, abstraction, and execution of the selected patterns. Please ensure to include the following components in your output:
+
+### 
+1. Clearly identify the specific pattern types (e.g., Observer or Strategy) and map out every participating role to its actual class, interface, or function in the code.
+2. Provide an architectural diagram explaining the application's components and request flows, along with editable UML diagrams showing the participant structures for your specific pattern implementations.
+3. Implement three realistic changes to the application and document the exact source code diffs showing the before and after states. Analyze whether the design patterns were preserved, modified, extended, or removed due to these refactoring efforts.
+4. Write working code snippets for the selected patterns in Java, Python, JavaScript, and C++. Each implementation must preserve the exact same pattern and behavior, utilizing shared common specifications like inputs, expected outputs, and error cases.
+5. Compile your findings and performance metrics into specific CSV files, primarily the cross_language.csv file, recording static and dynamic comparisons for each language, including source Lines of Code (LOC), maximum function cyclomatic complexity, actual test results, and the median elapsed process time in milliseconds.
+6. If AI tools are used for cross-language analysis, thoroughly document this in the llm.csv file, recording the exact prompts used, supplied context, raw model outputs, and your human evaluation verifying whether the AI's claims were correct or incorrect.
+
+### 
+The final output should be comprehensive and organized, allowing for a clear understanding of the design patterns in the context of the specified programming languages, while also addressing all required analysis and documentation aspects.

@@ -1,0 +1,25 @@
+@startuml
+title E-Learning application baseline architecture
+actor Student
+actor Instructor
+package "Angular client" {
+  component "Login / Register / Home / Navbar / Courses" as UI
+  component "AuthService" as Auth
+  component "CourseService / UserService" as ClientServices
+}
+package "Spring Boot REST backend" {
+  component "AuthController / UserController / CourseController" as Controllers
+  component "UserService / CourseService" as Services
+  component "UserRepository / CourseRepository" as Repositories
+  database "H2 database" as DB
+}
+Student --> UI
+Instructor --> UI
+UI --> Auth
+UI --> ClientServices
+Auth --> Controllers : HTTP /api
+ClientServices --> Controllers : HTTP /api
+Controllers --> Services
+Services --> Repositories
+Repositories --> DB
+@enduml

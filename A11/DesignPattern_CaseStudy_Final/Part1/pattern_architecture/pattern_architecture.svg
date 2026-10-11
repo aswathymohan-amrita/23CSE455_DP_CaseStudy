@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="420" viewBox="0 0 1000 420" role="img" aria-labelledby="title desc">
+  <title id="title">Baseline authentication state Observer</title>
+  <desc id="desc">AuthService owns a BehaviorSubject, exposes it as an Observable, and HomeComponent and NavbarComponent subscribe to state updates.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#40536d"/></marker>
+    <style>
+      text { font-family: Arial, sans-serif; fill: #172235; }
+      .box { fill: #f4f7fb; stroke: #40536d; stroke-width: 2; rx: 12; }
+      .title { font-size: 24px; font-weight: 700; }
+      .label { font-size: 18px; font-weight: 600; }
+      .small { font-size: 14px; }
+      .edge { stroke: #40536d; stroke-width: 2.5; fill: none; marker-end: url(#arrow); }
+    </style>
+  </defs>
+  <text x="500" y="42" text-anchor="middle" class="title">Authentication State Updates (Observer)</text>
+  <rect x="50" y="130" width="200" height="100" class="box"/>
+  <text x="150" y="168" text-anchor="middle" class="label">AuthService</text>
+  <text x="150" y="196" text-anchor="middle" class="small">Concrete subject</text>
+  <rect x="330" y="90" width="250" height="100" class="box"/>
+  <text x="455" y="128" text-anchor="middle" class="label">currentUserSubject</text>
+  <text x="455" y="156" text-anchor="middle" class="small">RxJS BehaviorSubject</text>
+  <rect x="330" y="240" width="250" height="90" class="box"/>
+  <text x="455" y="276" text-anchor="middle" class="label">currentUser$</text>
+  <text x="455" y="304" text-anchor="middle" class="small">Observable interface</text>
+  <rect x="720" y="90" width="230" height="90" class="box"/>
+  <text x="835" y="126" text-anchor="middle" class="label">NavbarComponent</text>
+  <text x="835" y="153" text-anchor="middle" class="small">Concrete observer</text>
+  <rect x="720" y="240" width="230" height="90" class="box"/>
+  <text x="835" y="276" text-anchor="middle" class="label">HomeComponent</text>
+  <text x="835" y="303" text-anchor="middle" class="small">Concrete observer</text>
+  <path d="M250 155 C285 155 290 140 330 140" class="edge"/>
+  <text x="290" y="126" text-anchor="middle" class="small">owns / emits</text>
+  <path d="M455 190 L455 240" class="edge"/>
+  <text x="515" y="218" text-anchor="middle" class="small">asObservable()</text>
+  <path d="M580 270 C650 270 650 135 720 135" class="edge"/>
+  <text x="650" y="185" text-anchor="middle" class="small">subscribe()</text>
+  <path d="M580 285 C640 285 655 285 720 285" class="edge"/>
+  <text x="650" y="318" text-anchor="middle" class="small">subscribe()</text>
+  <text x="500" y="386" text-anchor="middle" class="small">Baseline note: login/logout bypassed a complete broadcast; Part 2 routes both state changes through AuthService.</text>
+</svg>

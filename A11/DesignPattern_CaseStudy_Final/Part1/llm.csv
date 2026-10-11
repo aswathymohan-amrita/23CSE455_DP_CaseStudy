@@ -1,0 +1,2 @@
+part,model_and_date,prompt_file,input_file,output_file,evaluation,verification_file
+Part1 source analysis,Not recorded in supplied artifacts,Part1/Part1_prompt.txt (prompt artifact; transcript/session not independently linked),Part1/code; docs/DP_Csestudy.pdf,Part1/report/analysis.md,Source claims manually checked against recorded file locations. Human reviewer identity and raw model output are not recorded; baseline tests/build were not run.,Part1/evidence/pattern_evidence.md

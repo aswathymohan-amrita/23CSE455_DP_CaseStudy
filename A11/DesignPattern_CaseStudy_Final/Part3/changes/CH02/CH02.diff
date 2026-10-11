@@ -1,0 +1,26 @@
+--- a/QuizService.java
++++ b/QuizService.java
+@@ -1,15 +1,15 @@
+ import java.util.List;
+ import java.util.Map;
++import java.util.Objects;
+ 
+ class QuizService {
++  private final ScoringStrategy strategy;
++
++  QuizService(ScoringStrategy strategy) {
++    this.strategy = Objects.requireNonNull(strategy);
++  }
++
+   int calculateScore(List<Question> questions, Map<Integer, String> answers) {
+-    int score = 0;
+-    for (Question q : questions) {
+-      String answer = answers.get(q.id());
+-      if (answer == null || answer.isBlank()) continue;
+-      if (q.correct().equals(answer)) score += q.points();
+-      else score -= Math.max(1, q.points() / 2);
+-    }
+-    return Math.max(0, score);
++    return strategy.score(questions, answers);
+   }
+ }

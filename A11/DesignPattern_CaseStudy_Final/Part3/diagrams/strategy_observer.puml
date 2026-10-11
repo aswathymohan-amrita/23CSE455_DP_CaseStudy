@@ -1,0 +1,27 @@
+@startuml
+skinparam classAttributeIconSize 0
+interface ScoringStrategy <<Strategy>> {
+  +score(questions, answers): int
+}
+class StandardScoringStrategy <<ConcreteStrategy>>
+class NegativeMarkingStrategy <<ConcreteStrategy>>
+class QuizGrader <<Context>> {
+  -strategy: ScoringStrategy
+  +grade(questions, answers): int
+}
+ScoringStrategy <|.. StandardScoringStrategy
+ScoringStrategy <|.. NegativeMarkingStrategy
+QuizGrader o--> ScoringStrategy : delegates
+class QuizResultPublisher <<Subject>> {
+  +subscribe(observer)
+  +publish(result)
+}
+interface QuizResultObserver <<Observer>> {
+  +onResult(result)
+}
+class StudentResultObserver <<ConcreteObserver>>
+class InstructorResultObserver <<ConcreteObserver>>
+QuizResultObserver <|.. StudentResultObserver
+QuizResultObserver <|.. InstructorResultObserver
+QuizResultPublisher o--> "*" QuizResultObserver : subscribers
+@enduml

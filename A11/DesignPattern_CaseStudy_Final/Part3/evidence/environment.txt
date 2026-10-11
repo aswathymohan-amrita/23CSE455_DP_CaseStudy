@@ -1,0 +1,7 @@
+Validation environment (2026-10-11)
+Python 3.13.5
+Node.js v22.16.0
+OpenJDK 21.0.12.1 (2026-08-18)
+GCC g++ 14.2.0, C++20, -O2
+Platform: Linux sandbox; all four snippets tested in the same environment.
+Timing protocol: one unmeasured warm-up run, then five measured complete-process runs with time.perf_counter_ns(); compile time excluded; median of five reported.

@@ -1,0 +1,2 @@
+PASS: QuizServiceIntegrationTest creates a quiz for the course instructor, reloads the course quiz with persisted questions, and confirms the public quiz view omits correctAnswer by construction.
+The full suite ran 6 tests with 0 failures and 0 errors. See ../evidence/backend_test_output.txt.

@@ -1,0 +1,6 @@
+contributor_name,roll_number,batch,source_project,source_version,summary,pattern_name,count,source_dataset
+S N Chandran,AM.EN.U4EAC23046,EAC,hoangsonww/Learning-Management-System-Fullstack (A8),Original (bfeb206),per_pattern,Singleton,6,pattern_counts.csv
+S N Chandran,AM.EN.U4EAC23046,EAC,hoangsonww/Learning-Management-System-Fullstack (A8),Original (bfeb206),per_pattern,Observer,1,pattern_counts.csv
+S N Chandran,AM.EN.U4EAC23046,EAC,hoangsonww/Learning-Management-System-Fullstack (A8),Original (bfeb206),per_pattern,Service Layer,6,pattern_counts.csv
+S N Chandran,AM.EN.U4EAC23046,EAC,hoangsonww/Learning-Management-System-Fullstack (A8),Original (bfeb206),total_pattern_types,,3,pattern_counts.csv
+S N Chandran,AM.EN.U4EAC23046,EAC,hoangsonww/Learning-Management-System-Fullstack (A8),Original (bfeb206),total_pattern_instances,,13,pattern_counts.csv

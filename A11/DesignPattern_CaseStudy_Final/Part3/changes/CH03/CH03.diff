@@ -1,0 +1,12 @@
+--- a/QuizService.java
++++ b/QuizService.java
+@@ -2,8 +2,7 @@
+   Result submit(Quiz quiz, Student student, Answers answers) {
+     int score = grader.grade(quiz.questions(), answers.asMap());
+     Result result = resultRepository.save(new Result(quiz.id(), student.id(), score));
+-    notificationService.notifyStudent(student, result);
+-    notificationService.notifyInstructor(quiz.instructor(), result);
++    resultPublisher.publish(result);
+     return result;
+   }
+ }

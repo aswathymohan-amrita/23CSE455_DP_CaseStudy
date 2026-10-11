@@ -1,0 +1,6 @@
+student_name,roll_number,part,prompt_path,prompt_status,related_project,notes
+S N Chandran,AM.EN.U4EAC23046,Parts 1-3,docs/member_sources/Member_1_A8_Report.pdf,Completed report supplied with source inventory and counts,hoangsonww/Learning-Management-System-Fullstack (A8),Separate project; counts are not A11 totals
+Navaneeth Aneesh,AM.EN.U4EAC23039,Part 1,Prompts/Member_2.md,Analysis prompt supplied; completed source findings not supplied,nchinling/learning_management_system (EduQuest),Do not attribute the separate B12 dataset without verification
+Harikrishnan S,AM.EN.U4EAC23029,Part 1,Prompts/Member_3.md,Source-audit prompt supplied,dinhbachnguyen/E-Learning-App (A11 baseline),Shared A11 artifacts exist; individual authorship of implementation changes is not recorded
+Niveditha S,AM.EN.U4EAC23063,Parts 1-2,Prompts/Member_4.md,Four user prompts extracted from supplied Gemini chat,pantharev/lms-fiu-fb-client,Documentation/configuration-level records; no source implementation findings supplied
+Abhinav M Nair,AM.EN.U4EAC23003,Parts 1-3,Prompts/Member_5.md,Prompt plus recovered analysis-conversation excerpt; not a complete raw transcript,dinhbachnguyen/E-Learning-App (A11 baseline),Shared A11 artifacts exist; individual authorship of implementation changes is not recorded

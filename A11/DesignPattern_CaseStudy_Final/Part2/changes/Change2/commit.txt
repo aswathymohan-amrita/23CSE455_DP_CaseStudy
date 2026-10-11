@@ -1,0 +1,1 @@
+No verifiable Git commit ID supplied. The staged patch is the change record; the baseline ZIP has no Git metadata.

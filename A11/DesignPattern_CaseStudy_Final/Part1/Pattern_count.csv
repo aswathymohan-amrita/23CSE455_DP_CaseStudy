@@ -1,0 +1,4 @@
+source_version,summary,pattern_name,count,confirmed_types,confirmed_instances,concrete_participant_classes,unique_participant_symbols,rejected_candidate_count,uncertain_candidate_count,absent_named_candidate_count,counting_scope
+Original,per_pattern,Observer,1,,,,,,,
+Original,total_pattern_types,,1,1,,,,,,,Scoped to mapped collaborations and named candidate set; see Part1/Part2 report for rules.
+Original,total_pattern_instances,,1,,1,3,4,4,1,2,Scoped to mapped collaborations and named candidate set; see Part1/Part2 report for rules.

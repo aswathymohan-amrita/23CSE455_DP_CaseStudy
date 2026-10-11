@@ -1,0 +1,4 @@
+const x=require('./patterns'); function check(v){if(!v)throw Error('test failed');}
+const q=[new x.Question(1,10,'A'),new x.Question(2,5,'B'),new x.Question(3,5,'A')],a={1:'A',2:'B',3:'C'};
+check(new x.QuizGrader(new x.StandardScoringStrategy()).grade(q,a)===15);check(new x.QuizGrader(new x.NegativeMarkingStrategy()).grade(q,a)===13);check(new x.QuizGrader(new x.StandardScoringStrategy()).grade(q,{})===0);check(new x.QuizGrader(new x.StandardScoringStrategy()).grade(q,{1:'A',2:'B',3:'C',999:'A'})===15);
+const p=new x.QuizResultPublisher(),s=new x.StudentResultObserver(),i=new x.InstructorResultObserver();p.subscribe(s);p.subscribe(i);p.publish(new x.QuizResult(101,7,15));check(s.count===1&&s.last==='student:7 quiz:101 score:15');check(i.count===1&&i.last==='quiz:101 score:15');console.log('PASS 6/6');

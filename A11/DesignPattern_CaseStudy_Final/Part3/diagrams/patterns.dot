@@ -1,0 +1,12 @@
+digraph G { rankdir=LR; node [shape=box];
+ScoringStrategy [label="ScoringStrategy\n<<Strategy>>"];
+StandardScoringStrategy [label="StandardScoringStrategy\n<<ConcreteStrategy>>"];
+NegativeMarkingStrategy [label="NegativeMarkingStrategy\n<<ConcreteStrategy>>"];
+QuizGrader [label="QuizGrader\n<<Context>>"];
+QuizResultPublisher [label="QuizResultPublisher\n<<Subject>>"];
+QuizResultObserver [label="QuizResultObserver\n<<Observer>>"];
+StudentResultObserver [label="StudentResultObserver\n<<ConcreteObserver>>"];
+InstructorResultObserver [label="InstructorResultObserver\n<<ConcreteObserver>>"];
+ScoringStrategy -> StandardScoringStrategy [arrowhead=empty]; ScoringStrategy -> NegativeMarkingStrategy [arrowhead=empty]; QuizGrader -> ScoringStrategy [label="delegates"];
+QuizResultObserver -> StudentResultObserver [arrowhead=empty]; QuizResultObserver -> InstructorResultObserver [arrowhead=empty]; QuizResultPublisher -> QuizResultObserver [label="notifies * subscribers"];
+}

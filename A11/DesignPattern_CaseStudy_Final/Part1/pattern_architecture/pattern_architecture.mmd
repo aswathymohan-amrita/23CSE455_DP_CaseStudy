@@ -1,0 +1,10 @@
+flowchart LR
+  Auth[AuthService]
+  Subject[currentUserSubject\nBehaviorSubject]
+  API[currentUser$\nObservable]
+  Navbar[NavbarComponent subscription]
+  Home[HomeComponent subscription]
+  Auth -->|owns and emits| Subject
+  Subject -->|exposes| API
+  API -->|subscribe callback| Navbar
+  API -->|subscribe callback| Home

@@ -1,0 +1,2 @@
+PASS: ScoringStrategyTest (2 test methods) and the H2 integration test. Standard score selection and negative marking were exercised; the integrated negative-marking sample returned 7.5.
+The full suite ran 6 tests with 0 failures and 0 errors. See ../evidence/backend_test_output.txt.

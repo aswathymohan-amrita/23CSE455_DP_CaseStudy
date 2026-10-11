@@ -1,0 +1,96 @@
+diff --git a/elearning-backend/src/main/java/com/elearning/controller/QuizController.java b/elearning-backend/src/main/java/com/elearning/controller/QuizController.java
+index 6899845..b889d92 100644
+--- a/elearning-backend/src/main/java/com/elearning/controller/QuizController.java
++++ b/elearning-backend/src/main/java/com/elearning/controller/QuizController.java
+@@ -1,6 +1,7 @@
+ package com.elearning.controller;
+-import com.elearning.model.*; import com.elearning.service.QuizService; import org.springframework.web.bind.annotation.*; import java.util.List;
++import com.elearning.model.*;import com.elearning.service.QuizService;import org.springframework.web.bind.annotation.*;import java.util.List;import java.util.Map;
+ @RestController @RequestMapping("/api") public class QuizController {private final QuizService service;public QuizController(QuizService s){service=s;}
+  @PostMapping("/courses/{courseId}/quizzes") public QuizView create(@PathVariable Long courseId,@RequestBody CreateQuizRequest r){List<Question> qs=r.questions().stream().map(x->new Question(x.prompt(),x.correctAnswer(),x.points())).toList();return QuizView.from(service.createQuiz(courseId,r.instructorId(),r.title(),qs));}
+  @GetMapping("/courses/{courseId}/quizzes") public List<QuizView> list(@PathVariable Long courseId){return service.quizzesForCourse(courseId).stream().map(QuizView::from).toList();}
+- public record CreateQuizRequest(Long instructorId,String title,List<QuestionRequest> questions){} public record QuestionRequest(String prompt,String correctAnswer,double points){} public record QuizView(Long id,String title,List<QuestionView> questions){static QuizView from(Quiz q){return new QuizView(q.getId(),q.getTitle(),q.getQuestions().stream().map(x->new QuestionView(x.getId(),x.getPrompt(),x.getPoints())).toList());}} public record QuestionView(Long id,String prompt,double points){}}
++ @PostMapping("/quizzes/{quizId}/score") public double score(@PathVariable Long quizId,@RequestBody ScoreRequest r){return service.calculateScore(quizId,r.answers(),r.negativeMarking());}
++ public record CreateQuizRequest(Long instructorId,String title,List<QuestionRequest> questions){}public record QuestionRequest(String prompt,String correctAnswer,double points){}public record ScoreRequest(Map<Long,String> answers,boolean negativeMarking){}public record QuizView(Long id,String title,List<QuestionView> questions){static QuizView from(Quiz q){return new QuizView(q.getId(),q.getTitle(),q.getQuestions().stream().map(x->new QuestionView(x.getId(),x.getPrompt(),x.getPoints())).toList());}}public record QuestionView(Long id,String prompt,double points){}}
+diff --git a/elearning-backend/src/main/java/com/elearning/service/QuizService.java b/elearning-backend/src/main/java/com/elearning/service/QuizService.java
+index 5d3bce2..0e21e52 100644
+--- a/elearning-backend/src/main/java/com/elearning/service/QuizService.java
++++ b/elearning-backend/src/main/java/com/elearning/service/QuizService.java
+@@ -1,5 +1,7 @@
+ package com.elearning.service;
+-import com.elearning.model.*; import com.elearning.repository.CourseRepository; import com.elearning.repository.QuizRepository; import org.springframework.http.HttpStatus; import org.springframework.stereotype.Service; import org.springframework.web.server.ResponseStatusException; import java.util.List;
+-@Service public class QuizService { private final QuizRepository quizzes; private final CourseRepository courses; public QuizService(QuizRepository q,CourseRepository c){quizzes=q;courses=c;}
++import com.elearning.model.*; import com.elearning.repository.CourseRepository; import com.elearning.repository.QuizRepository; import com.elearning.service.scoring.*; import org.springframework.beans.factory.annotation.Qualifier; import org.springframework.http.HttpStatus; import org.springframework.stereotype.Service; import org.springframework.web.server.ResponseStatusException; import java.util.List; import java.util.Map;
++@Service public class QuizService {private final QuizRepository quizzes;private final CourseRepository courses;private final ScoringStrategy standard,negative;
++ public QuizService(QuizRepository q,CourseRepository c,@Qualifier("standardScoring") ScoringStrategy s,@Qualifier("negativeMarkingScoring") ScoringStrategy n){quizzes=q;courses=c;standard=s;negative=n;}
+  public Quiz createQuiz(Long courseId,Long instructorId,String title,List<Question> questions){Course course=courses.findById(courseId).orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND));if(course.getInstructor()==null||instructorId==null||!instructorId.equals(course.getInstructor().getId()))throw new ResponseStatusException(HttpStatus.FORBIDDEN);if(title==null||title.isBlank()||questions==null||questions.isEmpty())throw new ResponseStatusException(HttpStatus.BAD_REQUEST);Quiz quiz=new Quiz(title.trim(),course);for(Question x:questions){if(x.getPrompt()==null||x.getPrompt().isBlank()||x.getCorrectAnswer()==null||x.getCorrectAnswer().isBlank()||!Double.isFinite(x.getPoints())||x.getPoints()<=0)throw new ResponseStatusException(HttpStatus.BAD_REQUEST);x.setQuiz(quiz);}quiz.setQuestions(questions);return quizzes.save(quiz);}
+- public List<Quiz> quizzesForCourse(Long id){if(!courses.existsById(id))throw new ResponseStatusException(HttpStatus.NOT_FOUND);return quizzes.findByCourseId(id);}}
++ public List<Quiz> quizzesForCourse(Long id){if(!courses.existsById(id))throw new ResponseStatusException(HttpStatus.NOT_FOUND);return quizzes.findByCourseId(id);}
++ public double calculateScore(Long id,Map<Long,String> answers,boolean negativeMarking){Quiz quiz=quizzes.findById(id).orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND));return(negativeMarking?negative:standard).score(quiz.getQuestions(),answers==null?Map.of():answers);}}
+diff --git a/elearning-backend/src/main/java/com/elearning/service/scoring/NegativeMarkingScoringStrategy.java b/elearning-backend/src/main/java/com/elearning/service/scoring/NegativeMarkingScoringStrategy.java
+new file mode 100644
+index 0000000..3043aa4
+--- /dev/null
++++ b/elearning-backend/src/main/java/com/elearning/service/scoring/NegativeMarkingScoringStrategy.java
+@@ -0,0 +1,22 @@
++package com.elearning.service.scoring;
++
++import com.elearning.model.Question;
++import org.springframework.stereotype.Component;
++import java.util.List;
++import java.util.Map;
++import java.util.Objects;
++
++@Component("negativeMarkingScoring")
++public class NegativeMarkingScoringStrategy implements ScoringStrategy {
++  @Override
++  public double score(List<Question> questions, Map<Long, String> answers) {
++    double score = 0;
++    for (Question question : questions) {
++      String answer = answers.get(question.getId());
++      if (answer == null || answer.isBlank()) continue;
++      score += Objects.equals(question.getCorrectAnswer(), answer)
++          ? question.getPoints() : -question.getPoints() * 0.5;
++    }
++    return Math.max(0, score);
++  }
++}
+diff --git a/elearning-backend/src/main/java/com/elearning/service/scoring/ScoringStrategy.java b/elearning-backend/src/main/java/com/elearning/service/scoring/ScoringStrategy.java
+new file mode 100644
+index 0000000..ecb53ff
+--- /dev/null
++++ b/elearning-backend/src/main/java/com/elearning/service/scoring/ScoringStrategy.java
+@@ -0,0 +1,9 @@
++package com.elearning.service.scoring;
++
++import com.elearning.model.Question;
++import java.util.List;
++import java.util.Map;
++
++public interface ScoringStrategy {
++  double score(List<Question> questions, Map<Long, String> answers);
++}
+diff --git a/elearning-backend/src/main/java/com/elearning/service/scoring/StandardScoringStrategy.java b/elearning-backend/src/main/java/com/elearning/service/scoring/StandardScoringStrategy.java
+new file mode 100644
+index 0000000..7ef0935
+--- /dev/null
++++ b/elearning-backend/src/main/java/com/elearning/service/scoring/StandardScoringStrategy.java
+@@ -0,0 +1,17 @@
++package com.elearning.service.scoring;
++
++import com.elearning.model.Question;
++import org.springframework.stereotype.Component;
++import java.util.List;
++import java.util.Map;
++import java.util.Objects;
++
++@Component("standardScoring")
++public class StandardScoringStrategy implements ScoringStrategy {
++  @Override
++  public double score(List<Question> questions, Map<Long, String> answers) {
++    return questions.stream()
++        .filter(question -> Objects.equals(question.getCorrectAnswer(), answers.get(question.getId())))
++        .mapToDouble(Question::getPoints).sum();
++  }
++}
+

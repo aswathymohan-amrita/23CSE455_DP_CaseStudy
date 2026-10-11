@@ -1,0 +1,36 @@
+@startuml
+title Confirmed pattern collaborations across source versions
+class AuthService <<ConcreteSubject>> {
+  currentUserSubject: BehaviorSubject
+  currentUser$: Observable
+  setUser(user)
+  clearUser()
+}
+class NavbarComponent <<ConcreteObserver>>
+class HomeComponent <<ConcreteObserver>>
+AuthService --> NavbarComponent : currentUser$ subscription
+AuthService --> HomeComponent : currentUser$ subscription
+interface ScoringStrategy
+class StandardScoringStrategy
+class NegativeMarkingScoringStrategy
+class QuizService <<Context>>
+QuizService --> ScoringStrategy : delegates
+ScoringStrategy <|.. StandardScoringStrategy
+ScoringStrategy <|.. NegativeMarkingScoringStrategy
+class QuizResultPublisher <<Subject>>
+interface QuizResultObserver
+class StudentResultObserver
+class InstructorResultObserver
+class QuizService
+QuizService --> QuizResultPublisher : publish saved result
+QuizResultPublisher --> QuizResultObserver : notifies
+QuizResultObserver <|.. StudentResultObserver
+QuizResultObserver <|.. InstructorResultObserver
+note bottom
+Original: authentication Observer only
+After Change 1: preserved
+After Change 2: Strategy added
+After Change 3: authentication Observer corrected;
+quiz-result Observer added
+end note
+@enduml

@@ -1,0 +1,30 @@
+@startuml
+left to right direction
+actor Student
+actor Instructor
+rectangle "Angular Frontend" {
+  component "Course Detail UI" as CourseUI
+  component "Quiz UI" as QuizUI
+  component "Quiz API Service" as ApiService
+}
+rectangle "Spring Boot Backend" {
+  component "QuizController" as Controller
+  component "QuizService" as Service
+  component "QuizGrader" as Grader
+  component "QuizResultPublisher" as Publisher
+  database "Quiz / Question / Result Repositories" as Repos
+}
+Student --> CourseUI : open course
+CourseUI --> ApiService : list quizzes
+Student --> QuizUI : submit answers
+QuizUI --> ApiService : submit(quiz, answers)
+ApiService --> Controller : HTTP/JSON
+Controller --> Service : validate + coordinate
+Service --> Grader : grade()
+Grader --> Service : score
+Service --> Repos : persist Result
+Service --> Publisher : publish(Result)
+Publisher --> Student : StudentResultObserver
+Publisher --> Instructor : InstructorResultObserver
+Instructor --> CourseUI : create quiz/questions
+@enduml
