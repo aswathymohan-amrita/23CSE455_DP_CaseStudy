@@ -1,0 +1,4 @@
+﻿Test 1 - DoorDash Payload Adaptation:
+  POSOrder #DD-9081 [Sarah Jenkins (555-0192) -> 742 Evergreen Terrace] Total: $38.50 | Items: ['Margherita Pizza', 'Garlic Bread']
+Test 2 - UberEats Payload Adaptation:
+  POSOrder #UBER-4412 [Marcus Vance (555-8831) -> 104 Ocean Drive] Total: $52.00 | Items: ['Truffle Tagliatelle', 'Tiramisu']

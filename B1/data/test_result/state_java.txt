@@ -1,0 +1,13 @@
+﻿Initial State: Table #5 is AVAILABLE
+Test 1: Seating guests
+  Action: Seating party -> Transition to OCCUPIED
+State: OCCUPIED
+Test 2: Placing order
+  Action: Waiter sent order to kitchen -> Transition to ORDER_PLACED
+State: ORDER_PLACED
+Test 3: Requesting bill
+  Action: Printed guest bill -> Transition to BILLED
+State: BILLED
+Test 4: Settling bill and cleaning
+  Action: Payment received, table sanitized -> Transition to AVAILABLE
+Final State: Table #5 is AVAILABLE

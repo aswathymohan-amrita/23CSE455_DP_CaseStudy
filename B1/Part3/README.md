@@ -1,0 +1,3 @@
+# Part 3 evidence notice
+
+The canonical cross-language dataset is `../data/cross_language.csv`. Per-pattern `cross_language_data.csv` files and pre-existing `test_output.txt` files are preserved historical records; their paths, metrics, and outputs were not treated as freshly verified. Fresh Java/Python/JavaScript outputs and timings are under `evidence/reproduced_2026-10-11/`. C++ status and instructions are in `evidence/CPP_VERIFICATION.md`; complexity status is in `evidence/complexity_method.md`. The older report's correction notice and root `../AUDIT_REPORT.md` describe the current evidence status.

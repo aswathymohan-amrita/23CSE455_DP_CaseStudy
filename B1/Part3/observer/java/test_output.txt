@@ -1,0 +1,7 @@
+﻿Test 1 - Dispatch New Salad (COLD):
+[Cold Station] Received NEW_ORDER for Order #101: Classic Caesar Salad
+Test 2 - Dispatch New Steak (HOT):
+[Hot Station] Received NEW_ORDER for Order #102: Prime Ribeye Steak
+Test 3 - Mark Steak Ready:
+[Hot Station] Received ITEM_READY for Order #102: Prime Ribeye Steak
+[Waiter Terminal] Ready to serve Order #102 (Prime Ribeye Steak from HOT)

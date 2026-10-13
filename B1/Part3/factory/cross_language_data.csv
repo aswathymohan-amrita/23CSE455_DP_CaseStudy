@@ -1,0 +1,5 @@
+pattern_name,instance_name,language,snippet_path,source_loc,max_function_cc,runtime_compiler,test_command,test_result,median_process_ms,language_notes
+Factory Method,Kitchen Order Ticket Dispatch,Java,Part3/factory/FactoryDemo.java,60,2,Java 11/17 (OpenJDK),javac FactoryDemo.java && java FactoryDemo,prints formatted DineIn,107.9, and Delivery kitchen tickets
+Factory Method,Kitchen Order Ticket Dispatch,Python,Part3/factory/FactoryDemo.py,41,2,CPython 3.10+,python FactoryDemo.py,prints formatted DineIn,41.2, and Delivery kitchen tickets
+Factory Method,Kitchen Order Ticket Dispatch,JavaScript,Part3/factory/FactoryDemo.js,44,2,Node.js 22+,node FactoryDemo.js,prints formatted DineIn,39.2, and Delivery kitchen tickets
+Factory Method,Kitchen Order Ticket Dispatch,C++,Part3/factory/FactoryDemo.cpp,69,3,g++ C++17 (Windows native benchmark),g++ -std=c++17 FactoryDemo.cpp -o FactoryDemo && ./FactoryDemo,prints formatted DineIn,22.5, and Delivery kitchen tickets

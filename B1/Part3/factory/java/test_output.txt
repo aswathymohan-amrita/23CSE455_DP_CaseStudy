@@ -1,0 +1,3 @@
+﻿Test 1: [DINE-IN TICKET #101] Table: 4 | Server: Alex | Priority: NORMAL | Items: [Burger, Fries, Coke]
+Test 2: [TAKEOUT TICKET #102] Customer: Emily R. | Packaging: BAG & UTENSILS | Items: [Burger, Fries, Coke]
+Test 3: [DELIVERY TICKET #103] Courier: DoorDash | Address: 12 Maple St | SEAL REQUIRED | Items: [Burger, Fries, Coke]

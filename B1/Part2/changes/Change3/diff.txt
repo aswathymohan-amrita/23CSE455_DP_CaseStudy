@@ -1,0 +1,3 @@
++ IPaymentStrategy interface and concrete classes in payment.service.ts
++ POST /api/payments endpoint mounted in index.ts
++ PaymentModal.tsx connected to strategy engine

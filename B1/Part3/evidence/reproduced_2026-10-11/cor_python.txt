@@ -1,0 +1,9 @@
+﻿Test 1 - Valid MANAGER:
+  [TokenValidator] Token OK: tok_abc
+  [RoleChecker]   Role OK: MANAGER
+  200: Order created for mgr@rest.com
+Test 2 - Wrong role (SERVER):
+  [TokenValidator] Token OK: tok_abc
+  403: Forbidden � requires MANAGER, got SERVER
+Test 3 - No token:
+  401: Authentication required � no valid token

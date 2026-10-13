@@ -1,0 +1,12 @@
+source_version,summary,pattern_name,count
+original,per_pattern,Facade,2
+original,per_pattern,Chain of Responsibility,1
+original,per_pattern,Observer,1
+original,per_pattern,Active Record,1
+original,total_pattern_types,,4
+original,not_identified,Adapter,0
+original,not_identified,Strategy,0
+original,not_identified,Singleton,0
+original,not_identified,Proxy,0
+original,not_identified,Factory Method,0
+original,not_identified,Iterator,0

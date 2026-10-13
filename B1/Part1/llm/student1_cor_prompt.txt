@@ -1,0 +1,1 @@
+Examine the Express middleware pipeline in apps/backend/src/middleware/auth.ts. Show how the request passes sequentially from TokenValidator to RoleChecker to the final route handler. Implement this exact Chain of Responsibility pattern across Java, Python, JavaScript, and C++ demonstrating an authenticated request (200 OK) and an unauthorized request (403 Forbidden).

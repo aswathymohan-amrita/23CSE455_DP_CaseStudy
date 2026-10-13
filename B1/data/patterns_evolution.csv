@@ -1,0 +1,10 @@
+change,pattern_name,source_locations,status,evidence_note
+baseline,Facade,apps/backend/src/services/auth.service.ts:60-89,baseline,Authentication service facade is present in the inspected application source.
+baseline,Facade,apps/backend/src/services/order.service.ts:7-77,baseline,Order creation coordinates persistence and notifications behind a service operation.
+baseline,Chain of Responsibility,apps/backend/src/middleware/auth.ts:12-43,baseline,Express middleware composition exists; GoF classification remains uncertain.
+baseline,Observer,apps/backend/src/websocket.ts:35-58,baseline,Socket.IO event publication and room subscription exist.
+online ordering,Facade,apps/backend/src/services/order.service.ts:329-467,extended,"Online-order service operation adds validation, server-side pricing, persistence, and station dispatch; database integration not independently tested."
+online ordering,Chain of Responsibility,apps/backend/src/index.ts:52-72,modified,Public online endpoint is mounted outside staff authentication; usual Express middleware classification remains uncertain.
+online ordering,Observer,apps/backend/src/services/order.service.ts:448-467,extended,"Successful persistence triggers restaurant, kitchen, and station events."
+kitchen workflow,Observer,apps/backend/src/websocket.ts:71-84;155-159,extended,Station rooms and station item events extend existing Socket.IO publication/subscription.
+payment extensibility,Strategy,apps/backend/src/services/payment.service.ts:20-160,newly_introduced,PaymentContext registers interchangeable strategies; card/mobile results are simulated.

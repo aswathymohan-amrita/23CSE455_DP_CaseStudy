@@ -1,0 +1,34 @@
+source_version,summary,pattern_name,count
+original,per_pattern,Facade,2
+original,per_pattern,Chain of Responsibility,1
+original,per_pattern,Observer,1
+original,per_pattern,Active Record,1
+original,total_pattern_types,,4
+original,not_identified,Adapter,0
+original,not_identified,Strategy,0
+original,not_identified,State,0
+original,not_identified,Factory Method,0
+original,not_identified,Decorator,0
+original,not_identified,Command,0
+original,not_identified,Template Method,0
+after_evolution,per_pattern,Facade,2
+after_evolution,per_pattern,Chain of Responsibility,2
+after_evolution,per_pattern,Observer,2
+after_evolution,per_pattern,Strategy,1
+after_evolution,per_pattern,Adapter,1
+after_evolution,per_pattern,State,1
+after_evolution,per_pattern,Factory Method,1
+after_evolution,per_pattern,Decorator,1
+after_evolution,per_pattern,Command,1
+after_evolution,per_pattern,Template Method,1
+after_evolution,total_pattern_types,,10
+after_evolution,newly_introduced,Strategy,1
+after_evolution,newly_introduced,Adapter,1
+after_evolution,newly_introduced,State,1
+after_evolution,newly_introduced,Factory Method,1
+after_evolution,newly_introduced,Decorator,1
+after_evolution,newly_introduced,Command,1
+after_evolution,newly_introduced,Template Method,1
+after_evolution,extended,Facade,1
+after_evolution,extended,Chain of Responsibility,1
+after_evolution,extended,Observer,1

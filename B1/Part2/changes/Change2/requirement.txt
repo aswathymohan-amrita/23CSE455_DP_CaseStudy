@@ -1,0 +1,6 @@
+CHANGE 2: KITCHEN WORKFLOW STATION ROUTING
+Acceptance Criteria:
+1. Station-specific rooms: cold, hot, bar.
+2. Course-to-station mapping function mapCourseToStation().
+3. Dynamic joining and item dispatch via WebSocket.
+4. Frontend station filter and item deduplication.

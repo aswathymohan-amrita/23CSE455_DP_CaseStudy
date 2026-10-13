@@ -1,0 +1,3 @@
++ POST /api/orders/online route mounted before auth middleware
++ OrderService.createOnlineOrder() with server-side validation
++ OnlineOrdering.tsx component integrated with backend

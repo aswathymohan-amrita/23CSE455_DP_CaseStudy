@@ -1,0 +1,5 @@
+pattern_name,instance_name,language,snippet_path,source_loc,max_function_cc,runtime_compiler,test_command,test_result,median_process_ms,language_notes
+Strategy,Multi-Payment Processing Engine,Java,Part3/strategy/StrategyDemo.java,48,2,Java 11/17 (OpenJDK),javac StrategyDemo.java && java StrategyDemo,prints Stripe,107.9, and MobilePay authorization messages
+Strategy,Multi-Payment Processing Engine,Python,Part3/strategy/StrategyDemo.py,42,2,CPython 3.10+,python StrategyDemo.py,prints Stripe,27.2, and MobilePay authorization messages
+Strategy,Multi-Payment Processing Engine,JavaScript,Part3/strategy/StrategyDemo.js,49,2,Node.js 22+,node StrategyDemo.js,prints Stripe,38.8, and MobilePay authorization messages
+Strategy,Multi-Payment Processing Engine,C++,Part3/strategy/StrategyDemo.cpp,56,2,g++ C++17 (Windows native benchmark),g++ -std=c++17 StrategyDemo.cpp -o StrategyDemo && ./StrategyDemo,prints Stripe,16.5, and MobilePay authorization messages

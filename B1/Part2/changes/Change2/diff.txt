@@ -1,0 +1,3 @@
++ Station-specific Socket.IO room handling (kitchen:station:join)
++ mapCourseToStation() routing engine
++ KitchenDisplay.tsx station tabs and real-time subscription

@@ -1,0 +1,5 @@
+pattern_name,instance_name,language,snippet_path,source_loc,max_function_cc,runtime_compiler,test_command,test_result,median_process_ms,language_notes
+Observer,Kitchen Order Status Event Hub,Java,Part3/observer/ObserverDemo.java,48,3,Java 11/17 (OpenJDK),javac ObserverDemo.java && java ObserverDemo,prints Cold station,92.9, and Waiter notifications
+Observer,Kitchen Order Status Event Hub,Python,Part3/observer/ObserverDemo.py,37,4,CPython 3.10+,python ObserverDemo.py,prints Cold station,40.9, and Waiter notifications
+Observer,Kitchen Order Status Event Hub,JavaScript,Part3/observer/ObserverDemo.js,44,4,Node.js 22+,node ObserverDemo.js,prints Cold station,41.4, and Waiter notifications
+Observer,Kitchen Order Status Event Hub,C++,Part3/observer/ObserverDemo.cpp,56,3,g++ C++17 (Windows native benchmark),g++ -std=c++17 ObserverDemo.cpp -o ObserverDemo && ./ObserverDemo,prints Cold station,16.5, and Waiter notifications

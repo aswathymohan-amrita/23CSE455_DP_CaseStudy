@@ -1,0 +1,1 @@
+Analyze apps/backend/src/services/order.service.ts and auth.service.ts in our Restaurant POS system. Identify how they act as a GoF Façade over Prisma ORM, bcrypt, table locking, and Socket.IO. Provide a clean, standalone implementation of this Façade in Java, Python, JavaScript, and C++ simulating user login and order placement without external network dependencies.

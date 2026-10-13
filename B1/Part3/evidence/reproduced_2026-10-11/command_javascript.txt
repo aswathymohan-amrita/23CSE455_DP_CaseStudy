@@ -1,0 +1,13 @@
+﻿Step 1: Adding Burger and Fries
+Execute: Add Classic Burger
+Execute: Add Truffle Fries
+  Cart Items: [Classic Burger, Truffle Fries] | Discount: 0%
+Step 2: Applying 15% VIP Discount
+Execute: Apply 15% Discount
+  Cart Items: [Classic Burger, Truffle Fries] | Discount: 15%
+Step 3: Cashier pressed Undo (reverting discount)
+Undo: Revert discount back to 0%
+  Cart Items: [Classic Burger, Truffle Fries] | Discount: 0%
+Step 4: Cashier pressed Undo (reverting Truffle Fries)
+Undo: Remove Truffle Fries
+  Cart Items: [Classic Burger] | Discount: 0%

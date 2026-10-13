@@ -1,0 +1,5 @@
+﻿Test 1 - Base Burger: $12.00 -> Classic Angus Burger
+Test 2 - Loaded Burger: $17.00 -> Classic Angus Burger + Extra Cheddar + Smoked Bacon
+  Kitchen prep notes: Grill beef patty medium | Melt double aged cheddar | Add two strips crispy bacon
+Test 3 - GF Burger: $15.50 -> Classic Angus Burger + Extra Cheddar (Gluten-Free Bun)
+  Kitchen prep notes: Grill beef patty medium | Melt double aged cheddar | Use dedicated allergen-safe toaster

@@ -1,0 +1,16 @@
+﻿--- Test 1: Dine-In Pipeline ---
+Processing Order #DINE-301 (Subtotal: $50.00)
+  Step 1 [Common]: Verified inventory and active kitchen capacity.
+  Step 2 [Dine-In]: Added 8.25% dine-in tax ($4.12) -> Final: $54.12
+  Step 3 [Common]: Dispatched ticket to kitchen display.
+  Step 4 [Dine-In]: Displayed order on Table #8 waiter console.
+Order #DINE-301 fulfilled successfully.
+
+--- Test 2: Online Delivery Pipeline ---
+Processing Order #DELV-902 (Subtotal: $50.00)
+  Step 1 [Common]: Verified inventory and active kitchen capacity.
+  Step 2 [Delivery]: Added tax ($4.12) + $4.99 delivery fee -> Final: $59.12
+  Step 3 [Common]: Dispatched ticket to kitchen display.
+  Step 4 [Delivery]: Sent SMS tracking link to courier en route to 450 Elm Street
+Order #DELV-902 fulfilled successfully.
+

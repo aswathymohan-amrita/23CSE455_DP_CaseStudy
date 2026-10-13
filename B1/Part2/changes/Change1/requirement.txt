@@ -1,0 +1,7 @@
+CHANGE 1: ONLINE ORDERING CAPABILITY
+Acceptance Criteria:
+1. Public REST endpoints: GET /api/menu/public and POST /api/orders/online.
+2. Mandatory customer validation (name, email, phone, items).
+3. Server-side price resolution from database.
+4. Calculation of 8% tax and delivery fee.
+5. Emission of real-time events to restaurant and kitchen station rooms.

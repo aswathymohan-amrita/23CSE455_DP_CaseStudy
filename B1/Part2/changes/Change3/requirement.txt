@@ -1,0 +1,7 @@
+CHANGE 3: PAYMENT METHOD EXTENSIBILITY (STRATEGY PATTERN)
+Acceptance Criteria:
+1. IPaymentStrategy interface and PaymentContext.
+2. Concrete strategies for Cash, CreditCard, MobilePay, GiftCard.
+3. Dynamic strategy registration and execution.
+4. Change computation and tender validation for cash.
+5. In-memory ledger validation for gift cards.
