@@ -1,0 +1,25 @@
+digraph CH01_Itinerary_Generation_Collaboration {
+  graph [rankdir=LR, label="CH01 — Personalized itinerary generation collaboration\nSource-based view; not a claim that each node is a design pattern", labelloc=t, fontsize=18, fontname="Arial", pad=0.25, nodesep=0.45, ranksep=0.75, bgcolor="white"];
+  node [shape=record, style="rounded,filled", fillcolor="#f8fafc", color="#334155", fontname="Arial", fontsize=10, margin="0.12,0.08"];
+  edge [color="#475569", fontname="Arial", fontsize=9, arrowsize=0.7];
+  user [label="{User / trip page|Requests generation; reviews preview; confirms items}"];
+  controller [label="{ItineraryGenerationsController|create / show / confirm\nSource: app/controllers/itinerary_generations_controller.rb}", fillcolor="#dbeafe"];
+  auth [label="{EditableTripScoped|Owner/planner access check\nSource: app/controllers/concerns/editable_trip_scoped.rb}"];
+  job [label="{GenerateItineraryJob|Enqueue guard; result cache; Turbo broadcast\nSource: app/jobs/generate_itinerary_job.rb}", fillcolor="#dbeafe"];
+  generator [label="{ItineraryGenerator|Prompt; normalize and validate suggestions\nSource: app/services/itinerary_generator.rb}"];
+  anthropic [label="{Anthropic client|External model request}", fillcolor="#fef3c7"];
+  cache [label="{Rails.cache|Pending preview keyed by trip/user}"];
+  turbo [label="{Turbo Streams|Replace generation result target}"];
+  importer [label="{TripItemsBulkImport|Shared batch persistence\nSource: app/services/trip_items_bulk_import.rb}", fillcolor="#dcfce7"];
+  tripitem [label="{TripItem|Accepted items persisted only on confirmation}"];
+  user -> controller [label="generate / preview / confirm"];
+  controller -> auth [label="authorize trip"];
+  controller -> job [label="create: enqueue"];
+  job -> generator [label="generate"];
+  generator -> anthropic [label="messages.create"];
+  job -> cache [label="write result"];
+  job -> turbo [label="broadcast_replace_to"];
+  cache -> controller [label="show / confirm reads cached result", style=dashed];
+  controller -> importer [label="confirm: accepted items"];
+  importer -> tripitem [label="create items"];
+}

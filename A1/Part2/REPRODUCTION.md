@@ -92,3 +92,21 @@ cp .env.example .env
 mise exec ruby@3.4.2 -- bin/rails db:prepare
 mise exec ruby@3.4.2 -- bin/dev
 ```
+
+## Source snapshot identity and history limitations
+
+The retained source snapshots are `baseline/` and `code/` within this Part 2
+folder. The reproducible baseline-to-final comparison is saved as
+`evidence/snapshots/baseline_to_final_source.patch`. File sizes and SHA-256
+hashes for the included snapshot files are recorded in
+`evidence/snapshots/source_snapshot_manifest.json`.
+
+From the repository root, verify the recorded files with:
+
+    python3 A1/Part2/evidence/snapshots/verify_source_snapshot_manifest.py
+
+The available Git history does not establish separate historical source snapshots
+immediately after CH01 and CH02. The manifest identifies the retained baseline
+and final snapshots; the patch compares those two states only. It must not be
+interpreted as three separate historical scenario diffs, and reconstructed
+intermediate states must not be described as original historical snapshots.

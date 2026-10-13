@@ -2,7 +2,7 @@
 
 Project: DaPlanStan (Rails 8.1.3)
 Frozen BEFORE source version: `baseline` (Member 2 Part 2 package, P01-P09)
-Working branch: `member3/evolution`, HEAD `cd306ecb6171db559af5fe5bec49ed7cf1a6a245`
+Working branch: `member3/part2-submission`, HEAD `d190cf7e3c11321039f24c264462f14224564132` (current local repository state)
 Scope: Member 3 / Faculty Part 2 only. CH01, CH02 and CH03 are implemented and audited.
 All changes are uncommitted.
 
@@ -27,11 +27,12 @@ Authoritative inputs actually available:
 - The frozen baseline counts: 9 instances, 3 distinct types (Controller 6, Information
   Expert 1, Observer 2).
 
-Limitation: no official Faculty Part 2 submission template, report skeleton, or CSV schema
-for an *evolved* counts file was found in the repository, the archives, `/tmp/opencode/m2`,
-or any handoff artifact. The report format below therefore mirrors the Member 2
-`Part2_Design_Pattern_Discovery_and_Verification.md` structure and uses the handoff's status
-vocabulary. See section 7 for exactly what remains unresolved.
+Requirements and submission format are governed by the supplied faculty instructions
+and report template. This report documents the three evolution scenarios, pattern effects,
+tests, metrics, refactoring evidence and provenance. The source-version count dataset and
+its per-snapshot summary must remain consistent with the faculty's requirements for
+pattern types, instances, concrete participant classes and rejected/uncertain observations.
+The final team integration must also follow the required team-folder hierarchy.
 
 ## 2. Evolution status inventory
 
@@ -92,6 +93,43 @@ the AI call to `GenerateItineraryJob`, and delegates persistence to `TripItemsBu
 The duplicate-generation guard (`GenerateItineraryJob.enqueue_unless_running`) is a small
 idempotency helper inside that coordination, not claimed as a separate pattern.
 
+## 3.1 Updated pattern counts by source version
+
+The required `Pattern_count.csv` uses the faculty's four-column schema
+(`source_version,summary,pattern_name,count`). It contains per-pattern counts,
+distinct pattern-type totals and instance totals for all four source versions.
+
+The following supplemental measures are recorded here because the four-column
+CSV schema does not contain fields for participant-class counts or rejected and
+uncertain observations.
+
+| Source version | Pattern instances | Distinct pattern types | Distinct app-defined class names referenced in participant-role descriptions | Rejected/uncertain candidate observations |
+|---|---:|---:|---:|---|
+| Original code | 9 | 3 | 25 | Not verifiable: the baseline candidate-review register was not found in the current package |
+| Code after Change1 | 10 | 3 | 28 | 4 CH01-related candidates, counted retrospectively from the current report |
+| Code after Change2 | 10 | 3 | 28 | 5 cumulative Member 3 candidate records, counted retrospectively from the current report |
+| Code after Change3 | 10 | 3 | 28 | 6 cumulative Member 3 candidate records, counted retrospectively from the current report |
+
+**Participant-class counting rule:** count distinct application class names that
+appear in a snapshot's `participant_roles` entries and match class declarations
+under that snapshot's application source. Framework classes, functions, modules,
+views and dependencies are excluded. The reported numbers were obtained by a
+scripted name match; they are provisional until participant mappings are manually
+reviewed. CH02 and CH03 introduce value modules rather than new class declarations,
+which is consistent with the unchanged class-name count.
+
+**Rejected/uncertain observations:** the four, five and six entries above are
+retrospective cumulative counts of the candidate categories listed in section 4,
+attributed to the scenario in which each candidate arose. They are not recovered
+historical LLM observations. The original-code count remains unavailable because
+the baseline candidate-review register was not found in the supplied package.
+Do not interpret the unavailable baseline value as zero.
+
+The available source archive retains only the original and final source trees.
+Consequently, the Change1 and Change2 rows are reconciled against the staged
+evolution records and scenario evidence, not independently preserved intermediate
+source snapshots.
+
 ## 4. Evaluated and rejected new-pattern candidates
 
 Mirroring the baseline's rejected-candidate discipline, the following additions were
@@ -122,7 +160,27 @@ conservative choice is to treat it as an extension of P09 and count only one new
 
 ## 6. Verification runs (this session)
 
-All commands run from the repository root on `member3/evolution` at HEAD `cd306ec`. Ruby
+### Fresh post-packaging test run — 2026-10-11
+
+- Source tree: `A1/Part2/code`
+- Command: `RAILS_ENV=test mise exec ruby@3.4.2 -- ruby bin/rails test`
+- Raw output: `A1/Part2/evidence/final_test_run_2026-10-11.txt`
+- Result: **65 runs, 204 assertions, 0 failures, 0 errors, 0 skips; exit code 0.**
+- The test database was initialized from the checked-in `db/structure.sql` in
+  the test environment only. The original test database was backed up outside
+  the repository before replacement.
+- Tailwind reported an `Invalid empty selector` warning during CSS optimization;
+  the test command nevertheless completed successfully.
+- Migration status reported all 40 actual migration files as `up`. It also
+  displayed a `000 — NO FILE` version entry, which remains a reproducibility
+  note to investigate.
+- This is a fresh test run, but not a live Anthropic API integration test.
+  CH01 tests use a fake client. The result does not establish browser/end-to-end
+  coverage or complete formal equivalence with the baseline.
+
+
+
+The verification table below contains historical implementation-run results from the earlier `member3/evolution` checkout at HEAD `cd306ec`; it is not the identity of the current submission branch. A separate fresh full-suite run on the packaged evolved source tree is recorded immediately below. Ruby
 3.4.2 / Rails 8.1.3 run via `mise`. The test database was NOT reset; the existing test DB
 (already carrying the CH02/CH03 columns) was used.
 
@@ -160,14 +218,43 @@ contains the CH02 and CH03 tests. The full-suite total equals the sum of all ten
 | `test/controllers/trips_controller_test.rb` | 1 |
 | **Total** | **65** |
 
+### Source LOC metrics (measured 2026-10-11)
+
+The reproducible measurement script is `evidence/measure_source_loc.py`; the
+captured output is `evidence/LOC_Metrics_2026-10-11.txt`.
+
+| Metric | Baseline | Evolved (CH01-CH03) | Difference |
+|---|---:|---:|---:|
+| Ruby files | 103 | 112 | +9 |
+| Physical lines in scope | 3,236 | 3,762 | +526 |
+| Nonblank/non-`#`-comment lines | 2,480 | 2,842 | +362 |
+
+Scope: Ruby files under `app/`, `config/`, and `db/migrate/`; tests, documentation,
+dependencies, and generated files are excluded. The same Python script and counting
+rules are used for both snapshots. Physical lines include blank and comment lines.
+The nonblank/non-`#`-comment measure is a simple size proxy, **not strict executable
+SLOC**: inline comments and comment forms other than lines beginning with `#` may
+be counted. Increased LOC reflects the added behavior and collaborators; it does not
+by itself demonstrate improved design.
+
+### Refactoring versus functional evolution
+
+`evidence/Refactoring_Evidence.md` records the distinction and its source/test
+evidence. The behavior-preserving refactoring candidates are (1) extracting
+`TripItemsBulkImport` from controller-owned batch persistence and (2) extracting
+shared trip edit authorization into `EditableTripScoped`. CH01's generation workflow,
+CH02's provider-aware matching and persistence, and CH03's cancellation policy
+behavior are functional changes, not behavior-preserving refactorings as whole
+scenarios.
+
+The available final-tree test results support regression confidence, but an identical
+baseline test run and raw final test log have not been preserved here. Therefore,
+do not claim complete formal behavior equivalence; list the tested behaviors and the
+verification limitation honestly.
+
 ## 7. Limitations and unresolved items
 
-- **No official Faculty Part 2 template/schema found.** No rubric, report skeleton, or an
-  *evolved* `pattern_counts.csv` schema was discoverable. `patterns_evolution.csv` was
-  therefore built from the existing `patterns.csv` schema plus the handoff's status
-  vocabulary. No evolved `pattern_counts.csv` was created, because no authoritative schema
-  requires one and the handoff says not to retroactively modify baseline counts. If the
-  faculty expects a specific counts file, its columns must be supplied.
+- **Faculty schema correction.** The earlier draft incorrectly claimed that no official Faculty Part 2 schema was available. The faculty instructions define the LLM record columns and require source-version pattern counts and evolution evidence. The current package includes the evolution registry, count dataset, LLM provenance record, and diagrams. Final integration must still reconcile the exact filename/path spelling in the faculty hierarchy with the team's chosen deliverable names.
 - **Live Anthropic API not tested.** All CH01 AI tests use the fake client
   (`test/support/fake_anthropic.rb`); no real Claude request was made and no token/cost
   metrics exist.
@@ -189,10 +276,11 @@ contains the CH02 and CH03 tests. The full-suite total equals the sum of all ten
   to match the two migrations and this consistency was verified with `db:migrate:status`.
 - **Baseline Git provenance remains unverified** (as documented by Member 2); the frozen
   baseline is the `baseline` source label, not a verified commit.
-- **UML not updated.** P01, P05 and P09 relationships changed in the evolved tree and
-  NEW-01 has no baseline diagram, but no faculty requirement for evolved UML was found and
-  the nine baseline Mermaid/SVG diagrams must stay frozen. No evolved UML was produced; if
-  the faculty requires AFTER diagrams, that request must be supplied.
+- **Evolved UML prepared; human verification pending.** Three diagrams for CH01, CH02
+  and CH03 are present under `diagrams/`, with DOT sources and SVG renderings. These are
+  newly generated review artifacts, not recovered historical diagrams. A team member must
+  verify their participants and relationships against the final source before submission.
+  Keep the frozen baseline diagrams unchanged.
 
 ## 8. Deliverables (Member 3 / Faculty Part 2)
 
@@ -202,5 +290,4 @@ contains the CH02 and CH03 tests. The full-suite total equals the sum of all ten
 - `CH01_Personalized_Itinerary_Generation.md`, `CH02_Multiple_Booking_Providers.md`,
   `CH03_Different_Cancellation_Policies.md` - scenario evidence (preserved; reconciled).
 
-Unresolved by format: an evolved `pattern_counts.csv` and any faculty-mandated report
-skeleton (see section 7).
+- **Pattern-count status.** `Pattern_count.csv` matches the faculty's four-column schema and includes per-pattern, pattern-type and instance totals for all four source versions. Supplemental participant-class and rejected/uncertain counts are documented in section 3.1. The class counts remain provisional pending manual mapping review, and the baseline rejected/uncertain count is unavailable because its source register was not found in this package.

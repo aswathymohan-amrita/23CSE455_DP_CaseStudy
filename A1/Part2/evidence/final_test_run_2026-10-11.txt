@@ -1,0 +1,24 @@
+≈ tailwindcss v4.2.1
+
+/*! 🌼 daisyUI 5.5.19 */
+Found 1 warning while optimizing generated CSS:
+
+[2m│   }[22m
+[2m│ }[22m
+[2m│[22m $ios-enter: cubic-bezier(0.32, 0.72, 0, 1);
+[2m┆[22m [33m[2m^--[22m Invalid empty selector[39m
+[2m┆[22m
+[2m│ $ios-exit: cubic-bezier(0.32, 0, 0.67, 0);[22m
+[2m│ ::view-transition-old(root) {[22m
+
+Done in 474ms
+Run options: --seed 50192
+
+# Running:
+
+.................................................................
+
+Finished in 1.833347s, 35.4543 runs/s, 111.2719 assertions/s.
+65 runs, 204 assertions, 0 failures, 0 errors, 0 skips
+
+EXIT_CODE=0

@@ -1,0 +1,13 @@
+digraph CH02_Booking_Provider_Collaboration {
+  graph [rankdir=LR, label="CH02 — Booking provider normalization and P01 modification\nBookingProvider is a value module, not a Strategy hierarchy", labelloc=t, fontsize=18, fontname="Arial", pad=0.25, nodesep=0.55, ranksep=0.85, bgcolor="white"];
+  node [shape=record, style="rounded,filled", fillcolor="#f8fafc", color="#334155", fontname="Arial", fontsize=10, margin="0.12,0.08"];
+  edge [color="#475569", fontname="Arial", fontsize=9, arrowsize=0.7];
+  inbox [label="{InboxItem (Active Record)|Parses booking data; matches/creates TripItem\nprovider-aware name/matching key\nSource: app/models/inbox_item.rb}", fillcolor="#dbeafe"];
+  provider [label="{BookingProvider (module)|KNOWN alias lookup; normalize(raw); known\nSource: app/models/booking_provider.rb}", fillcolor="#fef3c7"];
+  tripitem [label="{TripItem (Active Record)|Stores normalized provider attribute\nSource: app/models/trip_item.rb}", fillcolor="#dcfce7"];
+  persistence [label="{Active Record / database|Persist provider and distinct booking items}"];
+  inbox -> provider [label="normalize provider"];
+  inbox -> tripitem [label="create / update item\nprovider + kind + location distinguish items"];
+  tripitem -> provider [label="normalize before validation/save"];
+  tripitem -> persistence [label="persist"];
+}

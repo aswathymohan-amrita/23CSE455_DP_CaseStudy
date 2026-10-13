@@ -1,0 +1,20 @@
+Scope: app/**/*.rb, config/**/*.rb, db/migrate/**/*.rb
+Excluded: tests, documentation, dependencies, generated files
+Physical lines include blanks and comments.
+Nonblank/non-#-comment lines exclude blank and # comment-only lines.
+Inline comments and other comment forms may still be counted.
+Python: 3.14.4
+
+Baseline
+  Ruby files: 103
+  Physical lines: 3236
+  Nonblank/non-#-comment lines: 2480
+Evolved (CH01-CH03)
+  Ruby files: 112
+  Physical lines: 3762
+  Nonblank/non-#-comment lines: 2842
+
+Evolved minus baseline
+  Ruby files: +9
+  Physical lines: +526
+  Nonblank/non-#-comment lines: +362

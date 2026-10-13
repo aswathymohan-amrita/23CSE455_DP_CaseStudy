@@ -69,7 +69,7 @@ Team repository for the **DaPlanStan** Rails application (Rails 8.1.3, Ruby 3.4.
 - No CI pipeline configured / no CI run executed
 - No browser/end-to-end tests, no independent human sign-off
 - UML diagrams not updated for evolved patterns (baseline diagrams frozen)
-- No official Faculty Part 2 template/schema found — report mirrors Part 1 structure
+- Faculty Part 2 requirements follow the supplied instructions and report template; count-dataset reconciliation and final report integration remain in progress.
 
 ## Reproduction
 
@@ -118,3 +118,22 @@ mise exec ruby@3.4.2 -- bin/importmap audit
 - These files existed in the source archive but were **excluded from the packaged snapshots**. The original frozen baseline at `~/projects/daplanstan-member3/baseline/daplanstan-main` remains untouched and still contains them.
 - No credentials, `.env` files, or local databases were added by Member 3.
 - All changes are **uncommitted** in the working source; the team repo snapshots are static copies with the above exclusions.
+
+## Part 2 source LOC measurements
+
+For a reproducible comparison, run `python3 Part2/evidence/measure_source_loc.py`
+from the team folder. Scope: Ruby files in `Part2/baseline/{app,config,db/migrate}`
+versus `Part2/code/{app,config,db/migrate}`; excludes tests, documentation,
+dependencies, and generated files. The method and actual output are saved under
+`Part2/evidence/`.
+
+| Metric | Baseline | Evolved (CH01-CH03) | Difference |
+|---|---:|---:|---:|
+| Ruby files | 103 | 112 | +9 |
+| Physical lines | 3,236 | 3,762 | +526 |
+| Nonblank/non-`#`-comment lines | 2,480 | 2,842 | +362 |
+
+The final line measure is a simple size proxy, not strict executable SLOC:
+inline and non-`#` comment forms may be counted. LOC growth is not itself evidence
+of improved design. Refactoring versus feature-change analysis is in
+`Part2/evidence/Refactoring_Evidence.md`.

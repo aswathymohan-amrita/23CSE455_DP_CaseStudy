@@ -1,0 +1,15 @@
+digraph CH03_Cancellation_Policy_Collaboration {
+  graph [rankdir=LR, label="CH03 — Trip-item cancellation policy evaluation\nData/behavior view; not a GoF Strategy implementation and does not cancel/refund", labelloc=t, fontsize=18, fontname="Arial", pad=0.25, nodesep=0.55, ranksep=0.85, bgcolor="white"];
+  node [shape=record, style="rounded,filled", fillcolor="#f8fafc", color="#334155", fontname="Arial", fontsize=10, margin="0.12,0.08"];
+  edge [color="#475569", fontname="Arial", fontsize=9, arrowsize=0.7];
+  user [label="{User / TripItem form|Select policy and free-until deadline}"];
+  controller [label="{TripItemsController|Permits policy fields\nSource: app/controllers/trip_items_controller.rb}", fillcolor="#dbeafe"];
+  item [label="{TripItem (Active Record)|cancellation_policy; cancellation_free_until\nnormalization + validation + cancellation_status\nSource: app/models/trip_item.rb}", fillcolor="#dcfce7"];
+  policy [label="{CancellationPolicy (module)|POLICIES lookup; normalize; evaluate(policy, free_until, at)\nSource: app/models/cancellation_policy.rb}", fillcolor="#fef3c7"];
+  result [label="{Evaluation Result|free?; refund_percent; penalty_percent}"];
+  user -> controller [label="submit item form"];
+  controller -> item [label="assign permitted fields"];
+  item -> policy [label="evaluate current eligibility"];
+  policy -> result [label="return calculation"];
+  result -> item [label="cancellation_status", style=dashed];
+}

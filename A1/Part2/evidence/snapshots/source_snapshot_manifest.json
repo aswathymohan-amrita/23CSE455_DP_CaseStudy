@@ -1,0 +1,4033 @@
+{
+  "purpose": "Integrity manifest for original and evolved source snapshots",
+  "limitation": "These are baseline and final snapshots. Intermediate historical states after CH01 and CH02 were not recovered.",
+  "snapshots": {
+    "baseline": {
+      "folder": "A1/Part2/baseline",
+      "file_count": 389,
+      "files": [
+        {
+          "path": ".dockerignore",
+          "size_bytes": 874,
+          "sha256": "8dad33df9e450a9e42deb56a86ee6a20b559578a6f0121b3375c4cf4e32d4aac"
+        },
+        {
+          "path": ".gitattributes",
+          "size_bytes": 348,
+          "sha256": "178d3a5e52684a157e7454dd3ee8c7da5c5546680067cc2f2f8796e0d6bcb3a2"
+        },
+        {
+          "path": ".github/dependabot.yml",
+          "size_bytes": 247,
+          "sha256": "4a6698dbb7e88418562c06e57b9881d554487ace4060be19d3e7d20a5646a47f"
+        },
+        {
+          "path": ".github/workflows/ci.yml",
+          "size_bytes": 1706,
+          "sha256": "6aafd8c081ec76c6ddf7903e4182156fb31d099fef8dca37f2eb3287d4cac281"
+        },
+        {
+          "path": ".gitignore",
+          "size_bytes": 1086,
+          "sha256": "3f17e93f2a4125f2e951f4a93a695454ec0cdb172fbcd29be2e0dd297fcbc329"
+        },
+        {
+          "path": ".rubocop.yml",
+          "size_bytes": 291,
+          "sha256": "543977c1c67340fe1dd12e2fcde050d0ae2c370aa752335e329f5e7dc7251e39"
+        },
+        {
+          "path": ".ruby-version",
+          "size_bytes": 11,
+          "sha256": "3c3c4cdeb8df21f17819b0e27d770626aee89fa8560680469643773444e719e0"
+        },
+        {
+          "path": "APPROACH.md",
+          "size_bytes": 8741,
+          "sha256": "ecaf2f240745533b3d080e3f6060016ae3383dd33e3aa60d8293e87911e67be5"
+        },
+        {
+          "path": "CLAUDE.md",
+          "size_bytes": 1523,
+          "sha256": "ca4af3c6d710a6203570f63f0ef37fcd469bf5aa86c3a4204dce2eddf66f4514"
+        },
+        {
+          "path": "DATA_MODEL.md",
+          "size_bytes": 9665,
+          "sha256": "b8fad4afc9f36c179f4b7c8d3f0ce023c0117e71c3954a3d580d049921ec4940"
+        },
+        {
+          "path": "Dockerfile",
+          "size_bytes": 2827,
+          "sha256": "9cf5fb4bf33b769dfd498ef727a6eb8f7f27d3d3d06dba4a37f4496aca886fc2"
+        },
+        {
+          "path": "Gemfile",
+          "size_bytes": 2672,
+          "sha256": "15da41aa3ab3858dffd244e5690c941a6aafc3082956306600e80595cbe2d35a"
+        },
+        {
+          "path": "Gemfile.lock",
+          "size_bytes": 28153,
+          "sha256": "4b4860a19c18ae63f4ca974cef4fada1e03d5edb81dd28deca83eeefc17bda88"
+        },
+        {
+          "path": "LICENSE.md",
+          "size_bytes": 1465,
+          "sha256": "1c5ea48e790565cbe9535cf30a9ef993c94fa85403514a7648969de61e701a62"
+        },
+        {
+          "path": "MISSION.md",
+          "size_bytes": 2387,
+          "sha256": "c115508143281ba48d52bd7a6f1b4171e3b306481c5049658d4d33e8fdae3177"
+        },
+        {
+          "path": "Procfile.dev",
+          "size_bytes": 55,
+          "sha256": "9e5a7dc7f7fb27425617012e7302d17b6c0bdf9a897a31c71292e909ac102266"
+        },
+        {
+          "path": "README.md",
+          "size_bytes": 3980,
+          "sha256": "ac61ee675aba432edb90566106713c3a814db6de3e958bf3fea1523a72edb4b8"
+        },
+        {
+          "path": "Rakefile",
+          "size_bytes": 227,
+          "sha256": "895c6a69d01c14f0dd437c0eb44914754006ce317807264ca7ffbd1c79a91ebf"
+        },
+        {
+          "path": "app/assets/builds/.keep",
+          "size_bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "app/assets/images/.keep",
+          "size_bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "app/assets/images/Bell.svg",
+          "size_bytes": 987,
+          "sha256": "e3f1a077366eadac1331f3ab3147f11cb5d06ca5486f23c57033a41a4c967fdb"
+        },
+        {
+          "path": "app/assets/images/Bus-Taxi.svg",
+          "size_bytes": 2507,
+          "sha256": "d97bde11d296a5fbd7c104ff67b2eaed5ed5fd22f825ddc57d8fd47fae7fb799"
+        },
+        {
+          "path": "app/assets/images/Camera.svg",
+          "size_bytes": 913,
+          "sha256": "6378f62674e0a29d35abfbfb69c7ae6b0d9fdf49c32c6d0da8ef6a7828cfce31"
+        },
+        {
+          "path": "app/assets/images/Car.svg",
+          "size_bytes": 2009,
+          "sha256": "85845db6caae868bfc193f4974115c4406cd5f643c413c54e28c39c75689013a"
+        },
+        {
+          "path": "app/assets/images/Do.svg",
+          "size_bytes": 886,
+          "sha256": "5eb052f342fd2dd02abc16aa45d4fce5f5ccf979d7f909fd17e853b3a0f82879"
+        },
+        {
+          "path": "app/assets/images/Down.svg",
+          "size_bytes": 473,
+          "sha256": "bbd8dceff10ee042e4a93277c0444402484327bb4917f4024a2acb0de4d06008"
+        },
+        {
+          "path": "app/assets/images/Eat.svg",
+          "size_bytes": 1004,
+          "sha256": "40acce97275ee18516a04e6829cf45805051126f065ce2cdf91445b1ebaf04bc"
+        },
+        {
+          "path": "app/assets/images/Edit.svg",
+          "size_bytes": 1022,
+          "sha256": "7b7fbdfd8f034f00799601e65d5faedcd2433211c705a5eca1946bc6ebf2d06f"
+        },
+        {
+          "path": "app/assets/images/Email.svg",
+          "size_bytes": 736,
+          "sha256": "e90ac1a31f462e8f648735a69d48ff3a1a42c3aa222a1c0cca246620d495e204"
+        },
+        {
+          "path": "app/assets/images/Euro.svg",
+          "size_bytes": 1369,
+          "sha256": "e426043b58ca52827eff643818889fed7258b8788f0dca7bb65979b75bc808fc"
+        },
+        {
+          "path": "app/assets/images/Expense.svg",
+          "size_bytes": 6293,
+          "sha256": "6b7901b3ad3138c06fc4a029dbb76e379da5c21321b1d512ecde2b34039afd9b"
+        },
+        {
+          "path": "app/assets/images/Expenses.svg",
+          "size_bytes": 762,
+          "sha256": "c0f17bd2f3ab1c6dc69c0f1a4406e4c3f0b1a644c6dd5923370bb831f5362d62"
+        },
+        {
+          "path": "app/assets/images/Ferry.svg",
+          "size_bytes": 1905,
+          "sha256": "7531cd5114d8336991dbba66c0b7f7b32c5f2b8f758e51a4dae03329084c83bf"
+        },
+        {
+          "path": "app/assets/images/Filter.svg",
+          "size_bytes": 678,
+          "sha256": "66129897421f20b4a218c5608f7fc66b15b560faac93b4742a45dd2f8f91e021"
+        },
+        {
+          "path": "app/assets/images/Inbox.svg",
+          "size_bytes": 1149,
+          "sha256": "d2d5cb3c72242e42abd0c3851879a4a49f031c79ff63a1bd787236875a9c2c88"
+        },
+        {
+          "path": "app/assets/images/Itinerary.svg",
+          "size_bytes": 737,
+          "sha256": "559bb2c6e7684ca5470fce079a94f88b2f49c3452db190a58659d6299edf1ad1"
+        },
+        {
+          "path": "app/assets/images/Left.svg",
+          "size_bytes": 473,
+          "sha256": "43a9a64d78ec14c3c21c4436ca6fcd3360019fabbf477b24998031858fe97a8e"
+        },
+        {
+          "path": "app/assets/images/Mail.svg",
+          "size_bytes": 3112,
+          "sha256": "b39bbf90cd311247fe1bae00571980456675b3756b200b3d4393681b110f4cee"
+        },
+        {
+          "path": "app/assets/images/Map-Marker.svg",
+          "size_bytes": 1023,
+          "sha256": "4bdb8ed2f21f0f62e8b62beeef1843c755ea3123ec5d86cc05b5cffed084d0b6"
+        },
+        {
+          "path": "app/assets/images/Map.svg",
+          "size_bytes": 1837,
+          "sha256": "550f588ca9c70523b90cbea5a1a0f5f0a036873341d455159790e8aea130a1c4"
+        },
+        {
+          "path": "app/assets/images/Move.svg",
+          "size_bytes": 1480,
+          "sha256": "e05dc7c76e4f7d1782d25acad13462ca88ad6caee54f5240ba4186bd2e8fe8d5"
+        },
+        {
+          "path": "app/assets/images/Plane.svg",
+          "size_bytes": 755,
+          "sha256": "d10e99846f111165003b34d4a55ebe66c31f933a6f2966c760ee4528731f5b08"
+        },
+        {
+          "path": "app/assets/images/Right.svg",
+          "size_bytes": 475,
+          "sha256": "ad3337efc3750ee59eb84908117bc10f583b85dc496d475cfb728ecf85c10672"
+        },
+        {
+          "path": "app/assets/images/Shop.svg",
+          "size_bytes": 1775,
+          "sha256": "5cab0120cc2326d8edf3e80b93e9fa88a38f347e2daf50db62b87916f88b3ccf"
+        },
+        {
+          "path": "app/assets/images/Stay.svg",
+          "size_bytes": 1218,
+          "sha256": "b9302cfd3c746409edb7e7fd782a282156b09a943e6d7213a2753376a3ebb00d"
+        },
+        {
+          "path": "app/assets/images/Train.svg",
+          "size_bytes": 2876,
+          "sha256": "32959063498894bd9bc43efaf828c925b1a9bd8ac0850615c0dcecd6baf85aa4"
+        },
+        {
+          "path": "app/assets/images/Trip.svg",
+          "size_bytes": 1158,
+          "sha256": "08050e14130d2a4fe5c9ec00ee26cd16136cf2205b7230db402dd7fa57056e78"
+        },
+        {
+          "path": "app/assets/images/Up.svg",
+          "size_bytes": 475,
+          "sha256": "c6909ea9d927addde03ea71772882bd7b29747d161b0ea6b516a9d353ca080f1"
+        },
+        {
+          "path": "app/assets/images/delete.svg",
+          "size_bytes": 1626,
+          "sha256": "50312b8a4410d80f5f0d2886c2f4f34c8313562283eece5c3cbc6cfedbd399c1"
+        },
+        {
+          "path": "app/assets/images/logo-mark.svg",
+          "size_bytes": 4269,
+          "sha256": "208d3ae86bb0edda2a12e280e90dc82084001fd215e4db1f076a0801076c12e5"
+        },
+        {
+          "path": "app/assets/stylesheets/application.css",
+          "size_bytes": 491,
+          "sha256": "478b66b3effc220e394a0ba1a9065c367d723bd73b2036067ea87f91094b2cdf"
+        },
+        {
+          "path": "app/assets/tailwind/application.css",
+          "size_bytes": 36096,
+          "sha256": "e0c2a1b93ae0ddf7e568dad8c336f9dcb363d3577ffb724727be831f1c09168e"
+        },
+        {
+          "path": "app/assets/tailwind/plugins/daisyui.js",
+          "size_bytes": 246457,
+          "sha256": "7b2ab8f3f52af4123f6425055df2989558c619969cb1a342cec6bb6ab86daa6d"
+        },
+        {
+          "path": "app/controllers/admin/application_controller.rb",
+          "size_bytes": 268,
+          "sha256": "58eba800648113a5fa48a1d4a6bbec19f8cc9db324369bd44442704385028499"
+        },
+        {
+          "path": "app/controllers/admin/dashboard_controller.rb",
+          "size_bytes": 542,
+          "sha256": "498d798cfcbee889b770323a75903e5a16a5a975daf32f32e53c7b0ea67bf1f2"
+        },
+        {
+          "path": "app/controllers/admin/invites_controller.rb",
+          "size_bytes": 622,
+          "sha256": "72d503bcfb75ee7ddddc6405dc9aa49d931c5e12aaf844fcc5fdd5b82c63293b"
+        },
+        {
+          "path": "app/controllers/application_controller.rb",
+          "size_bytes": 1473,
+          "sha256": "0b6e25b0d0e58bdddd4873c894b543c943dc1e70d0d223b08e5561ac999cf498"
+        },
+        {
+          "path": "app/controllers/approved_senders_controller.rb",
+          "size_bytes": 821,
+          "sha256": "eda99c924aa7845198f4148c4e3486f2c2ae95f80ce0b58db1961002be5e2b80"
+        },
+        {
+          "path": "app/controllers/concerns/.keep",
+          "size_bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "app/controllers/expenses_controller.rb",
+          "size_bytes": 3317,
+          "sha256": "5736ef2a7fbc59c67c7fcdaceb205ee193c2d8378d743a106a631a623d53c200"
+        },
+        {
+          "path": "app/controllers/home_controller.rb",
+          "size_bytes": 266,
+          "sha256": "78925cffd7a6cd4978e5eec5526a27ea12bb1e5964bec63ce05df1b4aab8e114"
+        },
+        {
+          "path": "app/controllers/inbox_items_controller.rb",
+          "size_bytes": 1675,
+          "sha256": "200d1eb69ead6940c0ddade3949aa885abf319d997dca4ce9184d0ee48887106"
+        },
+        {
+          "path": "app/controllers/invites_controller.rb",
+          "size_bytes": 1244,
+          "sha256": "60a54fddb86c17d5d2c6000e0c106f1b43665660bac475ab29b7e7d0732718af"
+        },
+        {
+          "path": "app/controllers/notifications_controller.rb",
+          "size_bytes": 381,
+          "sha256": "b2da8cf079ad3b0263eaf74bf209d1250f2a719ce96367acef54bbb5585e4e9d"
+        },
+        {
+          "path": "app/controllers/sessions_controller.rb",
+          "size_bytes": 2843,
+          "sha256": "6e9c5c385c91eb87db72bb8ac18c28624db0ceab71fe864c3adb56f8e40c1320"
+        },
+        {
+          "path": "app/controllers/settings_controller.rb",
+          "size_bytes": 939,
+          "sha256": "770a8789949c0035849eca9380efb7630ee1191cd0585766af07a9399d29d597"
+        },
+        {
+          "path": "app/controllers/travelers_controller.rb",
+          "size_bytes": 2020,
+          "sha256": "53e1bcddde82e4e08019ced6a4e3c9c59d03ac44232e35a1f4fdaaa1ceb3946a"
+        },
+        {
+          "path": "app/controllers/trip_items_controller.rb",
+          "size_bytes": 6730,
+          "sha256": "7faf180c8d4937b8dcbac7f57a46b68094128fdb301da761603b70fed0b5db25"
+        },
+        {
+          "path": "app/controllers/trip_members_controller.rb",
+          "size_bytes": 2128,
+          "sha256": "d01023666d0f30a2cc0af3cc7ad08dbf990f6fe70c24582347e32b9da507837e"
+        },
+        {
+          "path": "app/controllers/trips_controller.rb",
+          "size_bytes": 4204,
+          "sha256": "26207e45fe90888c9cf198317de7f3d7a6985851f9906dbd65b115f12a31eb0a"
+        },
+        {
+          "path": "app/helpers/application_helper.rb",
+          "size_bytes": 1817,
+          "sha256": "0bf7d8d3003fa4bfe9a0c942232eef2fd5ffd5af13477ccba8b174af3b5532e4"
+        },
+        {
+          "path": "app/helpers/expenses_helper.rb",
+          "size_bytes": 2104,
+          "sha256": "6a5793423e8dad8575140b1692555ad064ccce57ae465a281d54e3bbbb371909"
+        },
+        {
+          "path": "app/helpers/inbox_items_helper.rb",
+          "size_bytes": 1907,
+          "sha256": "8b2f601665ba8f84cd53aa89d44df1e669d31d6d1fb4c07abad6303841ce759b"
+        },
+        {
+          "path": "app/helpers/trip_items_helper.rb",
+          "size_bytes": 2739,
+          "sha256": "16835d97ae3589e0f2e46b64cb374768bada2f9892d859a793fca147715dbaab"
+        },
+        {
+          "path": "app/javascript/application.js",
+          "size_bytes": 1385,
+          "sha256": "ccb4b755184e4a2b32d3105aa7d8cf58851b1be9dd1c0aebf346accff780a868"
+        },
+        {
+          "path": "app/javascript/controllers/application.js",
+          "size_bytes": 218,
+          "sha256": "b5836315bab7b8d055ac3346bf57f933fa8aa8b37e9ea7b704cb2ae2bff129b8"
+        },
+        {
+          "path": "app/javascript/controllers/bottom_sheet_controller.js",
+          "size_bytes": 615,
+          "sha256": "d0a092a9e0c03101d60d1626b5f8232836046353d660cf450e9ac33d0471dd68"
+        },
+        {
+          "path": "app/javascript/controllers/category_picker_controller.js",
+          "size_bytes": 327,
+          "sha256": "73309c934f47cb257d7d0fba1ff5cc04dded13af6c807b30441dece96cda619f"
+        },
+        {
+          "path": "app/javascript/controllers/clipboard_controller.js",
+          "size_bytes": 463,
+          "sha256": "3ebdf59c29f23db2b8eb7c3f69785c9e732869b45eac0d36bd67280ce84bf452"
+        },
+        {
+          "path": "app/javascript/controllers/date_range_controller.js",
+          "size_bytes": 347,
+          "sha256": "9f4a1c453a3a3ad8fc9b737f3f7aae185235648bd7b4e36c77bae50d1646b8a4"
+        },
+        {
+          "path": "app/javascript/controllers/details_close_controller.js",
+          "size_bytes": 611,
+          "sha256": "a53bd2aead3eb3f72724dd9ac50ad74a426f2702acd1121c7b623cebf56e57bf"
+        },
+        {
+          "path": "app/javascript/controllers/flash_controller.js",
+          "size_bytes": 383,
+          "sha256": "7b68660ca64b8e651b1fd95122b28c165ae80c3daab23eba8220af0abe09769c"
+        },
+        {
+          "path": "app/javascript/controllers/index.js",
+          "size_bytes": 272,
+          "sha256": "a2d8f59d301f2f6ac02171ef63c930e00ea0f0bcf3b6cd8bf0c14a0733414058"
+        },
+        {
+          "path": "app/javascript/controllers/json_file_controller.js",
+          "size_bytes": 501,
+          "sha256": "0b0dc8794144dcbc074f1e19e58cbceaea0928e1227f3403368da6ee5ca53770"
+        },
+        {
+          "path": "app/javascript/controllers/kind_picker_controller.js",
+          "size_bytes": 2582,
+          "sha256": "91608ecadde85fefdf4bad6754ce09da03c0f6420def51724ae12e1f0289d73f"
+        },
+        {
+          "path": "app/javascript/controllers/location_picker_controller.js",
+          "size_bytes": 2213,
+          "sha256": "34eeab16ee6b10d58254ba2cba563586566cee2fa50b4e2beaad45ecf953a68c"
+        },
+        {
+          "path": "app/javascript/controllers/map_controller.js",
+          "size_bytes": 17481,
+          "sha256": "1315d3b5d5b12c4a54e7d17dea2918cdb78139856271c0e4ba2d9159f11d5dfe"
+        },
+        {
+          "path": "app/javascript/controllers/pull_to_refresh_controller.js",
+          "size_bytes": 4681,
+          "sha256": "3ce35ddb42d56bc40358de5b50d4dbbb476cdfa230e0044f2be958c559cfd45c"
+        },
+        {
+          "path": "app/javascript/controllers/receipt_controller.js",
+          "size_bytes": 752,
+          "sha256": "d856cb17fde9ff22550474bc4bc05770dfeb2426e8fd80943e3107acb4bc37db"
+        },
+        {
+          "path": "app/javascript/controllers/tabs_controller.js",
+          "size_bytes": 770,
+          "sha256": "75eac9fafa7acc75da84e03eecd6b0f52cc0903f38acfd17738d3f49a5fedd49"
+        },
+        {
+          "path": "app/javascript/controllers/timeline_controller.js",
+          "size_bytes": 2917,
+          "sha256": "fa25feab2fdb7e881655dfa80a7726e1b73c01ef7fff14b977da9dc42bc2f0e7"
+        },
+        {
+          "path": "app/javascript/controllers/trip_delete_controller.js",
+          "size_bytes": 448,
+          "sha256": "6d74ee69373d7cf99acf3dd48c2c606feb52f3f7ef85056967728a033fe6203d"
+        },
+        {
+          "path": "app/javascript/controllers/trip_nav_controller.js",
+          "size_bytes": 2195,
+          "sha256": "b288792e9762f6b5e32236a4a5a6c1a7b65cc6120e9e5346ff81d61a3c43f5ed"
+        },
+        {
+          "path": "app/jobs/application_job.rb",
+          "size_bytes": 269,
+          "sha256": "d51e125007521b0f59765422cf3cf949b59b2054cdac6567a95b4a7aeaf1d722"
+        },
+        {
+          "path": "app/jobs/fetch_trip_cover_image_job.rb",
+          "size_bytes": 1289,
+          "sha256": "55532d113263cd85d3343d156cbb3c7ff2e2758e94c473014b0043b99cb48b32"
+        },
+        {
+          "path": "app/jobs/geocode_trip_items_job.rb",
+          "size_bytes": 725,
+          "sha256": "2fdc8bee6e38ba1e692c58a1863f1002b5d4ed3a8872238e0c20a06092220e37"
+        },
+        {
+          "path": "app/jobs/parse_inbox_item_job.rb",
+          "size_bytes": 5739,
+          "sha256": "3152a659231306271df4d22fa0ed0f9f8394dac873f22f9898b7d4563a49a72a"
+        },
+        {
+          "path": "app/jobs/parse_receipt_job.rb",
+          "size_bytes": 2107,
+          "sha256": "62f4677ccd88f1f65e58f4d45d69222ef251c9692403de6b25de98ded2ab64a7"
+        },
+        {
+          "path": "app/mailboxes/application_mailbox.rb",
+          "size_bytes": 73,
+          "sha256": "74784b257ff3932f22f50f473e1aa9c2b6ad32713c104e737b767a34f5a39236"
+        },
+        {
+          "path": "app/mailboxes/trip_mailbox.rb",
+          "size_bytes": 1896,
+          "sha256": "8b9460bff2e6ef19202f2d7f13d9a8227177838196201884d8bfe25fca262524"
+        },
+        {
+          "path": "app/mailers/application_mailer.rb",
+          "size_bytes": 222,
+          "sha256": "6eaa5fd517020773ecbe3807d72d9d3713fd79a0bd950fce5182a6d755c5f22b"
+        },
+        {
+          "path": "app/mailers/invitation_mailer.rb",
+          "size_bytes": 423,
+          "sha256": "de0cb1273ba894f3232492f3e6488e6fcf97f84afa2114ad15af992e30316114"
+        },
+        {
+          "path": "app/mailers/trip_mailer.rb",
+          "size_bytes": 306,
+          "sha256": "7d93fe4621446615612dc6c83e600deb6b6fb7dbe634a70d8863417880ba37ee"
+        },
+        {
+          "path": "app/models/account.rb",
+          "size_bytes": 331,
+          "sha256": "537d602120c519f75e9ff782289372f1e20be9d1845f1e9c5b191af4f8c44ddd"
+        },
+        {
+          "path": "app/models/application_record.rb",
+          "size_bytes": 134,
+          "sha256": "e8b0283b97883bdf70357e57dda76621cfc689e537c234f6096657253c9c9c27"
+        },
+        {
+          "path": "app/models/approved_sender.rb",
+          "size_bytes": 220,
+          "sha256": "bc6ec3bd09ffa438c581b0125df623c6525f9adb1bd2b5d4577e6d6f7cc0e4e5"
+        },
+        {
+          "path": "app/models/concerns/.keep",
+          "size_bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "app/models/concerns/geocodable.rb",
+          "size_bytes": 2278,
+          "sha256": "17b72211e2e46ca28c31497539071109820f677e3e1afdeb9f02dab51689ed59"
+        },
+        {
+          "path": "app/models/expense.rb",
+          "size_bytes": 903,
+          "sha256": "73459d71941856fe16332bac6d8e437903e0feb3f78e017941d805ddf0fe75b5"
+        },
+        {
+          "path": "app/models/inbox_item.rb",
+          "size_bytes": 8716,
+          "sha256": "c1797b7d06f15d561cf3e651bcd1c6a22d33966a1d3e103e2bbca624a3e5dc4e"
+        },
+        {
+          "path": "app/models/invite.rb",
+          "size_bytes": 658,
+          "sha256": "29675223581d2db4690cc539564b28d1a4ab624b613c35f0c91cc63d365d4ac4"
+        },
+        {
+          "path": "app/models/media_item.rb",
+          "size_bytes": 171,
+          "sha256": "768913d8f1d22f87322b7cb69dc94eab40b47c94cd7edbaa70a82cdb3a93e755"
+        },
+        {
+          "path": "app/models/traveler.rb",
+          "size_bytes": 997,
+          "sha256": "bf3b91909f0da3be0eab845e35326d317c009d248a71907723a2acd9648595a3"
+        },
+        {
+          "path": "app/models/trip.rb",
+          "size_bytes": 1111,
+          "sha256": "210e823b4a870c7a0b27e428b00fb889847e6ef7911781eecd4cf2889ea70032"
+        },
+        {
+          "path": "app/models/trip_item.rb",
+          "size_bytes": 1595,
+          "sha256": "b055bf81171b5200d72125066754352af11be4fc2048a25d8152c5e2711790e5"
+        },
+        {
+          "path": "app/models/trip_member.rb",
+          "size_bytes": 217,
+          "sha256": "9454ea173c6899ebe7437483da91f3e1f4b639d4ccdbe84e8cb29b672d1af66d"
+        },
+        {
+          "path": "app/models/user.rb",
+          "size_bytes": 1201,
+          "sha256": "10fc8546ec4b382101227f0b1791aa423c8aabed3caf4c88f54da1b55db0278a"
+        },
+        {
+          "path": "app/models/user_identity.rb",
+          "size_bytes": 169,
+          "sha256": "10b73fb6deb606f5145dad97fef7cd4f5054bbf28371328138946215f736df5c"
+        },
+        {
+          "path": "app/views/admin/dashboard/index.html.erb",
+          "size_bytes": 3889,
+          "sha256": "8e207c1a22c432c23fb04747b8331d94c944f42e9ebae84f73392a4e8ee29cee"
+        },
+        {
+          "path": "app/views/admin/invites/index.html.erb",
+          "size_bytes": 3834,
+          "sha256": "19c25aa391b1db1ce2dd71c1325923e01b60251bc2d71ede29116d40b3b6e571"
+        },
+        {
+          "path": "app/views/expenses/_category_picker.html.erb",
+          "size_bytes": 4274,
+          "sha256": "c9fb985a491b2232b1f9e8e2494941835fc657e620e6b0cbca13540ba11c0cda"
+        },
+        {
+          "path": "app/views/expenses/_expense_nav.html.erb",
+          "size_bytes": 2268,
+          "sha256": "7a151e7d5578091fa9fd7e2c181c8a379ada32d36d2ca5ba384d7602db83a36c"
+        },
+        {
+          "path": "app/views/expenses/_expense_row.html.erb",
+          "size_bytes": 2429,
+          "sha256": "e1c6c41ecdef102bf95aa4466ffd12b4c00bc90e6849f292acb211d51d5bb9e5"
+        },
+        {
+          "path": "app/views/expenses/_form.html.erb",
+          "size_bytes": 7769,
+          "sha256": "7ede9e9204e2d347c00d6d636484d446932d23104594033be688976b90d50662"
+        },
+        {
+          "path": "app/views/expenses/edit.html.erb",
+          "size_bytes": 59,
+          "sha256": "6d62978396b3011e460e151e402390e6edf1ed12ca6fd2048335df4198ff8872"
+        },
+        {
+          "path": "app/views/expenses/index.html.erb",
+          "size_bytes": 1276,
+          "sha256": "2c6e42f1eeada77b229c0eb2c21d9c8439508e785559d594ed0f9c622de688fc"
+        },
+        {
+          "path": "app/views/expenses/new.html.erb",
+          "size_bytes": 59,
+          "sha256": "6d62978396b3011e460e151e402390e6edf1ed12ca6fd2048335df4198ff8872"
+        },
+        {
+          "path": "app/views/expenses/show.html.erb",
+          "size_bytes": 14856,
+          "sha256": "02b105c7e6420909d9eca26fe4ee79a4884d6b6e899e6e8b758faddce1397c4e"
+        },
+        {
+          "path": "app/views/home/app.html.erb",
+          "size_bytes": 7819,
+          "sha256": "e6b830a6218ffb8b13701cc8445aa594e231f53b314eb73d89464574fc1df35a"
+        },
+        {
+          "path": "app/views/home/privacy.html.erb",
+          "size_bytes": 2942,
+          "sha256": "d53fbdfc95826f89c9f54ea3bbc2d557410caf5e43ae5f7870c455ef60a08448"
+        },
+        {
+          "path": "app/views/home/terms.html.erb",
+          "size_bytes": 3070,
+          "sha256": "e30cb6cc23bf8dfb560013eb36465d4b0cab78abf7ab3a8afa4a1e31792991df"
+        },
+        {
+          "path": "app/views/inbox_items/index.html.erb",
+          "size_bytes": 5859,
+          "sha256": "c50302b87298a101eee89cb51730b91bbfc6bf09e61ea690718583279b4ed262"
+        },
+        {
+          "path": "app/views/inbox_items/show.html.erb",
+          "size_bytes": 9258,
+          "sha256": "b859242cd42ce8b54cd5386b0fa4249b656a87f4d7cfb8eaab25aa4dc91c8fd2"
+        },
+        {
+          "path": "app/views/invitation_mailer/invite.text.erb",
+          "size_bytes": 298,
+          "sha256": "f4a0c39a62add62f9febe972e0cf04f5556576ef4050af58b58ac39a173632d7"
+        },
+        {
+          "path": "app/views/invitation_mailer/invite_to_trip.text.erb",
+          "size_bytes": 181,
+          "sha256": "880831b9b8af8600b578447ac5b16bdd305fb08e90b2ad0c831d67cef8899fd2"
+        },
+        {
+          "path": "app/views/invites/accept.html.erb",
+          "size_bytes": 1976,
+          "sha256": "4a1041cf4462c02eeec5ede71b0a21c580980272e40d99b2d6b63772dcd3f850"
+        },
+        {
+          "path": "app/views/invites/index.html.erb",
+          "size_bytes": 4139,
+          "sha256": "8f95bfcb92f1db14c8fada020e146cf8f295b3564134f10af05d85666bd49ab0"
+        },
+        {
+          "path": "app/views/invites/waitlist.html.erb",
+          "size_bytes": 1076,
+          "sha256": "3d5227cfd5d02f8f94fbc4f8b74f2a53d447cc419ec07932425ad32fa08f300c"
+        },
+        {
+          "path": "app/views/layouts/_navbar.html.erb",
+          "size_bytes": 7494,
+          "sha256": "50699ce2b810b3b8970804af76544026d1e900bff0de4b8980e5552889069ae9"
+        },
+        {
+          "path": "app/views/layouts/admin.html.erb",
+          "size_bytes": 1869,
+          "sha256": "9ef21bd647d319f3a8d5774121104021f00623cdb5824d870cd87acadd7503b8"
+        },
+        {
+          "path": "app/views/layouts/application.html.erb",
+          "size_bytes": 3302,
+          "sha256": "65c6bc604fbcc6228d5aca2de8ef6fd0dda08474a5fc303c1ae18cd9d9c217ff"
+        },
+        {
+          "path": "app/views/layouts/landing.html.erb",
+          "size_bytes": 2482,
+          "sha256": "594ce9ab89189223e61cb37c67b2aecddcada9502b05dbf9ce8001213b49021a"
+        },
+        {
+          "path": "app/views/layouts/mailer.html.erb",
+          "size_bytes": 227,
+          "sha256": "3be3ece9c575096f91f8ecc6a4efb0c7ffd509d2ed4b06c3461bd920201bbd37"
+        },
+        {
+          "path": "app/views/layouts/mailer.text.erb",
+          "size_bytes": 13,
+          "sha256": "51353f9de3a26d4b28f7db91152bf56d31cfa9e4bd3c834680772a63cd374698"
+        },
+        {
+          "path": "app/views/notifications/index.html.erb",
+          "size_bytes": 3925,
+          "sha256": "0ca9f9fdf5b7c41391b5e04f260b9d391b5bccca06786d269683247143d784f6"
+        },
+        {
+          "path": "app/views/pwa/manifest.json.erb",
+          "size_bytes": 638,
+          "sha256": "53e94e45130fa787e861e9fa330a92673c0cb57b8bd74cb09eff0965d2fb0b1e"
+        },
+        {
+          "path": "app/views/pwa/service-worker.js",
+          "size_bytes": 876,
+          "sha256": "54bba97f108ac8d65af816aab152cc1860c9d9809641ba845231131db56d59bf"
+        },
+        {
+          "path": "app/views/settings/show.html.erb",
+          "size_bytes": 13547,
+          "sha256": "557062913ab78c5fd0c1960a828b47d55df6436eca75b08b1e30ab55adb3f57e"
+        },
+        {
+          "path": "app/views/trip_items/_form.html.erb",
+          "size_bytes": 9559,
+          "sha256": "f535ed544a4df58c10cb317d98492b1b0777701c95750e86c47179907feb0f4d"
+        },
+        {
+          "path": "app/views/trip_items/_item_row.html.erb",
+          "size_bytes": 2896,
+          "sha256": "f6951a9682a02ff1d199f89658008d5744552e4739945aa534e2b73f0bb9d9e8"
+        },
+        {
+          "path": "app/views/trip_items/_kind_picker.html.erb",
+          "size_bytes": 4623,
+          "sha256": "aa046efcacd44a45d93fd3a5202a3797af9287c6177dfe1d9428329e5101c6df"
+        },
+        {
+          "path": "app/views/trip_items/edit.html.erb",
+          "size_bytes": 34,
+          "sha256": "35a93ec772eff0944999668a7155da7a286804d4c8c345288b6f2bd2147cd6d8"
+        },
+        {
+          "path": "app/views/trip_items/import.html.erb",
+          "size_bytes": 11735,
+          "sha256": "4e937a8a1d27ef1dd59abc4f24873fca0e367a43acd869b6d4aa657428fb368c"
+        },
+        {
+          "path": "app/views/trip_items/new.html.erb",
+          "size_bytes": 34,
+          "sha256": "35a93ec772eff0944999668a7155da7a286804d4c8c345288b6f2bd2147cd6d8"
+        },
+        {
+          "path": "app/views/trip_items/show.html.erb",
+          "size_bytes": 17048,
+          "sha256": "36280d328a8698e906844aca199c67b64147c42e512c24269e634c8722a20bbb"
+        },
+        {
+          "path": "app/views/trip_mailer/pending_sender_notification.text.erb",
+          "size_bytes": 472,
+          "sha256": "e451312cbd3274d060feced70bfecedf660152de106b0333b5238ac6d9ebd445"
+        },
+        {
+          "path": "app/views/trips/_bottom_nav.html.erb",
+          "size_bytes": 2447,
+          "sha256": "7f39025644d289860893d889a0c63d680ca06ae6f70ed16a5e946e649416d9a4"
+        },
+        {
+          "path": "app/views/trips/_form.html.erb",
+          "size_bytes": 1347,
+          "sha256": "359c6135a8b3a452836af3db5437acc0864344cec3356cdc39346c38003e57a8"
+        },
+        {
+          "path": "app/views/trips/_navbar_center.html.erb",
+          "size_bytes": 811,
+          "sha256": "a1a40ca45c648410cbd832e11cd2c429c8b4ebb2623d1b43a0e01dfe89ef8e01"
+        },
+        {
+          "path": "app/views/trips/_tab_bar.html.erb",
+          "size_bytes": 2379,
+          "sha256": "f5169a0bc00348a63346b5329fb1e24e01897243bd50de7a9777c1345e4d4a61"
+        },
+        {
+          "path": "app/views/trips/_timeline.html.erb",
+          "size_bytes": 5885,
+          "sha256": "92bb3cece5997ad0e644b800cd4064b32b85d29cef02f8fc9b40a4d72eebb564"
+        },
+        {
+          "path": "app/views/trips/_timeline_event_content.html.erb",
+          "size_bytes": 2198,
+          "sha256": "72e961c54db20554729339386c27ca0de2cee32d13d9bfd310b711b8ee815a9b"
+        },
+        {
+          "path": "app/views/trips/_trip_panel.html.erb",
+          "size_bytes": 14228,
+          "sha256": "264e558255f9e2cc1e76a4361f5c6ad023a7b82863a38e4afe254211a828957a"
+        },
+        {
+          "path": "app/views/trips/cover.html.erb",
+          "size_bytes": 5632,
+          "sha256": "0c19e60557ec690c4c731cab498d9a9f7d9557588b6b090ccdb6366eccd1ed11"
+        },
+        {
+          "path": "app/views/trips/edit.html.erb",
+          "size_bytes": 5467,
+          "sha256": "533630e3ac9121ea3d357e7e69114f66c4032bef509eeb30b26a769ae4d6fb25"
+        },
+        {
+          "path": "app/views/trips/index.html.erb",
+          "size_bytes": 7305,
+          "sha256": "f176d1c04be7fa96cd41eed61fc31b912bfaf684c4c59bde8c3aca2d401894b6"
+        },
+        {
+          "path": "app/views/trips/new.html.erb",
+          "size_bytes": 3326,
+          "sha256": "11b57ea8aa3f26fcd8aae88a8a6d8ffe11528d2425451bbe54dc743e200b64fe"
+        },
+        {
+          "path": "app/views/trips/show.html.erb",
+          "size_bytes": 12717,
+          "sha256": "c2f70b8e281abfec4ce07f8afebea23a3eb3c8589d143185c91db4b1e6008875"
+        },
+        {
+          "path": "app/views/trips/travelers.html.erb",
+          "size_bytes": 5479,
+          "sha256": "4434e023cc1e4dd6d2cf5b4693cfa67c46eba6e3b9a429950bf0649225a6d15c"
+        },
+        {
+          "path": "bin/brakeman",
+          "size_bytes": 139,
+          "sha256": "7825743df15f32a7a7a36b2098aec1dd56767031af0181d288f8a563c2c225b0"
+        },
+        {
+          "path": "bin/bundler-audit",
+          "size_bytes": 202,
+          "sha256": "484ba9033e36465898620184f12f427b014bf91ac61a423d302447ea99cf378d"
+        },
+        {
+          "path": "bin/ci",
+          "size_bytes": 180,
+          "sha256": "ee240fa535e83197c3b79489f56454ec9e1b24f9b7db15eb26c35fc858e12c02"
+        },
+        {
+          "path": "bin/dev",
+          "size_bytes": 379,
+          "sha256": "7a30cf45206be40b4446525717a7eff0099a3fdf2f7dc0ba4472b6815833e038"
+        },
+        {
+          "path": "bin/docker-entrypoint",
+          "size_bytes": 592,
+          "sha256": "ac43b48ac188a97e479de5a657b5a5568475811beeff530773b2b76c407765d5"
+        },
+        {
+          "path": "bin/importmap",
+          "size_bytes": 91,
+          "sha256": "aaaf65c0637afc4a2cd13b04660761cfaee83d7f6e81446986a3e3aaafb84da5"
+        },
+        {
+          "path": "bin/jobs",
+          "size_bytes": 117,
+          "sha256": "7b51c14b8871a220d4227a09c87634c5f20d574c5ea3cdfaeb32fa62e35fc988"
+        },
+        {
+          "path": "bin/kamal",
+          "size_bytes": 350,
+          "sha256": "796c21a2998af4bb3fbf43e45a5dbcbeafee8c323c4b57a2ab45adfe48a4589e"
+        },
+        {
+          "path": "bin/rails",
+          "size_bytes": 141,
+          "sha256": "0862d7bc09d5ed61785d677ef2dba10ce285387d4d5d9e3d90d97630e3f69ab6"
+        },
+        {
+          "path": "bin/rake",
+          "size_bytes": 90,
+          "sha256": "5943c3811dc345727b5f330b599c4c6c45abc04816dd8f4201aeed88cf268cb3"
+        },
+        {
+          "path": "bin/rubocop",
+          "size_bytes": 266,
+          "sha256": "62c9fd75681308e1d161f75e96b6af1a837a2f56c9fc9ddf641f1cebf0d7f717"
+        },
+        {
+          "path": "bin/setup",
+          "size_bytes": 1069,
+          "sha256": "0f5b139524ceb07af2e32cca242a2817f4df26f0ecf96c64cec402ebcfaa7294"
+        },
+        {
+          "path": "bin/thrust",
+          "size_bytes": 104,
+          "sha256": "ed1176b4df355db4b2a67ee37b45ca5c6d7118255d28a07dcdcb6d0fe4ae5c4f"
+        },
+        {
+          "path": "config/application.rb",
+          "size_bytes": 2374,
+          "sha256": "4d62e5b96c1c751a554f6534af6e572eb2a8dfe371a585ac8496f6008d862f40"
+        },
+        {
+          "path": "config/boot.rb",
+          "size_bytes": 207,
+          "sha256": "bb5a9499136e72c70c557bc3ff4d2661cc9b05dc5b848fb720540e3fe716e4ea"
+        },
+        {
+          "path": "config/bundler-audit.yml",
+          "size_bytes": 226,
+          "sha256": "cf66f718f2c84c0ab6ae50fcb0b1323751c11522de80d0c66e25e4b5680cde55"
+        },
+        {
+          "path": "config/cable.yml",
+          "size_bytes": 549,
+          "sha256": "8e30a9d3e58b613f963d1ed5fb231474f88e7d290dcde6ceb9db83b83a3a8d0a"
+        },
+        {
+          "path": "config/cache.yml",
+          "size_bytes": 300,
+          "sha256": "1eeacb19bab1653c4d0817e093f0ae22fd1667853ee2e580704f41f13f21331d"
+        },
+        {
+          "path": "config/ci.rb",
+          "size_bytes": 694,
+          "sha256": "ee24e9c93939e6bb316b49667a1be93157d305af4e88b82841af5c886fc04ada"
+        },
+        {
+          "path": "config/database.yml",
+          "size_bytes": 1134,
+          "sha256": "81440fc26b79e802f1b2b67c5643fdea37ca41914628896bcd9bc4fac150a491"
+        },
+        {
+          "path": "config/deploy.yml",
+          "size_bytes": 1069,
+          "sha256": "525e798e27cefbb012f19ed58f018a1dc72845bd53a633ec6e36c28a1bda52b3"
+        },
+        {
+          "path": "config/environment.rb",
+          "size_bytes": 128,
+          "sha256": "73b2e731e02cedb9dc0335e1a35c3a2b7738032e3aa7e62ac32cbb8432b43c69"
+        },
+        {
+          "path": "config/environments/development.rb",
+          "size_bytes": 3906,
+          "sha256": "1d85db890abee968201a2a53516196a698496645d516e6260c83168334981d13"
+        },
+        {
+          "path": "config/environments/production.rb",
+          "size_bytes": 3597,
+          "sha256": "40154f598049302fa192abe7e5bcc6ceb1b486ca7128b56ceb3351aeb6139f25"
+        },
+        {
+          "path": "config/environments/test.rb",
+          "size_bytes": 2319,
+          "sha256": "b3208a3cb7383c4383dfa44d815fd0f942d03ca64ca2ca06a104aad9773403e2"
+        },
+        {
+          "path": "config/importmap.rb",
+          "size_bytes": 285,
+          "sha256": "148fdf21d156d2d1274627caa734d3e2d05ce23ae60e6a371fae054933ca30be"
+        },
+        {
+          "path": "config/initializers/action_mailbox.rb",
+          "size_bytes": 182,
+          "sha256": "af35dd2909c5d930948b58ce8b0c70fad08900fb5855fecbb4c21b1ea67cf6c8"
+        },
+        {
+          "path": "config/initializers/assets.rb",
+          "size_bytes": 296,
+          "sha256": "f55d4ce66ec2b48256ff492c99c7105b7cc1726c78789dffdbee2611e193c1a6"
+        },
+        {
+          "path": "config/initializers/content_security_policy.rb",
+          "size_bytes": 1332,
+          "sha256": "ce826e17b3fb793bff050c64f2d515da14b0a63b77f0144368646597075fbdd5"
+        },
+        {
+          "path": "config/initializers/filter_parameter_logging.rb",
+          "size_bytes": 468,
+          "sha256": "f864bd67e7bdaa63a5331b9fc15446613c410c3a314cd70d1b6a7c8b566b6120"
+        },
+        {
+          "path": "config/initializers/geocoder.rb",
+          "size_bytes": 226,
+          "sha256": "593b940bba375d0a705e67843a650bfb52e6c73ff275af322c3f3a349a1b25a2"
+        },
+        {
+          "path": "config/initializers/inflections.rb",
+          "size_bytes": 649,
+          "sha256": "e2c18b803625a073b25e4ee4460677da33a8bf19bbbcad629718a8e15c58acc2"
+        },
+        {
+          "path": "config/initializers/mail_logger.rb",
+          "size_bytes": 594,
+          "sha256": "1dfaf6c3be2211bdf7dff1fc5f821d5973294ddebab407e0debd1aa5ee3f8ba8"
+        },
+        {
+          "path": "config/initializers/omniauth.rb",
+          "size_bytes": 505,
+          "sha256": "575c84ccbd9457675a167d7cf168b639603ea9c1378e3fd616323f41aa74a4bf"
+        },
+        {
+          "path": "config/initializers/pagy.rb",
+          "size_bytes": 68,
+          "sha256": "6004e12bb1f8856dc8e508319cec022ed92db2acc9050f08c40d17ddf99891f9"
+        },
+        {
+          "path": "config/initializers/session_store.rb",
+          "size_bytes": 398,
+          "sha256": "7206a903a53f8ed325bbf586258a2af1d1cbe79681b95e4776ebf79e81ab1be3"
+        },
+        {
+          "path": "config/initializers/uuid_primary_keys.rb",
+          "size_bytes": 655,
+          "sha256": "02a9592ea5cd929162ae8608254375917d0a4aa02e59545d7ee874d4079fafaf"
+        },
+        {
+          "path": "config/locales/en.yml",
+          "size_bytes": 908,
+          "sha256": "ad72af216ad0a67a1155c685535698fdd2a7138810c7e6dcb5eab7f0cc1c5922"
+        },
+        {
+          "path": "config/puma.rb",
+          "size_bytes": 2052,
+          "sha256": "be1d845c72a6c48ee64662549d55a74d3c0142cb6c6e5574a8eb1ff122f71f20"
+        },
+        {
+          "path": "config/queue.yml",
+          "size_bytes": 290,
+          "sha256": "4343b6cebcfc464f6f84b993b0c60d2b229cc5d97cde4fd845aebb15871f4bac"
+        },
+        {
+          "path": "config/recurring.yml",
+          "size_bytes": 474,
+          "sha256": "1b308d44c793b26502423ab52361e20713c1294a47743d65f339059311e6dbe8"
+        },
+        {
+          "path": "config/routes.rb",
+          "size_bytes": 2263,
+          "sha256": "2c1a59168800669196ce5c9a80f9489b6a396d1af30548c7ef568e7e2e562031"
+        },
+        {
+          "path": "config/storage.yml",
+          "size_bytes": 811,
+          "sha256": "bb472986ec9dd77d0e30e840d8f2b21b9c435aa65e3096aa813e4bc2df658edb"
+        },
+        {
+          "path": "config.ru",
+          "size_bytes": 160,
+          "sha256": "1a5090e57cf9301e8bda3fec3abe4c72fbc001f6cd4909fd80b6cd488ab531b9"
+        },
+        {
+          "path": "db/cable_migrate/20260101000001_create_solid_cable_tables.rb",
+          "size_bytes": 459,
+          "sha256": "8d39424aa9310b25147cfa02b548b81ab0355e1b9c126dad221da3626a24a33b"
+        },
+        {
+          "path": "db/cable_schema.rb",
+          "size_bytes": 545,
+          "sha256": "9e22b36e3cc6413e52eefcfd1136259853426ff32e5c31d98690dafeb6fa6ee6"
+        },
+        {
+          "path": "db/cable_structure.sql",
+          "size_bytes": 823,
+          "sha256": "165e15f979c384a2cabff2afd47e592a1ce54aadf8495759679dfd089e2c909e"
+        },
+        {
+          "path": "db/cache_migrate/20260101000001_create_solid_cache_tables.rb",
+          "size_bytes": 535,
+          "sha256": "c244a8672874c2f0114ed256c7a7b800af2c8e1a5b688187cce42a34d3ab6e3e"
+        },
+        {
+          "path": "db/cache_schema.rb",
+          "size_bytes": 613,
+          "sha256": "31d6012503419a1be4aa87c4d18b2a9a85d84b6c23851428362d9a5e7b0eb26c"
+        },
+        {
+          "path": "db/cache_structure.sql",
+          "size_bytes": 865,
+          "sha256": "89a0a0d02b64d9baafb7b397607b1124d21fce66ce202bf089da8c620d9ad8f6"
+        },
+        {
+          "path": "db/migrate/20260328111901_create_active_storage_tables.active_storage.rb",
+          "size_bytes": 2197,
+          "sha256": "3bf51e52925efe90408d3159f9de848d2f891dfda149e5706280b8c027e82ddf"
+        },
+        {
+          "path": "db/migrate/20260328111902_create_action_mailbox_tables.action_mailbox.rb",
+          "size_bytes": 677,
+          "sha256": "9e35aa49723dfe0288cd51b4466fe589c78491f3ea9a3f57b6523ff45670ddfa"
+        },
+        {
+          "path": "db/migrate/20260328111914_create_users.rb",
+          "size_bytes": 281,
+          "sha256": "a02538793dd925b30828f30b7e5c8057d82bfbd753570f13b924289953af0f3e"
+        },
+        {
+          "path": "db/migrate/20260328111917_create_user_identities.rb",
+          "size_bytes": 446,
+          "sha256": "bebfb9772eae6e3273daa66b5353fc4a302ef04247240b9fb6055988aaa14230"
+        },
+        {
+          "path": "db/migrate/20260328111920_create_trips.rb",
+          "size_bytes": 656,
+          "sha256": "c5c90bcb54ba3977d4a68a0fb4cc07f9ebce57a3cbad27c47d8d3f9558f4fe16"
+        },
+        {
+          "path": "db/migrate/20260328111958_create_trip_members.rb",
+          "size_bytes": 522,
+          "sha256": "d5b51c72216f5cc3b257b17adbacd15998f79258b2d2c886635b14fd7c35aef5"
+        },
+        {
+          "path": "db/migrate/20260328112001_create_travel_legs.rb",
+          "size_bytes": 721,
+          "sha256": "102c7c883a74da09616edc62d6a20d74767e3aae7f31f3f4ab393cb2b9eff9a9"
+        },
+        {
+          "path": "db/migrate/20260328112004_create_accommodations.rb",
+          "size_bytes": 794,
+          "sha256": "8b5fc5084d214b43312a0aded43d6c93de7ca1ca4a79e1361c9095fa6508634e"
+        },
+        {
+          "path": "db/migrate/20260328112007_create_bookings.rb",
+          "size_bytes": 650,
+          "sha256": "2d9675e819bed1f4445b3090d9579d70543bb705a19e3ed7d990429e428d636b"
+        },
+        {
+          "path": "db/migrate/20260328112010_create_shortlist_items.rb",
+          "size_bytes": 832,
+          "sha256": "c8310982f7e48941b1f616be448a43ec7ee6ac390951fbb3ddac4f217e332784"
+        },
+        {
+          "path": "db/migrate/20260328112013_create_media_items.rb",
+          "size_bytes": 695,
+          "sha256": "609753d50d493bc7f227987f16742fb3cf09918bc3a0bb4b73e9e98679868604"
+        },
+        {
+          "path": "db/migrate/20260328112016_create_expenses.rb",
+          "size_bytes": 799,
+          "sha256": "7cc21154942a10cb7234797ca890e74a3556b1a78ff972bbaa3434c898a53690"
+        },
+        {
+          "path": "db/migrate/20260328112019_create_approved_senders.rb",
+          "size_bytes": 502,
+          "sha256": "2f2066ca0e9d1223a1de51fc879896665160e363cdb48e6d6777998cb211ab38"
+        },
+        {
+          "path": "db/migrate/20260328112022_create_inbox_items.rb",
+          "size_bytes": 818,
+          "sha256": "29c3781a62a13e525fce0365c0738028fdcbc8802741f0926efadb8fc23e7663"
+        },
+        {
+          "path": "db/migrate/20260329092750_add_confirmed_to_expenses.rb",
+          "size_bytes": 236,
+          "sha256": "b7fbc2ecca6e4985e7338decad1b3fe76324cb4bd175b5b0dfa721f533970a9a"
+        },
+        {
+          "path": "db/migrate/20260329093311_add_raw_html_to_inbox_items.rb",
+          "size_bytes": 129,
+          "sha256": "6a08ca788b277009dd92283f552ea7cfe4745d9cc8ec07ea2cf460da2fba3136"
+        },
+        {
+          "path": "db/migrate/20260329130118_add_lat_lng_to_travel_legs_and_bookings.rb",
+          "size_bytes": 431,
+          "sha256": "ae1e782c1044decd39f8afe5c6a9bd58c693de35a233e88d980d8e5bae4eb9c2"
+        },
+        {
+          "path": "db/migrate/20260329133748_update_trips_remove_status_budget_add_cover_image.rb",
+          "size_bytes": 357,
+          "sha256": "7ab663c7b7e3e3c754707ee10bf1a3b90419b9d5b9071a97c09de31101b43bcf"
+        },
+        {
+          "path": "db/migrate/20260330083951_add_accommodation_to_shortlist_items.rb",
+          "size_bytes": 188,
+          "sha256": "7f910fecf950528301c7fb31fdd81748f55e15284845c86d1370022a9084a10d"
+        },
+        {
+          "path": "db/migrate/20260330191640_create_fellow_travelers.rb",
+          "size_bytes": 418,
+          "sha256": "628608d57d5dbc72f8ff391677d3191c02e89a371fe3311f32f3e7378c8aa844"
+        },
+        {
+          "path": "db/migrate/20260330201931_add_invited_email_to_fellow_travelers.rb",
+          "size_bytes": 350,
+          "sha256": "bac6d5e6b954e8cf7675f63daa521de228b4bd182a53f52f8e50f0f65830cbc6"
+        },
+        {
+          "path": "db/migrate/20260330213217_create_accounts.rb",
+          "size_bytes": 334,
+          "sha256": "c724ee58b1b1431e81c08ec59ac467336988dc38954487614990f18c80c9c35d"
+        },
+        {
+          "path": "db/migrate/20260330213222_create_travelers.rb",
+          "size_bytes": 504,
+          "sha256": "b7605dd7dcf147cff29edc3ea4a74062468d867321d23b67b4e36c41ec078bd8"
+        },
+        {
+          "path": "db/migrate/20260330213229_add_account_id_to_trips.rb",
+          "size_bytes": 160,
+          "sha256": "2f4839ac322d74f6e2ad31c26b34e473789db67584fc973a09aaa56714877616"
+        },
+        {
+          "path": "db/migrate/20260330213233_add_traveler_id_to_trip_members.rb",
+          "size_bytes": 331,
+          "sha256": "f3ce97da9c742d1db26014cd5044653a95b992b63b47c35ace978b890ee5958b"
+        },
+        {
+          "path": "db/migrate/20260330213238_add_paid_by_traveler_id_to_expenses.rb",
+          "size_bytes": 201,
+          "sha256": "81e3944953a390b441c68a17350c36b57ffdbfedd77a0e052caf444ef4245371"
+        },
+        {
+          "path": "db/migrate/20260330213245_populate_accounts_and_travelers.rb",
+          "size_bytes": 89,
+          "sha256": "15ba98ff1cd6d843a24ff674ca26de3f588e091af35f18baed7373340b9c5321"
+        },
+        {
+          "path": "db/migrate/20260330213249_finalize_account_refactor.rb",
+          "size_bytes": 803,
+          "sha256": "0b30f6a684d7db19294635b6ddb9a8a3376745dc34c3a9a81933b0675fbb3529"
+        },
+        {
+          "path": "db/migrate/20260331070009_create_invites.rb",
+          "size_bytes": 625,
+          "sha256": "006e92503dd2b65c8faa593e99e215c58ad877637800a005c3c8b66dd21e1eb3"
+        },
+        {
+          "path": "db/migrate/20260405000001_create_trip_items.rb",
+          "size_bytes": 1117,
+          "sha256": "94602a393ac2236d51b6aeafd52aca7dff8ed5a3a9a0e79ca1b0dfeb5c0397ad"
+        },
+        {
+          "path": "db/migrate/20260407000001_add_theme_to_users.rb",
+          "size_bytes": 149,
+          "sha256": "21302f8f52073b43f9db2890371996f2fbe764f32c9d480ab2e7c6bec44f3e3a"
+        },
+        {
+          "path": "db/migrate/20260408154406_add_inbox_item_to_expenses.rb",
+          "size_bytes": 168,
+          "sha256": "509de746562cf413a51bd703ff61495b05a8f9ab9caff9f826ad49799528e305"
+        },
+        {
+          "path": "db/migrate/20260408155636_remove_legacy_travel_models.rb",
+          "size_bytes": 651,
+          "sha256": "f2041ba17691483f522ad3d6aaf6e73ac58d5c66d18536969e33eddf1b862595"
+        },
+        {
+          "path": "db/migrate/20260409000001_align_expense_categories_to_trip_item_kinds.rb",
+          "size_bytes": 846,
+          "sha256": "52b9c833ade46e06a9a77e5db4fcc0a72aa684cf235dc58527c31ce040c98154"
+        },
+        {
+          "path": "db/migrate/20260409000002_rename_kinds_to_user_terms.rb",
+          "size_bytes": 1031,
+          "sha256": "a8378ccee8fc0f06f6942ccd7cc11bef78d58d0f1d2b98a705d02e1fc22293fa"
+        },
+        {
+          "path": "db/migrate/20260411144752_drop_fellow_travelers.rb",
+          "size_bytes": 562,
+          "sha256": "1ffcc9b6f2f1a4a5b16f7edeb36a39928337afb5720c0738ee3f0c517c1a7ee7"
+        },
+        {
+          "path": "db/migrate/20260415044043_add_admin_to_users.rb",
+          "size_bytes": 226,
+          "sha256": "eead0fac625e427b054e90f68bb747576817b2f74122df1c41e23303ae30a08d"
+        },
+        {
+          "path": "db/migrate/20260509175443_add_url_to_trip_items.rb",
+          "size_bytes": 120,
+          "sha256": "7e3085b89a9deb90488c930af98a28615534e7c47f8f2c02c00de0105dc935c7"
+        },
+        {
+          "path": "db/queue_migrate/20260101000001_create_solid_queue_tables.rb",
+          "size_bytes": 4876,
+          "sha256": "753b5e88a5ee24ff9c7cdd23d6f28b7f00281353034a4cabf6eb8a10bbd8cdfe"
+        },
+        {
+          "path": "db/queue_schema.rb",
+          "size_bytes": 6278,
+          "sha256": "36b61820b43412c196933dc6182b164b6cfd86f7d13c918debc9e6cc2e1cfc29"
+        },
+        {
+          "path": "db/queue_structure.sql",
+          "size_bytes": 6903,
+          "sha256": "5f09287bfd4715af2a59e32a54245d4d6da5929e71a736e96298520d2a0e0fec"
+        },
+        {
+          "path": "db/seeds.rb",
+          "size_bytes": 14410,
+          "sha256": "cfc6815c551de8ec0ab445f3eeab6d30db661deef9f09588a02033f262066c0f"
+        },
+        {
+          "path": "db/structure.sql",
+          "size_bytes": 13208,
+          "sha256": "cffe9d648fea223354716f4e39efc0cab54b6c67cd8628352dfd6c44f6dcad04"
+        },
+        {
+          "path": "docker-compose.yml",
+          "size_bytes": 220,
+          "sha256": "c503e03f76ee25bde44bf7210e03a80f57caa8aeb4e790d83bb96dc899b50c02"
+        },
+        {
+          "path": "docs/CNAME",
+          "size_bytes": 14,
+          "sha256": "1bd86ccc21504a92c4e46768cdc6534b4cfd7abbaafc483a316bb8fb0ada7145"
+        },
+        {
+          "path": "docs/SETUP.md",
+          "size_bytes": 10634,
+          "sha256": "b66edbdc9918ec013f97aa6438c5e52172e58d260f32ff303b16f3f9486e6708"
+        },
+        {
+          "path": "docs/apple-touch-icon.png",
+          "size_bytes": 17212,
+          "sha256": "97da3f29d249a2dbf7567440d2b8a3027816591a141428e3630d40d6ec0c4e1d"
+        },
+        {
+          "path": "docs/favicon-96x96.png",
+          "size_bytes": 8403,
+          "sha256": "7ef070fc645ccfe105ee94b2aa5022a831cffb0e7f93370b25433b1ee9d16689"
+        },
+        {
+          "path": "docs/favicon.ico",
+          "size_bytes": 2531,
+          "sha256": "0011ce92bdf09ccb4f2a2acc335fed580cea30df8eab358f55fddba280a41608"
+        },
+        {
+          "path": "docs/favicon.svg",
+          "size_bytes": 4255,
+          "sha256": "51e72276ffbdb22c92ebe73b1890ef205dd2a797447a092b68508628090a9ea2"
+        },
+        {
+          "path": "docs/icon-512.png",
+          "size_bytes": 39515,
+          "sha256": "fe10a14b452956ff617c82ca7f8a0bad16fc3c7989ea50fbf67df9a0c716da01"
+        },
+        {
+          "path": "docs/index.html",
+          "size_bytes": 71715,
+          "sha256": "1dd62e43b8d3c4f6a176cfbe75e26e4eadef8ef339fa2f682b6b056634078848"
+        },
+        {
+          "path": "docs/logo-mark.svg",
+          "size_bytes": 4269,
+          "sha256": "208d3ae86bb0edda2a12e280e90dc82084001fd215e4db1f076a0801076c12e5"
+        },
+        {
+          "path": "docs/screenshots/gruvbox/Desktop.png",
+          "size_bytes": 1145578,
+          "sha256": "2c4d3092fe5560e3a1c050a3373ecd01718764cdb79d58b8ca96f34217b979e2"
+        },
+        {
+          "path": "docs/screenshots/gruvbox/ExpenseDetail.png",
+          "size_bytes": 231178,
+          "sha256": "78ba872bd79d365cb588395ca1aacd8e3a3a471cb07a351e6f80a412d63eccdd"
+        },
+        {
+          "path": "docs/screenshots/gruvbox/Expenses.png",
+          "size_bytes": 467962,
+          "sha256": "160a89df9f2313b7e14cecdacdb50722e646263427607defe05eea08c39f1abb"
+        },
+        {
+          "path": "docs/screenshots/gruvbox/ImportAI.png",
+          "size_bytes": 252050,
+          "sha256": "15d5c353c2897fe1f4bdc99c272f716e7f6ca528e45973bdf1710fb7bad7e175"
+        },
+        {
+          "path": "docs/screenshots/gruvbox/Inbox.png",
+          "size_bytes": 283082,
+          "sha256": "4c4a47ab28fc2900ad4c16fae167aa06249188efab69fa62b39ca80faac8e532"
+        },
+        {
+          "path": "docs/screenshots/gruvbox/Itinerary.png",
+          "size_bytes": 1011205,
+          "sha256": "a5702d25a8afde31d487dd4e2c60c7576300c8d2bbe865b4d5c6bf0be3717703"
+        },
+        {
+          "path": "docs/screenshots/gruvbox/Trip.png",
+          "size_bytes": 433878,
+          "sha256": "dd298071e304ce7ef0a75a9dec409cb26a4033e561718fdd4cf7cb42537b1cc3"
+        },
+        {
+          "path": "docs/screenshots/gruvbox/TripItem-Confirmed.png",
+          "size_bytes": 305491,
+          "sha256": "8737b97fd33efc2abc825fd95e5ac1d75def8893a52a9d7b55024b55c2bc5cec"
+        },
+        {
+          "path": "docs/screenshots/gruvbox/TripItem-Idea.png",
+          "size_bytes": 242058,
+          "sha256": "7efb194833237a2cc886ce8f2692981ba01143ab14bbe421d564c6d07fb3f5fd"
+        },
+        {
+          "path": "docs/screenshots/gruvbox/TripItem-New.png",
+          "size_bytes": 224797,
+          "sha256": "7e6c0f8613f4b0fe5796eef7d47a2e594df5686229258b65621ae574a06e8c81"
+        },
+        {
+          "path": "docs/screenshots/rosepine/Desktop.png",
+          "size_bytes": 1151631,
+          "sha256": "7971be79aa05384db749b25ea7404179e6db59f54343ac92e84d9219659fe26d"
+        },
+        {
+          "path": "docs/screenshots/rosepine/ExpenseDetail.png",
+          "size_bytes": 234359,
+          "sha256": "3bcfc28d50f2f07625a5f6b866cf7cc5a6cc360b5b53f9e30e162818e0d90c3f"
+        },
+        {
+          "path": "docs/screenshots/rosepine/Expenses.png",
+          "size_bytes": 485039,
+          "sha256": "eea9be3585d5529f40c6539c9fa1e69a92934b8a9214cd90d0968c3546179d43"
+        },
+        {
+          "path": "docs/screenshots/rosepine/ImportAI.png",
+          "size_bytes": 254270,
+          "sha256": "9741b1a9a2e5586ba81479043459066b46b9c25b118ae68a3f978fe46ca84c9f"
+        },
+        {
+          "path": "docs/screenshots/rosepine/Inbox.png",
+          "size_bytes": 282946,
+          "sha256": "b1a14ede4dcbeed267305870da6fde23ebb8d5c61d204608914945f19a811a9d"
+        },
+        {
+          "path": "docs/screenshots/rosepine/Itinerary.png",
+          "size_bytes": 1023916,
+          "sha256": "42df5ad826b1b4f4695afaf811fd763115ba145a0ab745068d1b5d6d3a0083d2"
+        },
+        {
+          "path": "docs/screenshots/rosepine/Trip.png",
+          "size_bytes": 435235,
+          "sha256": "79964b40352dd63040ce08e7b45fbaccdf32cc0497ec70043c0a04d92edfc8d5"
+        },
+        {
+          "path": "docs/screenshots/rosepine/TripItem-Confirmed.png",
+          "size_bytes": 304893,
+          "sha256": "62704e7211b855029b293db5560362652ac6e6cc82d6d169fa8c5f857aabc1d6"
+        },
+        {
+          "path": "docs/screenshots/rosepine/TripItem-Idea.png",
+          "size_bytes": 244422,
+          "sha256": "97aeeee8973b4571dd30812174e2c3ab59d8e88f0595b289b1fc4d0219797b8b"
+        },
+        {
+          "path": "docs/screenshots/rosepine/TripItem-New.png",
+          "size_bytes": 229328,
+          "sha256": "efe5dc435fa24a32dbb07af951980f0666b5fcb54547c3b1e16afe3fd5f727ff"
+        },
+        {
+          "path": "docs/screenshots/sand/Desktop.png",
+          "size_bytes": 1152007,
+          "sha256": "25706e4ec78af02f46616c88460913c01b94dabf5cce34b154311f66fce618c2"
+        },
+        {
+          "path": "docs/screenshots/sand/ExpenseDetail.png",
+          "size_bytes": 235653,
+          "sha256": "a5eb835777624d359fc423c6fae283f6843c0bc46b00e6ca8c34bd9f97e4ec0b"
+        },
+        {
+          "path": "docs/screenshots/sand/Expenses.png",
+          "size_bytes": 487913,
+          "sha256": "de088c0f2e9ff2b12079ee9368e8331d6b1d05d119e8c77de9ed5049f7c2a67c"
+        },
+        {
+          "path": "docs/screenshots/sand/ImportAI.png",
+          "size_bytes": 254047,
+          "sha256": "dc56b6c2761d55d673c8a597117dc4caaa6fbf16a9e1ff07e03e2144a02264e8"
+        },
+        {
+          "path": "docs/screenshots/sand/Inbox.png",
+          "size_bytes": 280365,
+          "sha256": "bbd795fae8fd4107019d635157ab9ac1720bd5993535e30899af3eec8f1250f7"
+        },
+        {
+          "path": "docs/screenshots/sand/Itinerary.png",
+          "size_bytes": 1023299,
+          "sha256": "8c577682aa3aa5ac533f54e01a697ff11b29cfe31c33043232fc8cd68a394a1d"
+        },
+        {
+          "path": "docs/screenshots/sand/Trip.png",
+          "size_bytes": 443835,
+          "sha256": "427e637bec3a823500de6db085711a50be20933bf3e611a3ad026ab08463038c"
+        },
+        {
+          "path": "docs/screenshots/sand/TripItem-Confirmed.png",
+          "size_bytes": 307144,
+          "sha256": "908e5ebd71a5487ad78f291e69dbb9105ff65580f6c84b2e46ca924269917471"
+        },
+        {
+          "path": "docs/screenshots/sand/TripItem-Idea.png",
+          "size_bytes": 245805,
+          "sha256": "6ec41ea832aeda80a3a1bf6cc20c5629bac9f00161ee05143c4ac9ab38f7cc4e"
+        },
+        {
+          "path": "docs/screenshots/sand/TripItem-New.png",
+          "size_bytes": 238799,
+          "sha256": "4d9954e949018e875934909a2af3b14b6c0513e8ec6951db7772ec2283afb342"
+        },
+        {
+          "path": "docs/screenshots/solarized/Desktop.png",
+          "size_bytes": 1149730,
+          "sha256": "5d51242c458d69bbc172596f53ca8bd82cd86f83db50ad11c38f1514626b237c"
+        },
+        {
+          "path": "docs/screenshots/solarized/ExpenseDetail.png",
+          "size_bytes": 233120,
+          "sha256": "c73b033daae9cfda5531228f41aad84243f15c0c96e0d1980e08bf637c56b4d7"
+        },
+        {
+          "path": "docs/screenshots/solarized/Expenses.png",
+          "size_bytes": 478552,
+          "sha256": "a0eccde695d3b9730ce493af1505cbfd789ae5e0918e0f5f9f9d824f7b3a43bc"
+        },
+        {
+          "path": "docs/screenshots/solarized/ImportAI.png",
+          "size_bytes": 253218,
+          "sha256": "4363790070a2443bc5f6b6383257e3b8bcb41f7e736a64137309f6c9917699cd"
+        },
+        {
+          "path": "docs/screenshots/solarized/Inbox.png",
+          "size_bytes": 284897,
+          "sha256": "3c13d0b087509a32f0548d2628e3e64a0405c6ce77f31e547eeb0b38d370a95c"
+        },
+        {
+          "path": "docs/screenshots/solarized/Itinerary.png",
+          "size_bytes": 911905,
+          "sha256": "5e1476a7369e681f285783b4eeae442ba6bc3ec7799873865340cffd377b9263"
+        },
+        {
+          "path": "docs/screenshots/solarized/Trip.png",
+          "size_bytes": 433259,
+          "sha256": "db30a388b86f2341617502f68e38a264ce57c5e1da1d6c20c54d8379a733b7f7"
+        },
+        {
+          "path": "docs/screenshots/solarized/TripItem-Confirmed.png",
+          "size_bytes": 302777,
+          "sha256": "361ba493e62eda2b8b771b29ea52e09f24a5f751f0fa46f13325732cc1c80a4f"
+        },
+        {
+          "path": "docs/screenshots/solarized/TripItem-Idea.png",
+          "size_bytes": 243525,
+          "sha256": "7854cbe9ba3f44e7b8e66c821269e82fc2b4b116d153330c0ac34b4250e426a6"
+        },
+        {
+          "path": "docs/screenshots/solarized/TripItem-New.png",
+          "size_bytes": 229737,
+          "sha256": "ad7dec981c0c984afe4e24c4f25af627252f8395dfed0791d4f066818c11e124"
+        },
+        {
+          "path": "docs/screenshots/stan/Desktop.png",
+          "size_bytes": 1149432,
+          "sha256": "7f21a84f91e5975d8de184dd48bc58a9a2e4f690cddefc543936915a4f8b1eb9"
+        },
+        {
+          "path": "docs/screenshots/stan/ExpenseDetail.png",
+          "size_bytes": 235144,
+          "sha256": "4801b9e735ae846e44bab401dd8041f55f401c6c88fd8b316243d76c39c4d429"
+        },
+        {
+          "path": "docs/screenshots/stan/Expenses.png",
+          "size_bytes": 480089,
+          "sha256": "f9a38c2e65c01786727b526811e4d6a617311d7d6e82f98d4d1e81b5a2a11892"
+        },
+        {
+          "path": "docs/screenshots/stan/ImportAI.png",
+          "size_bytes": 254301,
+          "sha256": "f112b74370aec10cd31aabfb3ffcb6687e00310bf0658c3098dc47d3ec57b904"
+        },
+        {
+          "path": "docs/screenshots/stan/Inbox.png",
+          "size_bytes": 284643,
+          "sha256": "b373cf609089116986dd2599c3b2ace55fb94368f1afb7a3990ed89e7df2eb08"
+        },
+        {
+          "path": "docs/screenshots/stan/Itinerary.png",
+          "size_bytes": 1577295,
+          "sha256": "14694738eec2719d77f5022d7a8046a1b9a500e0aa28137d4a4c3249cf72b4f2"
+        },
+        {
+          "path": "docs/screenshots/stan/Trip.png",
+          "size_bytes": 437102,
+          "sha256": "ed0f0627e5a90d63c3f4f5573b4b75c62d5407d118537a8401373398b26cb9de"
+        },
+        {
+          "path": "docs/screenshots/stan/TripItem-Confirmed.png",
+          "size_bytes": 305252,
+          "sha256": "e8c4de50239f63414373edc91f668c01b505eab044ecb7e315201ac1a2b68838"
+        },
+        {
+          "path": "docs/screenshots/stan/TripItem-Idea.png",
+          "size_bytes": 243594,
+          "sha256": "27007f118b9baeca63506e274e7495784558a357e9f3f74792a1f2d5c0f9e210"
+        },
+        {
+          "path": "docs/screenshots/stan/TripItem-New.png",
+          "size_bytes": 230635,
+          "sha256": "bc9600313cfa568ac96087f2d26920ebbd8e5c8ad31d9086a511afc3126e93fd"
+        },
+        {
+          "path": "docs/screenshots-webp/gruvbox/Desktop.webp",
+          "size_bytes": 56818,
+          "sha256": "3401752508576af960a813b22887b99df923d878abb07ed07872634b68ce6e8c"
+        },
+        {
+          "path": "docs/screenshots-webp/gruvbox/ExpenseDetail.webp",
+          "size_bytes": 14388,
+          "sha256": "7a72f25968da469b7cd72dbe4383755f09b0240bd18e4eeec8c7cb6b418062f5"
+        },
+        {
+          "path": "docs/screenshots-webp/gruvbox/Expenses.webp",
+          "size_bytes": 33816,
+          "sha256": "209f31f885f7414bd2d5bc94512a4d191274b9fec6d80007cbdfff559827cc5f"
+        },
+        {
+          "path": "docs/screenshots-webp/gruvbox/ImportAI.webp",
+          "size_bytes": 18962,
+          "sha256": "98d68e3c866a90150d43225ce08812f7e5ad9f4b8ecde19c1705a6928eaa82e4"
+        },
+        {
+          "path": "docs/screenshots-webp/gruvbox/Inbox.webp",
+          "size_bytes": 22330,
+          "sha256": "7c433305659f9d9d1348cd44482e3c866a8634e6bb2f6550161139ad852c53ee"
+        },
+        {
+          "path": "docs/screenshots-webp/gruvbox/Itinerary.webp",
+          "size_bytes": 44814,
+          "sha256": "a68c4c81ce327f98bfb2531f9677a6f688411110b39e309a91f78ddcfa36abe6"
+        },
+        {
+          "path": "docs/screenshots-webp/gruvbox/Trip.webp",
+          "size_bytes": 20652,
+          "sha256": "5e6b8ad839c7eb13fa63f59bc69851eff29b4d658a6c9341917cc45664d8ca2e"
+        },
+        {
+          "path": "docs/screenshots-webp/gruvbox/TripItem-Confirmed.webp",
+          "size_bytes": 25488,
+          "sha256": "155e7f2fb750cd973fdf161722268037aa1b9474cfa87845cae48acf781fa7c5"
+        },
+        {
+          "path": "docs/screenshots-webp/gruvbox/TripItem-Idea.webp",
+          "size_bytes": 17852,
+          "sha256": "20db6167d48b45bb3ad72e0dd868f08ddfc4cb90e7f97df577c5e1e9b7f26b9e"
+        },
+        {
+          "path": "docs/screenshots-webp/gruvbox/TripItem-New.webp",
+          "size_bytes": 13100,
+          "sha256": "896ee65de55f3e7a8a159ec5f3e3daeabf64051d77c4d173a4bf4c8c60bf7a5c"
+        },
+        {
+          "path": "docs/screenshots-webp/rosepine/Desktop.webp",
+          "size_bytes": 56150,
+          "sha256": "0adb4eb81006b67d9048077dcdcedeaac2737fb4ac89c67b83dba064726cf5ef"
+        },
+        {
+          "path": "docs/screenshots-webp/rosepine/ExpenseDetail.webp",
+          "size_bytes": 13680,
+          "sha256": "94cfdf0b4047de85053f9ead5e7098df76acb1ed59472933f5049b342bb36d95"
+        },
+        {
+          "path": "docs/screenshots-webp/rosepine/Expenses.webp",
+          "size_bytes": 32420,
+          "sha256": "46b276bd73ef70a6ddc8b67ee92f48466aa8d20601575900051b45ef847e6e0b"
+        },
+        {
+          "path": "docs/screenshots-webp/rosepine/ImportAI.webp",
+          "size_bytes": 17756,
+          "sha256": "0285d42eb91b885719144c2f75882dfb9e63591a0c5ea9dacc07f64b573919e0"
+        },
+        {
+          "path": "docs/screenshots-webp/rosepine/Inbox.webp",
+          "size_bytes": 19692,
+          "sha256": "4ffe157f38215342d470dd58b32722c53a0f511017239fc787c48d99eadd7fea"
+        },
+        {
+          "path": "docs/screenshots-webp/rosepine/Itinerary.webp",
+          "size_bytes": 43814,
+          "sha256": "2e04cb57c17b3044468d8135d013c28f97e0947d45a333d8e885cee18f222d99"
+        },
+        {
+          "path": "docs/screenshots-webp/rosepine/Trip.webp",
+          "size_bytes": 19686,
+          "sha256": "dfee2a2b9db3fe7d0521f61b9cb0b3125483a2fe7631a62f6855303f9619ecf8"
+        },
+        {
+          "path": "docs/screenshots-webp/rosepine/TripItem-Confirmed.webp",
+          "size_bytes": 22316,
+          "sha256": "03cfcd23fa224ce1befbd476a325e5cb28d502ca98b4ff5a9ff1312edebaa2de"
+        },
+        {
+          "path": "docs/screenshots-webp/rosepine/TripItem-Idea.webp",
+          "size_bytes": 15864,
+          "sha256": "810f48258283878f3c465f084d07085a3ac31916c04a8040db07fbc1416ab392"
+        },
+        {
+          "path": "docs/screenshots-webp/rosepine/TripItem-New.webp",
+          "size_bytes": 12464,
+          "sha256": "5e216eaf4c6892b6cb3083980396016846faf431cc08ac861d77126315efa6f7"
+        },
+        {
+          "path": "docs/screenshots-webp/sand/Desktop.webp",
+          "size_bytes": 57674,
+          "sha256": "122cd0fdf5132c470f4f87c19d69f88d7ddd25b2f3bb5fc3993b0bce4459f4e0"
+        },
+        {
+          "path": "docs/screenshots-webp/sand/ExpenseDetail.webp",
+          "size_bytes": 14376,
+          "sha256": "91be45cd4d6248850333e08b5b6076eaa670c7e847f32a855b7304df92e1ab97"
+        },
+        {
+          "path": "docs/screenshots-webp/sand/Expenses.webp",
+          "size_bytes": 34444,
+          "sha256": "70fe579c6b7fffa81f39f5214caf7b1fa5c702cdfbfeeb0d1f0c64aac3e26f66"
+        },
+        {
+          "path": "docs/screenshots-webp/sand/ImportAI.webp",
+          "size_bytes": 18748,
+          "sha256": "85ff3acac22396c3f0356c9889b41523782370a8e4166a5da7a8ade1cbde86e6"
+        },
+        {
+          "path": "docs/screenshots-webp/sand/Inbox.webp",
+          "size_bytes": 21094,
+          "sha256": "cd37290850e1c19ead9084538d7d5d2d0602f24aacd5788389281a5900a641fb"
+        },
+        {
+          "path": "docs/screenshots-webp/sand/Itinerary.webp",
+          "size_bytes": 45200,
+          "sha256": "456f05e56c06f53e08e19bd37784a85398eb1916d7c973aec7a5110c53d0718c"
+        },
+        {
+          "path": "docs/screenshots-webp/sand/Trip.webp",
+          "size_bytes": 20948,
+          "sha256": "d3c38ce18401b6a5fc8f114f396ffd8355039cc0c2dcc18433dc2add2db20eeb"
+        },
+        {
+          "path": "docs/screenshots-webp/sand/TripItem-Confirmed.webp",
+          "size_bytes": 24274,
+          "sha256": "3502c84a127351f85bbf863d7c5271a3b167ef73c5514c5022fe1eccd2908708"
+        },
+        {
+          "path": "docs/screenshots-webp/sand/TripItem-Idea.webp",
+          "size_bytes": 17300,
+          "sha256": "2f98789204ba9bea50d5f7efdd138b3d3b923bae4412774871ef7e5cff5a8084"
+        },
+        {
+          "path": "docs/screenshots-webp/sand/TripItem-New.webp",
+          "size_bytes": 13062,
+          "sha256": "149b0baf07d866c71ef9f120edb066c504d02dc5bc7b55a27ebee21f1bbe5fc8"
+        },
+        {
+          "path": "docs/screenshots-webp/solarized/Desktop.webp",
+          "size_bytes": 58964,
+          "sha256": "d6dfb740211a714899c0124b30d139f931f4ed119f6204e40506ea8aa09dfa93"
+        },
+        {
+          "path": "docs/screenshots-webp/solarized/ExpenseDetail.webp",
+          "size_bytes": 14934,
+          "sha256": "cb5c363d2ecb083b26b67215f2f388ae3132b4417fec3e7b129baedcbad2814a"
+        },
+        {
+          "path": "docs/screenshots-webp/solarized/Expenses.webp",
+          "size_bytes": 33832,
+          "sha256": "4f1bf4b4ac4c6c38ed238616e762d5e8619db17f43fc038cbd8631a11456b9f1"
+        },
+        {
+          "path": "docs/screenshots-webp/solarized/ImportAI.webp",
+          "size_bytes": 19906,
+          "sha256": "95ab60369e85f410e46b0e9ccc6cf3e338d3b51e9d51e202660f3baec72d1e68"
+        },
+        {
+          "path": "docs/screenshots-webp/solarized/Inbox.webp",
+          "size_bytes": 23628,
+          "sha256": "8dec0487cc0711f7785248071a5de5b8c3c80452a6b77ff7c671518ab9a0b83f"
+        },
+        {
+          "path": "docs/screenshots-webp/solarized/Itinerary.webp",
+          "size_bytes": 41720,
+          "sha256": "6f946338b495a9e523cb6306c73c4aeb02c9c53d88cd7e536a81384c5becc3a3"
+        },
+        {
+          "path": "docs/screenshots-webp/solarized/Trip.webp",
+          "size_bytes": 21310,
+          "sha256": "aa397101aef414616c194b152344988750106d807806f0acb48612e83d93073d"
+        },
+        {
+          "path": "docs/screenshots-webp/solarized/TripItem-Confirmed.webp",
+          "size_bytes": 25168,
+          "sha256": "9d73d4455281bc84a4c3421d29f4ef5bd2f4c882fe1aa389421bbcf13df9d962"
+        },
+        {
+          "path": "docs/screenshots-webp/solarized/TripItem-Idea.webp",
+          "size_bytes": 18942,
+          "sha256": "9f2189f8d0e8b20d034f6b790fb8a325678311789970b0792a6795437706263f"
+        },
+        {
+          "path": "docs/screenshots-webp/solarized/TripItem-New.webp",
+          "size_bytes": 13772,
+          "sha256": "3bda11216587db788a358f90cf3192bba557cdd0fb73319ded46771b6fd96782"
+        },
+        {
+          "path": "docs/screenshots-webp/stan/Desktop.webp",
+          "size_bytes": 56684,
+          "sha256": "45fe1ceda18455af524966f44104491ad35f54fe912a8a08250bf4de0d077971"
+        },
+        {
+          "path": "docs/screenshots-webp/stan/ExpenseDetail.webp",
+          "size_bytes": 14312,
+          "sha256": "d2e8a8d0d77385c7876fbc5b6658de5f7296f4d264016e4889bf1850a4f25e2a"
+        },
+        {
+          "path": "docs/screenshots-webp/stan/Expenses.webp",
+          "size_bytes": 34552,
+          "sha256": "5add5821000c9ddb159cdcdf2e7f30453db3dd380bc7382b5c259defdb21f43a"
+        },
+        {
+          "path": "docs/screenshots-webp/stan/ImportAI.webp",
+          "size_bytes": 18712,
+          "sha256": "7d18b23390654b641ac81f8aa410fb1311c981228491479ef7f5bbf6f3f9a0f2"
+        },
+        {
+          "path": "docs/screenshots-webp/stan/Inbox.webp",
+          "size_bytes": 20718,
+          "sha256": "5e8fc4f90f174f6b928134e5926283e9e9691058879d88c4db6f592a16502309"
+        },
+        {
+          "path": "docs/screenshots-webp/stan/Itinerary.webp",
+          "size_bytes": 44096,
+          "sha256": "e7c32cc1942412c4c65ebb34996bd5aa04d0a4e372f23899ccfa25a869755d87"
+        },
+        {
+          "path": "docs/screenshots-webp/stan/Trip.webp",
+          "size_bytes": 20296,
+          "sha256": "bf792973db156ffc07b834fd266e137058b2c4ce1b4d87a18caa9f2d295e4231"
+        },
+        {
+          "path": "docs/screenshots-webp/stan/TripItem-Confirmed.webp",
+          "size_bytes": 23334,
+          "sha256": "e1bfeec48fcd041b9281e3e869cc5548492f3013cd0a07f5aba39ec140b127a7"
+        },
+        {
+          "path": "docs/screenshots-webp/stan/TripItem-Idea.webp",
+          "size_bytes": 16338,
+          "sha256": "12bd6d00730aba8645cb41f9107bfc09e088a9676ec28e033c8c3547735a3281"
+        },
+        {
+          "path": "docs/screenshots-webp/stan/TripItem-New.webp",
+          "size_bytes": 13094,
+          "sha256": "da80773625dbf787a86d275c7a461559d940ba5426f264c021a490dc9a1780b1"
+        },
+        {
+          "path": "docs/site.webmanifest",
+          "size_bytes": 735,
+          "sha256": "a458d6e089d8db332633267fe1b38ab77829733f7f7418e9db5578338e408ac2"
+        },
+        {
+          "path": "lib/tasks/.keep",
+          "size_bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "public/400.html",
+          "size_bytes": 7054,
+          "sha256": "e4611b7ecd95c05bc42597702de6f2775aa5414c1bec28a8173165e143159371"
+        },
+        {
+          "path": "public/404.html",
+          "size_bytes": 5201,
+          "sha256": "6f48aec35400a1e5fb88b7cef034a18d55ce810653b04f93d7162e02053745d0"
+        },
+        {
+          "path": "public/406-unsupported-browser.html",
+          "size_bytes": 7283,
+          "sha256": "37e250b92c485478422b11e0bf4686d5bcc919f4a6877115aa2bf9e4753c1e08"
+        },
+        {
+          "path": "public/422.html",
+          "size_bytes": 8747,
+          "sha256": "f91269998d46c1b59f51c933cb86d8079e3155f4e48fe1566e2f1a34c946287f"
+        },
+        {
+          "path": "public/500.html",
+          "size_bytes": 8283,
+          "sha256": "0e135e717e9d1a5dd6db932ec70bd9524363064979cd2d8b216ee1c0300e36b5"
+        },
+        {
+          "path": "public/apple-touch-icon.png",
+          "size_bytes": 17212,
+          "sha256": "97da3f29d249a2dbf7567440d2b8a3027816591a141428e3630d40d6ec0c4e1d"
+        },
+        {
+          "path": "public/favicon-96x96.png",
+          "size_bytes": 8403,
+          "sha256": "7ef070fc645ccfe105ee94b2aa5022a831cffb0e7f93370b25433b1ee9d16689"
+        },
+        {
+          "path": "public/favicon.ico",
+          "size_bytes": 2531,
+          "sha256": "0011ce92bdf09ccb4f2a2acc335fed580cea30df8eab358f55fddba280a41608"
+        },
+        {
+          "path": "public/favicon.svg",
+          "size_bytes": 4255,
+          "sha256": "51e72276ffbdb22c92ebe73b1890ef205dd2a797447a092b68508628090a9ea2"
+        },
+        {
+          "path": "public/icon-192.png",
+          "size_bytes": 18418,
+          "sha256": "4d56dd6e248f868fe9d3adb338c1e3770c00cbfb5f0e88d6a676b8bed8a0e45a"
+        },
+        {
+          "path": "public/icon-512.png",
+          "size_bytes": 39515,
+          "sha256": "fe10a14b452956ff617c82ca7f8a0bad16fc3c7989ea50fbf67df9a0c716da01"
+        },
+        {
+          "path": "public/robots.txt",
+          "size_bytes": 99,
+          "sha256": "2f15987e4606501202b9d337085439339e53a374e3d194847192c12f85ba78f8"
+        },
+        {
+          "path": "public/site.webmanifest",
+          "size_bytes": 735,
+          "sha256": "a458d6e089d8db332633267fe1b38ab77829733f7f7418e9db5578338e408ac2"
+        },
+        {
+          "path": "script/.keep",
+          "size_bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "setup.sh",
+          "size_bytes": 4672,
+          "sha256": "28058c8b83138f5b609f483ce43cbcaa4d3aa73a311ac096ed6be7a6f33fa76d"
+        }
+      ]
+    },
+    "evolved": {
+      "folder": "A1/Part2/code",
+      "file_count": 414,
+      "files": [
+        {
+          "path": ".dockerignore",
+          "size_bytes": 874,
+          "sha256": "8dad33df9e450a9e42deb56a86ee6a20b559578a6f0121b3375c4cf4e32d4aac"
+        },
+        {
+          "path": ".gitattributes",
+          "size_bytes": 348,
+          "sha256": "178d3a5e52684a157e7454dd3ee8c7da5c5546680067cc2f2f8796e0d6bcb3a2"
+        },
+        {
+          "path": ".github/dependabot.yml",
+          "size_bytes": 247,
+          "sha256": "4a6698dbb7e88418562c06e57b9881d554487ace4060be19d3e7d20a5646a47f"
+        },
+        {
+          "path": ".github/workflows/ci.yml",
+          "size_bytes": 1706,
+          "sha256": "6aafd8c081ec76c6ddf7903e4182156fb31d099fef8dca37f2eb3287d4cac281"
+        },
+        {
+          "path": ".gitignore",
+          "size_bytes": 1086,
+          "sha256": "3f17e93f2a4125f2e951f4a93a695454ec0cdb172fbcd29be2e0dd297fcbc329"
+        },
+        {
+          "path": ".rubocop.yml",
+          "size_bytes": 291,
+          "sha256": "543977c1c67340fe1dd12e2fcde050d0ae2c370aa752335e329f5e7dc7251e39"
+        },
+        {
+          "path": ".ruby-version",
+          "size_bytes": 11,
+          "sha256": "3c3c4cdeb8df21f17819b0e27d770626aee89fa8560680469643773444e719e0"
+        },
+        {
+          "path": "APPROACH.md",
+          "size_bytes": 8741,
+          "sha256": "ecaf2f240745533b3d080e3f6060016ae3383dd33e3aa60d8293e87911e67be5"
+        },
+        {
+          "path": "CLAUDE.md",
+          "size_bytes": 1523,
+          "sha256": "ca4af3c6d710a6203570f63f0ef37fcd469bf5aa86c3a4204dce2eddf66f4514"
+        },
+        {
+          "path": "DATA_MODEL.md",
+          "size_bytes": 9665,
+          "sha256": "b8fad4afc9f36c179f4b7c8d3f0ce023c0117e71c3954a3d580d049921ec4940"
+        },
+        {
+          "path": "Dockerfile",
+          "size_bytes": 2827,
+          "sha256": "9cf5fb4bf33b769dfd498ef727a6eb8f7f27d3d3d06dba4a37f4496aca886fc2"
+        },
+        {
+          "path": "Gemfile",
+          "size_bytes": 2672,
+          "sha256": "15da41aa3ab3858dffd244e5690c941a6aafc3082956306600e80595cbe2d35a"
+        },
+        {
+          "path": "Gemfile.lock",
+          "size_bytes": 28153,
+          "sha256": "4b4860a19c18ae63f4ca974cef4fada1e03d5edb81dd28deca83eeefc17bda88"
+        },
+        {
+          "path": "LICENSE.md",
+          "size_bytes": 1465,
+          "sha256": "1c5ea48e790565cbe9535cf30a9ef993c94fa85403514a7648969de61e701a62"
+        },
+        {
+          "path": "MISSION.md",
+          "size_bytes": 2387,
+          "sha256": "c115508143281ba48d52bd7a6f1b4171e3b306481c5049658d4d33e8fdae3177"
+        },
+        {
+          "path": "Procfile.dev",
+          "size_bytes": 55,
+          "sha256": "9e5a7dc7f7fb27425617012e7302d17b6c0bdf9a897a31c71292e909ac102266"
+        },
+        {
+          "path": "README.md",
+          "size_bytes": 3980,
+          "sha256": "ac61ee675aba432edb90566106713c3a814db6de3e958bf3fea1523a72edb4b8"
+        },
+        {
+          "path": "Rakefile",
+          "size_bytes": 227,
+          "sha256": "895c6a69d01c14f0dd437c0eb44914754006ce317807264ca7ffbd1c79a91ebf"
+        },
+        {
+          "path": "app/assets/builds/.keep",
+          "size_bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "app/assets/builds/tailwind.css",
+          "size_bytes": 302237,
+          "sha256": "a2eb2f122ad3ab53885cbdb9e89b7d396b78dab176446dabfd2aacda47beb6db"
+        },
+        {
+          "path": "app/assets/images/.keep",
+          "size_bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "app/assets/images/Bell.svg",
+          "size_bytes": 987,
+          "sha256": "e3f1a077366eadac1331f3ab3147f11cb5d06ca5486f23c57033a41a4c967fdb"
+        },
+        {
+          "path": "app/assets/images/Bus-Taxi.svg",
+          "size_bytes": 2507,
+          "sha256": "d97bde11d296a5fbd7c104ff67b2eaed5ed5fd22f825ddc57d8fd47fae7fb799"
+        },
+        {
+          "path": "app/assets/images/Camera.svg",
+          "size_bytes": 913,
+          "sha256": "6378f62674e0a29d35abfbfb69c7ae6b0d9fdf49c32c6d0da8ef6a7828cfce31"
+        },
+        {
+          "path": "app/assets/images/Car.svg",
+          "size_bytes": 2009,
+          "sha256": "85845db6caae868bfc193f4974115c4406cd5f643c413c54e28c39c75689013a"
+        },
+        {
+          "path": "app/assets/images/Do.svg",
+          "size_bytes": 886,
+          "sha256": "5eb052f342fd2dd02abc16aa45d4fce5f5ccf979d7f909fd17e853b3a0f82879"
+        },
+        {
+          "path": "app/assets/images/Down.svg",
+          "size_bytes": 473,
+          "sha256": "bbd8dceff10ee042e4a93277c0444402484327bb4917f4024a2acb0de4d06008"
+        },
+        {
+          "path": "app/assets/images/Eat.svg",
+          "size_bytes": 1004,
+          "sha256": "40acce97275ee18516a04e6829cf45805051126f065ce2cdf91445b1ebaf04bc"
+        },
+        {
+          "path": "app/assets/images/Edit.svg",
+          "size_bytes": 1022,
+          "sha256": "7b7fbdfd8f034f00799601e65d5faedcd2433211c705a5eca1946bc6ebf2d06f"
+        },
+        {
+          "path": "app/assets/images/Email.svg",
+          "size_bytes": 736,
+          "sha256": "e90ac1a31f462e8f648735a69d48ff3a1a42c3aa222a1c0cca246620d495e204"
+        },
+        {
+          "path": "app/assets/images/Euro.svg",
+          "size_bytes": 1369,
+          "sha256": "e426043b58ca52827eff643818889fed7258b8788f0dca7bb65979b75bc808fc"
+        },
+        {
+          "path": "app/assets/images/Expense.svg",
+          "size_bytes": 6293,
+          "sha256": "6b7901b3ad3138c06fc4a029dbb76e379da5c21321b1d512ecde2b34039afd9b"
+        },
+        {
+          "path": "app/assets/images/Expenses.svg",
+          "size_bytes": 762,
+          "sha256": "c0f17bd2f3ab1c6dc69c0f1a4406e4c3f0b1a644c6dd5923370bb831f5362d62"
+        },
+        {
+          "path": "app/assets/images/Ferry.svg",
+          "size_bytes": 1905,
+          "sha256": "7531cd5114d8336991dbba66c0b7f7b32c5f2b8f758e51a4dae03329084c83bf"
+        },
+        {
+          "path": "app/assets/images/Filter.svg",
+          "size_bytes": 678,
+          "sha256": "66129897421f20b4a218c5608f7fc66b15b560faac93b4742a45dd2f8f91e021"
+        },
+        {
+          "path": "app/assets/images/Inbox.svg",
+          "size_bytes": 1149,
+          "sha256": "d2d5cb3c72242e42abd0c3851879a4a49f031c79ff63a1bd787236875a9c2c88"
+        },
+        {
+          "path": "app/assets/images/Itinerary.svg",
+          "size_bytes": 737,
+          "sha256": "559bb2c6e7684ca5470fce079a94f88b2f49c3452db190a58659d6299edf1ad1"
+        },
+        {
+          "path": "app/assets/images/Left.svg",
+          "size_bytes": 473,
+          "sha256": "43a9a64d78ec14c3c21c4436ca6fcd3360019fabbf477b24998031858fe97a8e"
+        },
+        {
+          "path": "app/assets/images/Mail.svg",
+          "size_bytes": 3112,
+          "sha256": "b39bbf90cd311247fe1bae00571980456675b3756b200b3d4393681b110f4cee"
+        },
+        {
+          "path": "app/assets/images/Map-Marker.svg",
+          "size_bytes": 1023,
+          "sha256": "4bdb8ed2f21f0f62e8b62beeef1843c755ea3123ec5d86cc05b5cffed084d0b6"
+        },
+        {
+          "path": "app/assets/images/Map.svg",
+          "size_bytes": 1837,
+          "sha256": "550f588ca9c70523b90cbea5a1a0f5f0a036873341d455159790e8aea130a1c4"
+        },
+        {
+          "path": "app/assets/images/Move.svg",
+          "size_bytes": 1480,
+          "sha256": "e05dc7c76e4f7d1782d25acad13462ca88ad6caee54f5240ba4186bd2e8fe8d5"
+        },
+        {
+          "path": "app/assets/images/Plane.svg",
+          "size_bytes": 755,
+          "sha256": "d10e99846f111165003b34d4a55ebe66c31f933a6f2966c760ee4528731f5b08"
+        },
+        {
+          "path": "app/assets/images/Right.svg",
+          "size_bytes": 475,
+          "sha256": "ad3337efc3750ee59eb84908117bc10f583b85dc496d475cfb728ecf85c10672"
+        },
+        {
+          "path": "app/assets/images/Shop.svg",
+          "size_bytes": 1775,
+          "sha256": "5cab0120cc2326d8edf3e80b93e9fa88a38f347e2daf50db62b87916f88b3ccf"
+        },
+        {
+          "path": "app/assets/images/Stay.svg",
+          "size_bytes": 1218,
+          "sha256": "b9302cfd3c746409edb7e7fd782a282156b09a943e6d7213a2753376a3ebb00d"
+        },
+        {
+          "path": "app/assets/images/Train.svg",
+          "size_bytes": 2876,
+          "sha256": "32959063498894bd9bc43efaf828c925b1a9bd8ac0850615c0dcecd6baf85aa4"
+        },
+        {
+          "path": "app/assets/images/Trip.svg",
+          "size_bytes": 1158,
+          "sha256": "08050e14130d2a4fe5c9ec00ee26cd16136cf2205b7230db402dd7fa57056e78"
+        },
+        {
+          "path": "app/assets/images/Up.svg",
+          "size_bytes": 475,
+          "sha256": "c6909ea9d927addde03ea71772882bd7b29747d161b0ea6b516a9d353ca080f1"
+        },
+        {
+          "path": "app/assets/images/delete.svg",
+          "size_bytes": 1626,
+          "sha256": "50312b8a4410d80f5f0d2886c2f4f34c8313562283eece5c3cbc6cfedbd399c1"
+        },
+        {
+          "path": "app/assets/images/logo-mark.svg",
+          "size_bytes": 4269,
+          "sha256": "208d3ae86bb0edda2a12e280e90dc82084001fd215e4db1f076a0801076c12e5"
+        },
+        {
+          "path": "app/assets/stylesheets/application.css",
+          "size_bytes": 491,
+          "sha256": "478b66b3effc220e394a0ba1a9065c367d723bd73b2036067ea87f91094b2cdf"
+        },
+        {
+          "path": "app/assets/tailwind/application.css",
+          "size_bytes": 36096,
+          "sha256": "e0c2a1b93ae0ddf7e568dad8c336f9dcb363d3577ffb724727be831f1c09168e"
+        },
+        {
+          "path": "app/assets/tailwind/plugins/daisyui.js",
+          "size_bytes": 246457,
+          "sha256": "7b2ab8f3f52af4123f6425055df2989558c619969cb1a342cec6bb6ab86daa6d"
+        },
+        {
+          "path": "app/controllers/admin/application_controller.rb",
+          "size_bytes": 268,
+          "sha256": "58eba800648113a5fa48a1d4a6bbec19f8cc9db324369bd44442704385028499"
+        },
+        {
+          "path": "app/controllers/admin/dashboard_controller.rb",
+          "size_bytes": 542,
+          "sha256": "498d798cfcbee889b770323a75903e5a16a5a975daf32f32e53c7b0ea67bf1f2"
+        },
+        {
+          "path": "app/controllers/admin/invites_controller.rb",
+          "size_bytes": 622,
+          "sha256": "72d503bcfb75ee7ddddc6405dc9aa49d931c5e12aaf844fcc5fdd5b82c63293b"
+        },
+        {
+          "path": "app/controllers/application_controller.rb",
+          "size_bytes": 1473,
+          "sha256": "0b6e25b0d0e58bdddd4873c894b543c943dc1e70d0d223b08e5561ac999cf498"
+        },
+        {
+          "path": "app/controllers/approved_senders_controller.rb",
+          "size_bytes": 821,
+          "sha256": "eda99c924aa7845198f4148c4e3486f2c2ae95f80ce0b58db1961002be5e2b80"
+        },
+        {
+          "path": "app/controllers/concerns/.keep",
+          "size_bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "app/controllers/concerns/editable_trip_scoped.rb",
+          "size_bytes": 766,
+          "sha256": "5fc983b120f3c5257de8281c2adf8b638ac9fa4cc79cb86b7b4e09b222cb91f9"
+        },
+        {
+          "path": "app/controllers/expenses_controller.rb",
+          "size_bytes": 3317,
+          "sha256": "5736ef2a7fbc59c67c7fcdaceb205ee193c2d8378d743a106a631a623d53c200"
+        },
+        {
+          "path": "app/controllers/home_controller.rb",
+          "size_bytes": 266,
+          "sha256": "78925cffd7a6cd4978e5eec5526a27ea12bb1e5964bec63ce05df1b4aab8e114"
+        },
+        {
+          "path": "app/controllers/inbox_items_controller.rb",
+          "size_bytes": 1675,
+          "sha256": "200d1eb69ead6940c0ddade3949aa885abf319d997dca4ce9184d0ee48887106"
+        },
+        {
+          "path": "app/controllers/invites_controller.rb",
+          "size_bytes": 1244,
+          "sha256": "60a54fddb86c17d5d2c6000e0c106f1b43665660bac475ab29b7e7d0732718af"
+        },
+        {
+          "path": "app/controllers/itinerary_generations_controller.rb",
+          "size_bytes": 1464,
+          "sha256": "6995de5641fd470e9515f11a8c8a37cc01b8035ff9c7962c17184f1b22281d2b"
+        },
+        {
+          "path": "app/controllers/notifications_controller.rb",
+          "size_bytes": 381,
+          "sha256": "b2da8cf079ad3b0263eaf74bf209d1250f2a719ce96367acef54bbb5585e4e9d"
+        },
+        {
+          "path": "app/controllers/sessions_controller.rb",
+          "size_bytes": 2843,
+          "sha256": "6e9c5c385c91eb87db72bb8ac18c28624db0ceab71fe864c3adb56f8e40c1320"
+        },
+        {
+          "path": "app/controllers/settings_controller.rb",
+          "size_bytes": 939,
+          "sha256": "770a8789949c0035849eca9380efb7630ee1191cd0585766af07a9399d29d597"
+        },
+        {
+          "path": "app/controllers/travelers_controller.rb",
+          "size_bytes": 2020,
+          "sha256": "53e1bcddde82e4e08019ced6a4e3c9c59d03ac44232e35a1f4fdaaa1ceb3946a"
+        },
+        {
+          "path": "app/controllers/trip_items_controller.rb",
+          "size_bytes": 4616,
+          "sha256": "c32cd697ab9c3a6849df4dd52bbb197f6921cb684f052e4ed89de199908b07f0"
+        },
+        {
+          "path": "app/controllers/trip_members_controller.rb",
+          "size_bytes": 2128,
+          "sha256": "d01023666d0f30a2cc0af3cc7ad08dbf990f6fe70c24582347e32b9da507837e"
+        },
+        {
+          "path": "app/controllers/trips_controller.rb",
+          "size_bytes": 3872,
+          "sha256": "045918753894a19e1d708b5c0c658e1a82637fe8dddbb8c59a3c8a47d8a8c839"
+        },
+        {
+          "path": "app/helpers/application_helper.rb",
+          "size_bytes": 1817,
+          "sha256": "0bf7d8d3003fa4bfe9a0c942232eef2fd5ffd5af13477ccba8b174af3b5532e4"
+        },
+        {
+          "path": "app/helpers/expenses_helper.rb",
+          "size_bytes": 2104,
+          "sha256": "6a5793423e8dad8575140b1692555ad064ccce57ae465a281d54e3bbbb371909"
+        },
+        {
+          "path": "app/helpers/inbox_items_helper.rb",
+          "size_bytes": 1907,
+          "sha256": "8b2f601665ba8f84cd53aa89d44df1e669d31d6d1fb4c07abad6303841ce759b"
+        },
+        {
+          "path": "app/helpers/trip_items_helper.rb",
+          "size_bytes": 2739,
+          "sha256": "16835d97ae3589e0f2e46b64cb374768bada2f9892d859a793fca147715dbaab"
+        },
+        {
+          "path": "app/javascript/application.js",
+          "size_bytes": 1385,
+          "sha256": "ccb4b755184e4a2b32d3105aa7d8cf58851b1be9dd1c0aebf346accff780a868"
+        },
+        {
+          "path": "app/javascript/controllers/application.js",
+          "size_bytes": 218,
+          "sha256": "b5836315bab7b8d055ac3346bf57f933fa8aa8b37e9ea7b704cb2ae2bff129b8"
+        },
+        {
+          "path": "app/javascript/controllers/bottom_sheet_controller.js",
+          "size_bytes": 615,
+          "sha256": "d0a092a9e0c03101d60d1626b5f8232836046353d660cf450e9ac33d0471dd68"
+        },
+        {
+          "path": "app/javascript/controllers/category_picker_controller.js",
+          "size_bytes": 327,
+          "sha256": "73309c934f47cb257d7d0fba1ff5cc04dded13af6c807b30441dece96cda619f"
+        },
+        {
+          "path": "app/javascript/controllers/clipboard_controller.js",
+          "size_bytes": 463,
+          "sha256": "3ebdf59c29f23db2b8eb7c3f69785c9e732869b45eac0d36bd67280ce84bf452"
+        },
+        {
+          "path": "app/javascript/controllers/date_range_controller.js",
+          "size_bytes": 347,
+          "sha256": "9f4a1c453a3a3ad8fc9b737f3f7aae185235648bd7b4e36c77bae50d1646b8a4"
+        },
+        {
+          "path": "app/javascript/controllers/details_close_controller.js",
+          "size_bytes": 611,
+          "sha256": "a53bd2aead3eb3f72724dd9ac50ad74a426f2702acd1121c7b623cebf56e57bf"
+        },
+        {
+          "path": "app/javascript/controllers/flash_controller.js",
+          "size_bytes": 383,
+          "sha256": "7b68660ca64b8e651b1fd95122b28c165ae80c3daab23eba8220af0abe09769c"
+        },
+        {
+          "path": "app/javascript/controllers/index.js",
+          "size_bytes": 272,
+          "sha256": "a2d8f59d301f2f6ac02171ef63c930e00ea0f0bcf3b6cd8bf0c14a0733414058"
+        },
+        {
+          "path": "app/javascript/controllers/json_file_controller.js",
+          "size_bytes": 501,
+          "sha256": "0b0dc8794144dcbc074f1e19e58cbceaea0928e1227f3403368da6ee5ca53770"
+        },
+        {
+          "path": "app/javascript/controllers/kind_picker_controller.js",
+          "size_bytes": 2582,
+          "sha256": "91608ecadde85fefdf4bad6754ce09da03c0f6420def51724ae12e1f0289d73f"
+        },
+        {
+          "path": "app/javascript/controllers/location_picker_controller.js",
+          "size_bytes": 2213,
+          "sha256": "34eeab16ee6b10d58254ba2cba563586566cee2fa50b4e2beaad45ecf953a68c"
+        },
+        {
+          "path": "app/javascript/controllers/map_controller.js",
+          "size_bytes": 17481,
+          "sha256": "1315d3b5d5b12c4a54e7d17dea2918cdb78139856271c0e4ba2d9159f11d5dfe"
+        },
+        {
+          "path": "app/javascript/controllers/pull_to_refresh_controller.js",
+          "size_bytes": 4681,
+          "sha256": "3ce35ddb42d56bc40358de5b50d4dbbb476cdfa230e0044f2be958c559cfd45c"
+        },
+        {
+          "path": "app/javascript/controllers/receipt_controller.js",
+          "size_bytes": 752,
+          "sha256": "d856cb17fde9ff22550474bc4bc05770dfeb2426e8fd80943e3107acb4bc37db"
+        },
+        {
+          "path": "app/javascript/controllers/tabs_controller.js",
+          "size_bytes": 770,
+          "sha256": "75eac9fafa7acc75da84e03eecd6b0f52cc0903f38acfd17738d3f49a5fedd49"
+        },
+        {
+          "path": "app/javascript/controllers/timeline_controller.js",
+          "size_bytes": 2917,
+          "sha256": "fa25feab2fdb7e881655dfa80a7726e1b73c01ef7fff14b977da9dc42bc2f0e7"
+        },
+        {
+          "path": "app/javascript/controllers/trip_delete_controller.js",
+          "size_bytes": 448,
+          "sha256": "6d74ee69373d7cf99acf3dd48c2c606feb52f3f7ef85056967728a033fe6203d"
+        },
+        {
+          "path": "app/javascript/controllers/trip_nav_controller.js",
+          "size_bytes": 2195,
+          "sha256": "b288792e9762f6b5e32236a4a5a6c1a7b65cc6120e9e5346ff81d61a3c43f5ed"
+        },
+        {
+          "path": "app/jobs/application_job.rb",
+          "size_bytes": 269,
+          "sha256": "d51e125007521b0f59765422cf3cf949b59b2054cdac6567a95b4a7aeaf1d722"
+        },
+        {
+          "path": "app/jobs/fetch_trip_cover_image_job.rb",
+          "size_bytes": 1289,
+          "sha256": "55532d113263cd85d3343d156cbb3c7ff2e2758e94c473014b0043b99cb48b32"
+        },
+        {
+          "path": "app/jobs/generate_itinerary_job.rb",
+          "size_bytes": 3266,
+          "sha256": "0ac4c9bb68909cf5db6421f77c3a8c1558761fdc55858ceb6ebc4e04e96d454a"
+        },
+        {
+          "path": "app/jobs/geocode_trip_items_job.rb",
+          "size_bytes": 725,
+          "sha256": "2fdc8bee6e38ba1e692c58a1863f1002b5d4ed3a8872238e0c20a06092220e37"
+        },
+        {
+          "path": "app/jobs/parse_inbox_item_job.rb",
+          "size_bytes": 5739,
+          "sha256": "3152a659231306271df4d22fa0ed0f9f8394dac873f22f9898b7d4563a49a72a"
+        },
+        {
+          "path": "app/jobs/parse_receipt_job.rb",
+          "size_bytes": 2107,
+          "sha256": "62f4677ccd88f1f65e58f4d45d69222ef251c9692403de6b25de98ded2ab64a7"
+        },
+        {
+          "path": "app/mailboxes/application_mailbox.rb",
+          "size_bytes": 73,
+          "sha256": "74784b257ff3932f22f50f473e1aa9c2b6ad32713c104e737b767a34f5a39236"
+        },
+        {
+          "path": "app/mailboxes/trip_mailbox.rb",
+          "size_bytes": 1896,
+          "sha256": "8b9460bff2e6ef19202f2d7f13d9a8227177838196201884d8bfe25fca262524"
+        },
+        {
+          "path": "app/mailers/application_mailer.rb",
+          "size_bytes": 222,
+          "sha256": "6eaa5fd517020773ecbe3807d72d9d3713fd79a0bd950fce5182a6d755c5f22b"
+        },
+        {
+          "path": "app/mailers/invitation_mailer.rb",
+          "size_bytes": 423,
+          "sha256": "de0cb1273ba894f3232492f3e6488e6fcf97f84afa2114ad15af992e30316114"
+        },
+        {
+          "path": "app/mailers/trip_mailer.rb",
+          "size_bytes": 306,
+          "sha256": "7d93fe4621446615612dc6c83e600deb6b6fb7dbe634a70d8863417880ba37ee"
+        },
+        {
+          "path": "app/models/account.rb",
+          "size_bytes": 331,
+          "sha256": "537d602120c519f75e9ff782289372f1e20be9d1845f1e9c5b191af4f8c44ddd"
+        },
+        {
+          "path": "app/models/application_record.rb",
+          "size_bytes": 134,
+          "sha256": "e8b0283b97883bdf70357e57dda76621cfc689e537c234f6096657253c9c9c27"
+        },
+        {
+          "path": "app/models/approved_sender.rb",
+          "size_bytes": 220,
+          "sha256": "bc6ec3bd09ffa438c581b0125df623c6525f9adb1bd2b5d4577e6d6f7cc0e4e5"
+        },
+        {
+          "path": "app/models/booking_provider.rb",
+          "size_bytes": 2135,
+          "sha256": "39b8f2ea36ac33759caf6a79c97b4bda3cfad3bca03322739ae694709369d16b"
+        },
+        {
+          "path": "app/models/cancellation_policy.rb",
+          "size_bytes": 2084,
+          "sha256": "747164965d5dd52cac2373f00101f35bd798ee68903a419f5ec3efe37c6d14d0"
+        },
+        {
+          "path": "app/models/concerns/.keep",
+          "size_bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "app/models/concerns/geocodable.rb",
+          "size_bytes": 2278,
+          "sha256": "17b72211e2e46ca28c31497539071109820f677e3e1afdeb9f02dab51689ed59"
+        },
+        {
+          "path": "app/models/expense.rb",
+          "size_bytes": 903,
+          "sha256": "73459d71941856fe16332bac6d8e437903e0feb3f78e017941d805ddf0fe75b5"
+        },
+        {
+          "path": "app/models/inbox_item.rb",
+          "size_bytes": 9617,
+          "sha256": "1401fefe521c5fdb27a9e8de0bf76e9a416d1131bc6b07958323d04a3a4ea642"
+        },
+        {
+          "path": "app/models/invite.rb",
+          "size_bytes": 658,
+          "sha256": "29675223581d2db4690cc539564b28d1a4ab624b613c35f0c91cc63d365d4ac4"
+        },
+        {
+          "path": "app/models/media_item.rb",
+          "size_bytes": 171,
+          "sha256": "768913d8f1d22f87322b7cb69dc94eab40b47c94cd7edbaa70a82cdb3a93e755"
+        },
+        {
+          "path": "app/models/traveler.rb",
+          "size_bytes": 997,
+          "sha256": "bf3b91909f0da3be0eab845e35326d317c009d248a71907723a2acd9648595a3"
+        },
+        {
+          "path": "app/models/trip.rb",
+          "size_bytes": 1111,
+          "sha256": "210e823b4a870c7a0b27e428b00fb889847e6ef7911781eecd4cf2889ea70032"
+        },
+        {
+          "path": "app/models/trip_item.rb",
+          "size_bytes": 2669,
+          "sha256": "fd2b7b32f5bcd68cffbe6a1e485acc3f78a6616f183248c80f21bbe3c69065b2"
+        },
+        {
+          "path": "app/models/trip_member.rb",
+          "size_bytes": 217,
+          "sha256": "9454ea173c6899ebe7437483da91f3e1f4b639d4ccdbe84e8cb29b672d1af66d"
+        },
+        {
+          "path": "app/models/user.rb",
+          "size_bytes": 1201,
+          "sha256": "10fc8546ec4b382101227f0b1791aa423c8aabed3caf4c88f54da1b55db0278a"
+        },
+        {
+          "path": "app/models/user_identity.rb",
+          "size_bytes": 169,
+          "sha256": "10b73fb6deb606f5145dad97fef7cd4f5054bbf28371328138946215f736df5c"
+        },
+        {
+          "path": "app/services/itinerary_generator.rb",
+          "size_bytes": 6688,
+          "sha256": "c6e164ae7250197bb21504db5e8348c54962e6e76a2345d67ecdd3d7d38a8bec"
+        },
+        {
+          "path": "app/services/trip_items_bulk_import.rb",
+          "size_bytes": 2958,
+          "sha256": "e4e8e486997fb97d310dd9b8e6d57fa7f514c030d85c1fce455628f67e5a6da4"
+        },
+        {
+          "path": "app/views/admin/dashboard/index.html.erb",
+          "size_bytes": 3889,
+          "sha256": "8e207c1a22c432c23fb04747b8331d94c944f42e9ebae84f73392a4e8ee29cee"
+        },
+        {
+          "path": "app/views/admin/invites/index.html.erb",
+          "size_bytes": 3834,
+          "sha256": "19c25aa391b1db1ce2dd71c1325923e01b60251bc2d71ede29116d40b3b6e571"
+        },
+        {
+          "path": "app/views/expenses/_category_picker.html.erb",
+          "size_bytes": 4274,
+          "sha256": "c9fb985a491b2232b1f9e8e2494941835fc657e620e6b0cbca13540ba11c0cda"
+        },
+        {
+          "path": "app/views/expenses/_expense_nav.html.erb",
+          "size_bytes": 2268,
+          "sha256": "7a151e7d5578091fa9fd7e2c181c8a379ada32d36d2ca5ba384d7602db83a36c"
+        },
+        {
+          "path": "app/views/expenses/_expense_row.html.erb",
+          "size_bytes": 2429,
+          "sha256": "e1c6c41ecdef102bf95aa4466ffd12b4c00bc90e6849f292acb211d51d5bb9e5"
+        },
+        {
+          "path": "app/views/expenses/_form.html.erb",
+          "size_bytes": 7769,
+          "sha256": "7ede9e9204e2d347c00d6d636484d446932d23104594033be688976b90d50662"
+        },
+        {
+          "path": "app/views/expenses/edit.html.erb",
+          "size_bytes": 59,
+          "sha256": "6d62978396b3011e460e151e402390e6edf1ed12ca6fd2048335df4198ff8872"
+        },
+        {
+          "path": "app/views/expenses/index.html.erb",
+          "size_bytes": 1276,
+          "sha256": "2c6e42f1eeada77b229c0eb2c21d9c8439508e785559d594ed0f9c622de688fc"
+        },
+        {
+          "path": "app/views/expenses/new.html.erb",
+          "size_bytes": 59,
+          "sha256": "6d62978396b3011e460e151e402390e6edf1ed12ca6fd2048335df4198ff8872"
+        },
+        {
+          "path": "app/views/expenses/show.html.erb",
+          "size_bytes": 14856,
+          "sha256": "02b105c7e6420909d9eca26fe4ee79a4884d6b6e899e6e8b758faddce1397c4e"
+        },
+        {
+          "path": "app/views/home/app.html.erb",
+          "size_bytes": 7819,
+          "sha256": "e6b830a6218ffb8b13701cc8445aa594e231f53b314eb73d89464574fc1df35a"
+        },
+        {
+          "path": "app/views/home/privacy.html.erb",
+          "size_bytes": 2942,
+          "sha256": "d53fbdfc95826f89c9f54ea3bbc2d557410caf5e43ae5f7870c455ef60a08448"
+        },
+        {
+          "path": "app/views/home/terms.html.erb",
+          "size_bytes": 3070,
+          "sha256": "e30cb6cc23bf8dfb560013eb36465d4b0cab78abf7ab3a8afa4a1e31792991df"
+        },
+        {
+          "path": "app/views/inbox_items/index.html.erb",
+          "size_bytes": 5859,
+          "sha256": "c50302b87298a101eee89cb51730b91bbfc6bf09e61ea690718583279b4ed262"
+        },
+        {
+          "path": "app/views/inbox_items/show.html.erb",
+          "size_bytes": 9258,
+          "sha256": "b859242cd42ce8b54cd5386b0fa4249b656a87f4d7cfb8eaab25aa4dc91c8fd2"
+        },
+        {
+          "path": "app/views/invitation_mailer/invite.text.erb",
+          "size_bytes": 298,
+          "sha256": "f4a0c39a62add62f9febe972e0cf04f5556576ef4050af58b58ac39a173632d7"
+        },
+        {
+          "path": "app/views/invitation_mailer/invite_to_trip.text.erb",
+          "size_bytes": 181,
+          "sha256": "880831b9b8af8600b578447ac5b16bdd305fb08e90b2ad0c831d67cef8899fd2"
+        },
+        {
+          "path": "app/views/invites/accept.html.erb",
+          "size_bytes": 1976,
+          "sha256": "4a1041cf4462c02eeec5ede71b0a21c580980272e40d99b2d6b63772dcd3f850"
+        },
+        {
+          "path": "app/views/invites/index.html.erb",
+          "size_bytes": 4139,
+          "sha256": "8f95bfcb92f1db14c8fada020e146cf8f295b3564134f10af05d85666bd49ab0"
+        },
+        {
+          "path": "app/views/invites/waitlist.html.erb",
+          "size_bytes": 1076,
+          "sha256": "3d5227cfd5d02f8f94fbc4f8b74f2a53d447cc419ec07932425ad32fa08f300c"
+        },
+        {
+          "path": "app/views/itinerary_generations/_result.html.erb",
+          "size_bytes": 5870,
+          "sha256": "7b14889d2803d129d3a240824701a999971c545a75bdeee1bfd76bab517517c6"
+        },
+        {
+          "path": "app/views/itinerary_generations/show.html.erb",
+          "size_bytes": 1652,
+          "sha256": "4964c22ab455feecc12e54dcdbd841da8fa8c997154e15e6ac1e9bf44e606cd4"
+        },
+        {
+          "path": "app/views/layouts/_navbar.html.erb",
+          "size_bytes": 7494,
+          "sha256": "50699ce2b810b3b8970804af76544026d1e900bff0de4b8980e5552889069ae9"
+        },
+        {
+          "path": "app/views/layouts/admin.html.erb",
+          "size_bytes": 1869,
+          "sha256": "9ef21bd647d319f3a8d5774121104021f00623cdb5824d870cd87acadd7503b8"
+        },
+        {
+          "path": "app/views/layouts/application.html.erb",
+          "size_bytes": 3302,
+          "sha256": "65c6bc604fbcc6228d5aca2de8ef6fd0dda08474a5fc303c1ae18cd9d9c217ff"
+        },
+        {
+          "path": "app/views/layouts/landing.html.erb",
+          "size_bytes": 2482,
+          "sha256": "594ce9ab89189223e61cb37c67b2aecddcada9502b05dbf9ce8001213b49021a"
+        },
+        {
+          "path": "app/views/layouts/mailer.html.erb",
+          "size_bytes": 227,
+          "sha256": "3be3ece9c575096f91f8ecc6a4efb0c7ffd509d2ed4b06c3461bd920201bbd37"
+        },
+        {
+          "path": "app/views/layouts/mailer.text.erb",
+          "size_bytes": 13,
+          "sha256": "51353f9de3a26d4b28f7db91152bf56d31cfa9e4bd3c834680772a63cd374698"
+        },
+        {
+          "path": "app/views/notifications/index.html.erb",
+          "size_bytes": 3925,
+          "sha256": "0ca9f9fdf5b7c41391b5e04f260b9d391b5bccca06786d269683247143d784f6"
+        },
+        {
+          "path": "app/views/pwa/manifest.json.erb",
+          "size_bytes": 638,
+          "sha256": "53e94e45130fa787e861e9fa330a92673c0cb57b8bd74cb09eff0965d2fb0b1e"
+        },
+        {
+          "path": "app/views/pwa/service-worker.js",
+          "size_bytes": 876,
+          "sha256": "54bba97f108ac8d65af816aab152cc1860c9d9809641ba845231131db56d59bf"
+        },
+        {
+          "path": "app/views/settings/show.html.erb",
+          "size_bytes": 13547,
+          "sha256": "557062913ab78c5fd0c1960a828b47d55df6436eca75b08b1e30ab55adb3f57e"
+        },
+        {
+          "path": "app/views/trip_items/_form.html.erb",
+          "size_bytes": 11123,
+          "sha256": "eb7f9e9cde9341742c7d18c2879c5975f2bee85aa3020269723979415e295ccc"
+        },
+        {
+          "path": "app/views/trip_items/_item_row.html.erb",
+          "size_bytes": 2896,
+          "sha256": "f6951a9682a02ff1d199f89658008d5744552e4739945aa534e2b73f0bb9d9e8"
+        },
+        {
+          "path": "app/views/trip_items/_kind_picker.html.erb",
+          "size_bytes": 4623,
+          "sha256": "aa046efcacd44a45d93fd3a5202a3797af9287c6177dfe1d9428329e5101c6df"
+        },
+        {
+          "path": "app/views/trip_items/edit.html.erb",
+          "size_bytes": 34,
+          "sha256": "35a93ec772eff0944999668a7155da7a286804d4c8c345288b6f2bd2147cd6d8"
+        },
+        {
+          "path": "app/views/trip_items/import.html.erb",
+          "size_bytes": 11735,
+          "sha256": "4e937a8a1d27ef1dd59abc4f24873fca0e367a43acd869b6d4aa657428fb368c"
+        },
+        {
+          "path": "app/views/trip_items/new.html.erb",
+          "size_bytes": 34,
+          "sha256": "35a93ec772eff0944999668a7155da7a286804d4c8c345288b6f2bd2147cd6d8"
+        },
+        {
+          "path": "app/views/trip_items/show.html.erb",
+          "size_bytes": 18388,
+          "sha256": "24634bec3f9fa9d19cdd5218c9b9e36001a37e0020fd04a3530474cf347ed88e"
+        },
+        {
+          "path": "app/views/trip_mailer/pending_sender_notification.text.erb",
+          "size_bytes": 472,
+          "sha256": "e451312cbd3274d060feced70bfecedf660152de106b0333b5238ac6d9ebd445"
+        },
+        {
+          "path": "app/views/trips/_bottom_nav.html.erb",
+          "size_bytes": 2447,
+          "sha256": "7f39025644d289860893d889a0c63d680ca06ae6f70ed16a5e946e649416d9a4"
+        },
+        {
+          "path": "app/views/trips/_form.html.erb",
+          "size_bytes": 1347,
+          "sha256": "359c6135a8b3a452836af3db5437acc0864344cec3356cdc39346c38003e57a8"
+        },
+        {
+          "path": "app/views/trips/_navbar_center.html.erb",
+          "size_bytes": 811,
+          "sha256": "a1a40ca45c648410cbd832e11cd2c429c8b4ebb2623d1b43a0e01dfe89ef8e01"
+        },
+        {
+          "path": "app/views/trips/_tab_bar.html.erb",
+          "size_bytes": 2379,
+          "sha256": "f5169a0bc00348a63346b5329fb1e24e01897243bd50de7a9777c1345e4d4a61"
+        },
+        {
+          "path": "app/views/trips/_timeline.html.erb",
+          "size_bytes": 5885,
+          "sha256": "92bb3cece5997ad0e644b800cd4064b32b85d29cef02f8fc9b40a4d72eebb564"
+        },
+        {
+          "path": "app/views/trips/_timeline_event_content.html.erb",
+          "size_bytes": 2198,
+          "sha256": "72e961c54db20554729339386c27ca0de2cee32d13d9bfd310b711b8ee815a9b"
+        },
+        {
+          "path": "app/views/trips/_trip_panel.html.erb",
+          "size_bytes": 15064,
+          "sha256": "c9fc2544e4e5e75e675b170bf49fa7dac9c6f7f7e92c5882558ea1ec997efcd5"
+        },
+        {
+          "path": "app/views/trips/cover.html.erb",
+          "size_bytes": 5632,
+          "sha256": "0c19e60557ec690c4c731cab498d9a9f7d9557588b6b090ccdb6366eccd1ed11"
+        },
+        {
+          "path": "app/views/trips/edit.html.erb",
+          "size_bytes": 5467,
+          "sha256": "533630e3ac9121ea3d357e7e69114f66c4032bef509eeb30b26a769ae4d6fb25"
+        },
+        {
+          "path": "app/views/trips/index.html.erb",
+          "size_bytes": 7305,
+          "sha256": "f176d1c04be7fa96cd41eed61fc31b912bfaf684c4c59bde8c3aca2d401894b6"
+        },
+        {
+          "path": "app/views/trips/new.html.erb",
+          "size_bytes": 3326,
+          "sha256": "11b57ea8aa3f26fcd8aae88a8a6d8ffe11528d2425451bbe54dc743e200b64fe"
+        },
+        {
+          "path": "app/views/trips/show.html.erb",
+          "size_bytes": 12717,
+          "sha256": "c2f70b8e281abfec4ce07f8afebea23a3eb3c8589d143185c91db4b1e6008875"
+        },
+        {
+          "path": "app/views/trips/travelers.html.erb",
+          "size_bytes": 5479,
+          "sha256": "4434e023cc1e4dd6d2cf5b4693cfa67c46eba6e3b9a429950bf0649225a6d15c"
+        },
+        {
+          "path": "bin/brakeman",
+          "size_bytes": 139,
+          "sha256": "7825743df15f32a7a7a36b2098aec1dd56767031af0181d288f8a563c2c225b0"
+        },
+        {
+          "path": "bin/bundler-audit",
+          "size_bytes": 202,
+          "sha256": "484ba9033e36465898620184f12f427b014bf91ac61a423d302447ea99cf378d"
+        },
+        {
+          "path": "bin/ci",
+          "size_bytes": 180,
+          "sha256": "ee240fa535e83197c3b79489f56454ec9e1b24f9b7db15eb26c35fc858e12c02"
+        },
+        {
+          "path": "bin/dev",
+          "size_bytes": 379,
+          "sha256": "7a30cf45206be40b4446525717a7eff0099a3fdf2f7dc0ba4472b6815833e038"
+        },
+        {
+          "path": "bin/docker-entrypoint",
+          "size_bytes": 592,
+          "sha256": "ac43b48ac188a97e479de5a657b5a5568475811beeff530773b2b76c407765d5"
+        },
+        {
+          "path": "bin/importmap",
+          "size_bytes": 91,
+          "sha256": "aaaf65c0637afc4a2cd13b04660761cfaee83d7f6e81446986a3e3aaafb84da5"
+        },
+        {
+          "path": "bin/jobs",
+          "size_bytes": 117,
+          "sha256": "7b51c14b8871a220d4227a09c87634c5f20d574c5ea3cdfaeb32fa62e35fc988"
+        },
+        {
+          "path": "bin/kamal",
+          "size_bytes": 350,
+          "sha256": "796c21a2998af4bb3fbf43e45a5dbcbeafee8c323c4b57a2ab45adfe48a4589e"
+        },
+        {
+          "path": "bin/rails",
+          "size_bytes": 141,
+          "sha256": "0862d7bc09d5ed61785d677ef2dba10ce285387d4d5d9e3d90d97630e3f69ab6"
+        },
+        {
+          "path": "bin/rake",
+          "size_bytes": 90,
+          "sha256": "5943c3811dc345727b5f330b599c4c6c45abc04816dd8f4201aeed88cf268cb3"
+        },
+        {
+          "path": "bin/rubocop",
+          "size_bytes": 266,
+          "sha256": "62c9fd75681308e1d161f75e96b6af1a837a2f56c9fc9ddf641f1cebf0d7f717"
+        },
+        {
+          "path": "bin/setup",
+          "size_bytes": 1069,
+          "sha256": "0f5b139524ceb07af2e32cca242a2817f4df26f0ecf96c64cec402ebcfaa7294"
+        },
+        {
+          "path": "bin/thrust",
+          "size_bytes": 104,
+          "sha256": "ed1176b4df355db4b2a67ee37b45ca5c6d7118255d28a07dcdcb6d0fe4ae5c4f"
+        },
+        {
+          "path": "config/application.rb",
+          "size_bytes": 2372,
+          "sha256": "42c820c466a9e4a148bea9e1aac1572048a6113ce6f0ee9ee245fb8b17c4e655"
+        },
+        {
+          "path": "config/boot.rb",
+          "size_bytes": 207,
+          "sha256": "bb5a9499136e72c70c557bc3ff4d2661cc9b05dc5b848fb720540e3fe716e4ea"
+        },
+        {
+          "path": "config/bundler-audit.yml",
+          "size_bytes": 226,
+          "sha256": "cf66f718f2c84c0ab6ae50fcb0b1323751c11522de80d0c66e25e4b5680cde55"
+        },
+        {
+          "path": "config/cable.yml",
+          "size_bytes": 549,
+          "sha256": "8e30a9d3e58b613f963d1ed5fb231474f88e7d290dcde6ceb9db83b83a3a8d0a"
+        },
+        {
+          "path": "config/cache.yml",
+          "size_bytes": 300,
+          "sha256": "1eeacb19bab1653c4d0817e093f0ae22fd1667853ee2e580704f41f13f21331d"
+        },
+        {
+          "path": "config/ci.rb",
+          "size_bytes": 694,
+          "sha256": "ee24e9c93939e6bb316b49667a1be93157d305af4e88b82841af5c886fc04ada"
+        },
+        {
+          "path": "config/database.yml",
+          "size_bytes": 1134,
+          "sha256": "81440fc26b79e802f1b2b67c5643fdea37ca41914628896bcd9bc4fac150a491"
+        },
+        {
+          "path": "config/deploy.yml",
+          "size_bytes": 1069,
+          "sha256": "525e798e27cefbb012f19ed58f018a1dc72845bd53a633ec6e36c28a1bda52b3"
+        },
+        {
+          "path": "config/environment.rb",
+          "size_bytes": 128,
+          "sha256": "73b2e731e02cedb9dc0335e1a35c3a2b7738032e3aa7e62ac32cbb8432b43c69"
+        },
+        {
+          "path": "config/environments/development.rb",
+          "size_bytes": 3906,
+          "sha256": "1d85db890abee968201a2a53516196a698496645d516e6260c83168334981d13"
+        },
+        {
+          "path": "config/environments/production.rb",
+          "size_bytes": 3597,
+          "sha256": "40154f598049302fa192abe7e5bcc6ceb1b486ca7128b56ceb3351aeb6139f25"
+        },
+        {
+          "path": "config/environments/test.rb",
+          "size_bytes": 2521,
+          "sha256": "68bdba143439e14395faab6fd617a9ea94dd9dc5a661d51ff3932c83a9c0bc1e"
+        },
+        {
+          "path": "config/importmap.rb",
+          "size_bytes": 285,
+          "sha256": "148fdf21d156d2d1274627caa734d3e2d05ce23ae60e6a371fae054933ca30be"
+        },
+        {
+          "path": "config/initializers/action_mailbox.rb",
+          "size_bytes": 182,
+          "sha256": "af35dd2909c5d930948b58ce8b0c70fad08900fb5855fecbb4c21b1ea67cf6c8"
+        },
+        {
+          "path": "config/initializers/assets.rb",
+          "size_bytes": 296,
+          "sha256": "f55d4ce66ec2b48256ff492c99c7105b7cc1726c78789dffdbee2611e193c1a6"
+        },
+        {
+          "path": "config/initializers/content_security_policy.rb",
+          "size_bytes": 1332,
+          "sha256": "ce826e17b3fb793bff050c64f2d515da14b0a63b77f0144368646597075fbdd5"
+        },
+        {
+          "path": "config/initializers/filter_parameter_logging.rb",
+          "size_bytes": 468,
+          "sha256": "f864bd67e7bdaa63a5331b9fc15446613c410c3a314cd70d1b6a7c8b566b6120"
+        },
+        {
+          "path": "config/initializers/geocoder.rb",
+          "size_bytes": 226,
+          "sha256": "593b940bba375d0a705e67843a650bfb52e6c73ff275af322c3f3a349a1b25a2"
+        },
+        {
+          "path": "config/initializers/inflections.rb",
+          "size_bytes": 649,
+          "sha256": "e2c18b803625a073b25e4ee4460677da33a8bf19bbbcad629718a8e15c58acc2"
+        },
+        {
+          "path": "config/initializers/mail_logger.rb",
+          "size_bytes": 594,
+          "sha256": "1dfaf6c3be2211bdf7dff1fc5f821d5973294ddebab407e0debd1aa5ee3f8ba8"
+        },
+        {
+          "path": "config/initializers/omniauth.rb",
+          "size_bytes": 505,
+          "sha256": "575c84ccbd9457675a167d7cf168b639603ea9c1378e3fd616323f41aa74a4bf"
+        },
+        {
+          "path": "config/initializers/pagy.rb",
+          "size_bytes": 68,
+          "sha256": "6004e12bb1f8856dc8e508319cec022ed92db2acc9050f08c40d17ddf99891f9"
+        },
+        {
+          "path": "config/initializers/session_store.rb",
+          "size_bytes": 398,
+          "sha256": "7206a903a53f8ed325bbf586258a2af1d1cbe79681b95e4776ebf79e81ab1be3"
+        },
+        {
+          "path": "config/initializers/uuid_primary_keys.rb",
+          "size_bytes": 655,
+          "sha256": "02a9592ea5cd929162ae8608254375917d0a4aa02e59545d7ee874d4079fafaf"
+        },
+        {
+          "path": "config/locales/en.yml",
+          "size_bytes": 908,
+          "sha256": "ad72af216ad0a67a1155c685535698fdd2a7138810c7e6dcb5eab7f0cc1c5922"
+        },
+        {
+          "path": "config/puma.rb",
+          "size_bytes": 2052,
+          "sha256": "be1d845c72a6c48ee64662549d55a74d3c0142cb6c6e5574a8eb1ff122f71f20"
+        },
+        {
+          "path": "config/queue.yml",
+          "size_bytes": 290,
+          "sha256": "4343b6cebcfc464f6f84b993b0c60d2b229cc5d97cde4fd845aebb15871f4bac"
+        },
+        {
+          "path": "config/recurring.yml",
+          "size_bytes": 474,
+          "sha256": "1b308d44c793b26502423ab52361e20713c1294a47743d65f339059311e6dbe8"
+        },
+        {
+          "path": "config/routes.rb",
+          "size_bytes": 2361,
+          "sha256": "0f111b97733fe2664cfb7f4cf7e26ba88b506098b490bf1c73d2bd7f1c850ad2"
+        },
+        {
+          "path": "config/storage.yml",
+          "size_bytes": 811,
+          "sha256": "bb472986ec9dd77d0e30e840d8f2b21b9c435aa65e3096aa813e4bc2df658edb"
+        },
+        {
+          "path": "config.ru",
+          "size_bytes": 160,
+          "sha256": "1a5090e57cf9301e8bda3fec3abe4c72fbc001f6cd4909fd80b6cd488ab531b9"
+        },
+        {
+          "path": "db/cable_migrate/20260101000001_create_solid_cable_tables.rb",
+          "size_bytes": 459,
+          "sha256": "8d39424aa9310b25147cfa02b548b81ab0355e1b9c126dad221da3626a24a33b"
+        },
+        {
+          "path": "db/cable_schema.rb",
+          "size_bytes": 545,
+          "sha256": "9e22b36e3cc6413e52eefcfd1136259853426ff32e5c31d98690dafeb6fa6ee6"
+        },
+        {
+          "path": "db/cable_structure.sql",
+          "size_bytes": 823,
+          "sha256": "165e15f979c384a2cabff2afd47e592a1ce54aadf8495759679dfd089e2c909e"
+        },
+        {
+          "path": "db/cache_migrate/20260101000001_create_solid_cache_tables.rb",
+          "size_bytes": 535,
+          "sha256": "c244a8672874c2f0114ed256c7a7b800af2c8e1a5b688187cce42a34d3ab6e3e"
+        },
+        {
+          "path": "db/cache_schema.rb",
+          "size_bytes": 613,
+          "sha256": "31d6012503419a1be4aa87c4d18b2a9a85d84b6c23851428362d9a5e7b0eb26c"
+        },
+        {
+          "path": "db/cache_structure.sql",
+          "size_bytes": 865,
+          "sha256": "89a0a0d02b64d9baafb7b397607b1124d21fce66ce202bf089da8c620d9ad8f6"
+        },
+        {
+          "path": "db/migrate/20260328111901_create_active_storage_tables.active_storage.rb",
+          "size_bytes": 2197,
+          "sha256": "3bf51e52925efe90408d3159f9de848d2f891dfda149e5706280b8c027e82ddf"
+        },
+        {
+          "path": "db/migrate/20260328111902_create_action_mailbox_tables.action_mailbox.rb",
+          "size_bytes": 677,
+          "sha256": "9e35aa49723dfe0288cd51b4466fe589c78491f3ea9a3f57b6523ff45670ddfa"
+        },
+        {
+          "path": "db/migrate/20260328111914_create_users.rb",
+          "size_bytes": 281,
+          "sha256": "a02538793dd925b30828f30b7e5c8057d82bfbd753570f13b924289953af0f3e"
+        },
+        {
+          "path": "db/migrate/20260328111917_create_user_identities.rb",
+          "size_bytes": 446,
+          "sha256": "bebfb9772eae6e3273daa66b5353fc4a302ef04247240b9fb6055988aaa14230"
+        },
+        {
+          "path": "db/migrate/20260328111920_create_trips.rb",
+          "size_bytes": 656,
+          "sha256": "c5c90bcb54ba3977d4a68a0fb4cc07f9ebce57a3cbad27c47d8d3f9558f4fe16"
+        },
+        {
+          "path": "db/migrate/20260328111958_create_trip_members.rb",
+          "size_bytes": 522,
+          "sha256": "d5b51c72216f5cc3b257b17adbacd15998f79258b2d2c886635b14fd7c35aef5"
+        },
+        {
+          "path": "db/migrate/20260328112001_create_travel_legs.rb",
+          "size_bytes": 721,
+          "sha256": "102c7c883a74da09616edc62d6a20d74767e3aae7f31f3f4ab393cb2b9eff9a9"
+        },
+        {
+          "path": "db/migrate/20260328112004_create_accommodations.rb",
+          "size_bytes": 794,
+          "sha256": "8b5fc5084d214b43312a0aded43d6c93de7ca1ca4a79e1361c9095fa6508634e"
+        },
+        {
+          "path": "db/migrate/20260328112007_create_bookings.rb",
+          "size_bytes": 650,
+          "sha256": "2d9675e819bed1f4445b3090d9579d70543bb705a19e3ed7d990429e428d636b"
+        },
+        {
+          "path": "db/migrate/20260328112010_create_shortlist_items.rb",
+          "size_bytes": 832,
+          "sha256": "c8310982f7e48941b1f616be448a43ec7ee6ac390951fbb3ddac4f217e332784"
+        },
+        {
+          "path": "db/migrate/20260328112013_create_media_items.rb",
+          "size_bytes": 695,
+          "sha256": "609753d50d493bc7f227987f16742fb3cf09918bc3a0bb4b73e9e98679868604"
+        },
+        {
+          "path": "db/migrate/20260328112016_create_expenses.rb",
+          "size_bytes": 799,
+          "sha256": "7cc21154942a10cb7234797ca890e74a3556b1a78ff972bbaa3434c898a53690"
+        },
+        {
+          "path": "db/migrate/20260328112019_create_approved_senders.rb",
+          "size_bytes": 502,
+          "sha256": "2f2066ca0e9d1223a1de51fc879896665160e363cdb48e6d6777998cb211ab38"
+        },
+        {
+          "path": "db/migrate/20260328112022_create_inbox_items.rb",
+          "size_bytes": 818,
+          "sha256": "29c3781a62a13e525fce0365c0738028fdcbc8802741f0926efadb8fc23e7663"
+        },
+        {
+          "path": "db/migrate/20260329092750_add_confirmed_to_expenses.rb",
+          "size_bytes": 236,
+          "sha256": "b7fbc2ecca6e4985e7338decad1b3fe76324cb4bd175b5b0dfa721f533970a9a"
+        },
+        {
+          "path": "db/migrate/20260329093311_add_raw_html_to_inbox_items.rb",
+          "size_bytes": 129,
+          "sha256": "6a08ca788b277009dd92283f552ea7cfe4745d9cc8ec07ea2cf460da2fba3136"
+        },
+        {
+          "path": "db/migrate/20260329130118_add_lat_lng_to_travel_legs_and_bookings.rb",
+          "size_bytes": 431,
+          "sha256": "ae1e782c1044decd39f8afe5c6a9bd58c693de35a233e88d980d8e5bae4eb9c2"
+        },
+        {
+          "path": "db/migrate/20260329133748_update_trips_remove_status_budget_add_cover_image.rb",
+          "size_bytes": 357,
+          "sha256": "7ab663c7b7e3e3c754707ee10bf1a3b90419b9d5b9071a97c09de31101b43bcf"
+        },
+        {
+          "path": "db/migrate/20260330083951_add_accommodation_to_shortlist_items.rb",
+          "size_bytes": 188,
+          "sha256": "7f910fecf950528301c7fb31fdd81748f55e15284845c86d1370022a9084a10d"
+        },
+        {
+          "path": "db/migrate/20260330191640_create_fellow_travelers.rb",
+          "size_bytes": 418,
+          "sha256": "628608d57d5dbc72f8ff391677d3191c02e89a371fe3311f32f3e7378c8aa844"
+        },
+        {
+          "path": "db/migrate/20260330201931_add_invited_email_to_fellow_travelers.rb",
+          "size_bytes": 350,
+          "sha256": "bac6d5e6b954e8cf7675f63daa521de228b4bd182a53f52f8e50f0f65830cbc6"
+        },
+        {
+          "path": "db/migrate/20260330213217_create_accounts.rb",
+          "size_bytes": 334,
+          "sha256": "c724ee58b1b1431e81c08ec59ac467336988dc38954487614990f18c80c9c35d"
+        },
+        {
+          "path": "db/migrate/20260330213222_create_travelers.rb",
+          "size_bytes": 504,
+          "sha256": "b7605dd7dcf147cff29edc3ea4a74062468d867321d23b67b4e36c41ec078bd8"
+        },
+        {
+          "path": "db/migrate/20260330213229_add_account_id_to_trips.rb",
+          "size_bytes": 160,
+          "sha256": "2f4839ac322d74f6e2ad31c26b34e473789db67584fc973a09aaa56714877616"
+        },
+        {
+          "path": "db/migrate/20260330213233_add_traveler_id_to_trip_members.rb",
+          "size_bytes": 331,
+          "sha256": "f3ce97da9c742d1db26014cd5044653a95b992b63b47c35ace978b890ee5958b"
+        },
+        {
+          "path": "db/migrate/20260330213238_add_paid_by_traveler_id_to_expenses.rb",
+          "size_bytes": 201,
+          "sha256": "81e3944953a390b441c68a17350c36b57ffdbfedd77a0e052caf444ef4245371"
+        },
+        {
+          "path": "db/migrate/20260330213245_populate_accounts_and_travelers.rb",
+          "size_bytes": 89,
+          "sha256": "15ba98ff1cd6d843a24ff674ca26de3f588e091af35f18baed7373340b9c5321"
+        },
+        {
+          "path": "db/migrate/20260330213249_finalize_account_refactor.rb",
+          "size_bytes": 803,
+          "sha256": "0b30f6a684d7db19294635b6ddb9a8a3376745dc34c3a9a81933b0675fbb3529"
+        },
+        {
+          "path": "db/migrate/20260331070009_create_invites.rb",
+          "size_bytes": 625,
+          "sha256": "006e92503dd2b65c8faa593e99e215c58ad877637800a005c3c8b66dd21e1eb3"
+        },
+        {
+          "path": "db/migrate/20260405000001_create_trip_items.rb",
+          "size_bytes": 1117,
+          "sha256": "94602a393ac2236d51b6aeafd52aca7dff8ed5a3a9a0e79ca1b0dfeb5c0397ad"
+        },
+        {
+          "path": "db/migrate/20260407000001_add_theme_to_users.rb",
+          "size_bytes": 149,
+          "sha256": "21302f8f52073b43f9db2890371996f2fbe764f32c9d480ab2e7c6bec44f3e3a"
+        },
+        {
+          "path": "db/migrate/20260408154406_add_inbox_item_to_expenses.rb",
+          "size_bytes": 168,
+          "sha256": "509de746562cf413a51bd703ff61495b05a8f9ab9caff9f826ad49799528e305"
+        },
+        {
+          "path": "db/migrate/20260408155636_remove_legacy_travel_models.rb",
+          "size_bytes": 651,
+          "sha256": "f2041ba17691483f522ad3d6aaf6e73ac58d5c66d18536969e33eddf1b862595"
+        },
+        {
+          "path": "db/migrate/20260409000001_align_expense_categories_to_trip_item_kinds.rb",
+          "size_bytes": 846,
+          "sha256": "52b9c833ade46e06a9a77e5db4fcc0a72aa684cf235dc58527c31ce040c98154"
+        },
+        {
+          "path": "db/migrate/20260409000002_rename_kinds_to_user_terms.rb",
+          "size_bytes": 1031,
+          "sha256": "a8378ccee8fc0f06f6942ccd7cc11bef78d58d0f1d2b98a705d02e1fc22293fa"
+        },
+        {
+          "path": "db/migrate/20260411144752_drop_fellow_travelers.rb",
+          "size_bytes": 562,
+          "sha256": "1ffcc9b6f2f1a4a5b16f7edeb36a39928337afb5720c0738ee3f0c517c1a7ee7"
+        },
+        {
+          "path": "db/migrate/20260415044043_add_admin_to_users.rb",
+          "size_bytes": 226,
+          "sha256": "eead0fac625e427b054e90f68bb747576817b2f74122df1c41e23303ae30a08d"
+        },
+        {
+          "path": "db/migrate/20260509175443_add_url_to_trip_items.rb",
+          "size_bytes": 120,
+          "sha256": "7e3085b89a9deb90488c930af98a28615534e7c47f8f2c02c00de0105dc935c7"
+        },
+        {
+          "path": "db/migrate/20260510000000_add_provider_to_trip_items.rb",
+          "size_bytes": 130,
+          "sha256": "e0ce64ceb33070762e76d360ab892c401b47b70d8c568da34fa8f3500c68a239"
+        },
+        {
+          "path": "db/migrate/20260511120000_add_cancellation_policy_to_trip_items.rb",
+          "size_bytes": 215,
+          "sha256": "426c904182afa17b91d8d276330b2e468f302ae73a38d07bc71b229e9a24f2bd"
+        },
+        {
+          "path": "db/queue_migrate/20260101000001_create_solid_queue_tables.rb",
+          "size_bytes": 4876,
+          "sha256": "753b5e88a5ee24ff9c7cdd23d6f28b7f00281353034a4cabf6eb8a10bbd8cdfe"
+        },
+        {
+          "path": "db/queue_schema.rb",
+          "size_bytes": 6278,
+          "sha256": "36b61820b43412c196933dc6182b164b6cfd86f7d13c918debc9e6cc2e1cfc29"
+        },
+        {
+          "path": "db/queue_structure.sql",
+          "size_bytes": 6903,
+          "sha256": "5f09287bfd4715af2a59e32a54245d4d6da5929e71a736e96298520d2a0e0fec"
+        },
+        {
+          "path": "db/seeds.rb",
+          "size_bytes": 14410,
+          "sha256": "cfc6815c551de8ec0ab445f3eeab6d30db661deef9f09588a02033f262066c0f"
+        },
+        {
+          "path": "db/structure.sql",
+          "size_bytes": 13425,
+          "sha256": "0999bdf3aa04b07dacee6591e000de317eb52eace183def79a51a892630a805a"
+        },
+        {
+          "path": "docker-compose.yml",
+          "size_bytes": 220,
+          "sha256": "c503e03f76ee25bde44bf7210e03a80f57caa8aeb4e790d83bb96dc899b50c02"
+        },
+        {
+          "path": "docs/CNAME",
+          "size_bytes": 14,
+          "sha256": "1bd86ccc21504a92c4e46768cdc6534b4cfd7abbaafc483a316bb8fb0ada7145"
+        },
+        {
+          "path": "docs/SETUP.md",
+          "size_bytes": 10634,
+          "sha256": "b66edbdc9918ec013f97aa6438c5e52172e58d260f32ff303b16f3f9486e6708"
+        },
+        {
+          "path": "docs/apple-touch-icon.png",
+          "size_bytes": 17212,
+          "sha256": "97da3f29d249a2dbf7567440d2b8a3027816591a141428e3630d40d6ec0c4e1d"
+        },
+        {
+          "path": "docs/favicon-96x96.png",
+          "size_bytes": 8403,
+          "sha256": "7ef070fc645ccfe105ee94b2aa5022a831cffb0e7f93370b25433b1ee9d16689"
+        },
+        {
+          "path": "docs/favicon.ico",
+          "size_bytes": 2531,
+          "sha256": "0011ce92bdf09ccb4f2a2acc335fed580cea30df8eab358f55fddba280a41608"
+        },
+        {
+          "path": "docs/favicon.svg",
+          "size_bytes": 4255,
+          "sha256": "51e72276ffbdb22c92ebe73b1890ef205dd2a797447a092b68508628090a9ea2"
+        },
+        {
+          "path": "docs/icon-512.png",
+          "size_bytes": 39515,
+          "sha256": "fe10a14b452956ff617c82ca7f8a0bad16fc3c7989ea50fbf67df9a0c716da01"
+        },
+        {
+          "path": "docs/index.html",
+          "size_bytes": 71715,
+          "sha256": "1dd62e43b8d3c4f6a176cfbe75e26e4eadef8ef339fa2f682b6b056634078848"
+        },
+        {
+          "path": "docs/logo-mark.svg",
+          "size_bytes": 4269,
+          "sha256": "208d3ae86bb0edda2a12e280e90dc82084001fd215e4db1f076a0801076c12e5"
+        },
+        {
+          "path": "docs/screenshots/gruvbox/Desktop.png",
+          "size_bytes": 1145578,
+          "sha256": "2c4d3092fe5560e3a1c050a3373ecd01718764cdb79d58b8ca96f34217b979e2"
+        },
+        {
+          "path": "docs/screenshots/gruvbox/ExpenseDetail.png",
+          "size_bytes": 231178,
+          "sha256": "78ba872bd79d365cb588395ca1aacd8e3a3a471cb07a351e6f80a412d63eccdd"
+        },
+        {
+          "path": "docs/screenshots/gruvbox/Expenses.png",
+          "size_bytes": 467962,
+          "sha256": "160a89df9f2313b7e14cecdacdb50722e646263427607defe05eea08c39f1abb"
+        },
+        {
+          "path": "docs/screenshots/gruvbox/ImportAI.png",
+          "size_bytes": 252050,
+          "sha256": "15d5c353c2897fe1f4bdc99c272f716e7f6ca528e45973bdf1710fb7bad7e175"
+        },
+        {
+          "path": "docs/screenshots/gruvbox/Inbox.png",
+          "size_bytes": 283082,
+          "sha256": "4c4a47ab28fc2900ad4c16fae167aa06249188efab69fa62b39ca80faac8e532"
+        },
+        {
+          "path": "docs/screenshots/gruvbox/Itinerary.png",
+          "size_bytes": 1011205,
+          "sha256": "a5702d25a8afde31d487dd4e2c60c7576300c8d2bbe865b4d5c6bf0be3717703"
+        },
+        {
+          "path": "docs/screenshots/gruvbox/Trip.png",
+          "size_bytes": 433878,
+          "sha256": "dd298071e304ce7ef0a75a9dec409cb26a4033e561718fdd4cf7cb42537b1cc3"
+        },
+        {
+          "path": "docs/screenshots/gruvbox/TripItem-Confirmed.png",
+          "size_bytes": 305491,
+          "sha256": "8737b97fd33efc2abc825fd95e5ac1d75def8893a52a9d7b55024b55c2bc5cec"
+        },
+        {
+          "path": "docs/screenshots/gruvbox/TripItem-Idea.png",
+          "size_bytes": 242058,
+          "sha256": "7efb194833237a2cc886ce8f2692981ba01143ab14bbe421d564c6d07fb3f5fd"
+        },
+        {
+          "path": "docs/screenshots/gruvbox/TripItem-New.png",
+          "size_bytes": 224797,
+          "sha256": "7e6c0f8613f4b0fe5796eef7d47a2e594df5686229258b65621ae574a06e8c81"
+        },
+        {
+          "path": "docs/screenshots/rosepine/Desktop.png",
+          "size_bytes": 1151631,
+          "sha256": "7971be79aa05384db749b25ea7404179e6db59f54343ac92e84d9219659fe26d"
+        },
+        {
+          "path": "docs/screenshots/rosepine/ExpenseDetail.png",
+          "size_bytes": 234359,
+          "sha256": "3bcfc28d50f2f07625a5f6b866cf7cc5a6cc360b5b53f9e30e162818e0d90c3f"
+        },
+        {
+          "path": "docs/screenshots/rosepine/Expenses.png",
+          "size_bytes": 485039,
+          "sha256": "eea9be3585d5529f40c6539c9fa1e69a92934b8a9214cd90d0968c3546179d43"
+        },
+        {
+          "path": "docs/screenshots/rosepine/ImportAI.png",
+          "size_bytes": 254270,
+          "sha256": "9741b1a9a2e5586ba81479043459066b46b9c25b118ae68a3f978fe46ca84c9f"
+        },
+        {
+          "path": "docs/screenshots/rosepine/Inbox.png",
+          "size_bytes": 282946,
+          "sha256": "b1a14ede4dcbeed267305870da6fde23ebb8d5c61d204608914945f19a811a9d"
+        },
+        {
+          "path": "docs/screenshots/rosepine/Itinerary.png",
+          "size_bytes": 1023916,
+          "sha256": "42df5ad826b1b4f4695afaf811fd763115ba145a0ab745068d1b5d6d3a0083d2"
+        },
+        {
+          "path": "docs/screenshots/rosepine/Trip.png",
+          "size_bytes": 435235,
+          "sha256": "79964b40352dd63040ce08e7b45fbaccdf32cc0497ec70043c0a04d92edfc8d5"
+        },
+        {
+          "path": "docs/screenshots/rosepine/TripItem-Confirmed.png",
+          "size_bytes": 304893,
+          "sha256": "62704e7211b855029b293db5560362652ac6e6cc82d6d169fa8c5f857aabc1d6"
+        },
+        {
+          "path": "docs/screenshots/rosepine/TripItem-Idea.png",
+          "size_bytes": 244422,
+          "sha256": "97aeeee8973b4571dd30812174e2c3ab59d8e88f0595b289b1fc4d0219797b8b"
+        },
+        {
+          "path": "docs/screenshots/rosepine/TripItem-New.png",
+          "size_bytes": 229328,
+          "sha256": "efe5dc435fa24a32dbb07af951980f0666b5fcb54547c3b1e16afe3fd5f727ff"
+        },
+        {
+          "path": "docs/screenshots/sand/Desktop.png",
+          "size_bytes": 1152007,
+          "sha256": "25706e4ec78af02f46616c88460913c01b94dabf5cce34b154311f66fce618c2"
+        },
+        {
+          "path": "docs/screenshots/sand/ExpenseDetail.png",
+          "size_bytes": 235653,
+          "sha256": "a5eb835777624d359fc423c6fae283f6843c0bc46b00e6ca8c34bd9f97e4ec0b"
+        },
+        {
+          "path": "docs/screenshots/sand/Expenses.png",
+          "size_bytes": 487913,
+          "sha256": "de088c0f2e9ff2b12079ee9368e8331d6b1d05d119e8c77de9ed5049f7c2a67c"
+        },
+        {
+          "path": "docs/screenshots/sand/ImportAI.png",
+          "size_bytes": 254047,
+          "sha256": "dc56b6c2761d55d673c8a597117dc4caaa6fbf16a9e1ff07e03e2144a02264e8"
+        },
+        {
+          "path": "docs/screenshots/sand/Inbox.png",
+          "size_bytes": 280365,
+          "sha256": "bbd795fae8fd4107019d635157ab9ac1720bd5993535e30899af3eec8f1250f7"
+        },
+        {
+          "path": "docs/screenshots/sand/Itinerary.png",
+          "size_bytes": 1023299,
+          "sha256": "8c577682aa3aa5ac533f54e01a697ff11b29cfe31c33043232fc8cd68a394a1d"
+        },
+        {
+          "path": "docs/screenshots/sand/Trip.png",
+          "size_bytes": 443835,
+          "sha256": "427e637bec3a823500de6db085711a50be20933bf3e611a3ad026ab08463038c"
+        },
+        {
+          "path": "docs/screenshots/sand/TripItem-Confirmed.png",
+          "size_bytes": 307144,
+          "sha256": "908e5ebd71a5487ad78f291e69dbb9105ff65580f6c84b2e46ca924269917471"
+        },
+        {
+          "path": "docs/screenshots/sand/TripItem-Idea.png",
+          "size_bytes": 245805,
+          "sha256": "6ec41ea832aeda80a3a1bf6cc20c5629bac9f00161ee05143c4ac9ab38f7cc4e"
+        },
+        {
+          "path": "docs/screenshots/sand/TripItem-New.png",
+          "size_bytes": 238799,
+          "sha256": "4d9954e949018e875934909a2af3b14b6c0513e8ec6951db7772ec2283afb342"
+        },
+        {
+          "path": "docs/screenshots/solarized/Desktop.png",
+          "size_bytes": 1149730,
+          "sha256": "5d51242c458d69bbc172596f53ca8bd82cd86f83db50ad11c38f1514626b237c"
+        },
+        {
+          "path": "docs/screenshots/solarized/ExpenseDetail.png",
+          "size_bytes": 233120,
+          "sha256": "c73b033daae9cfda5531228f41aad84243f15c0c96e0d1980e08bf637c56b4d7"
+        },
+        {
+          "path": "docs/screenshots/solarized/Expenses.png",
+          "size_bytes": 478552,
+          "sha256": "a0eccde695d3b9730ce493af1505cbfd789ae5e0918e0f5f9f9d824f7b3a43bc"
+        },
+        {
+          "path": "docs/screenshots/solarized/ImportAI.png",
+          "size_bytes": 253218,
+          "sha256": "4363790070a2443bc5f6b6383257e3b8bcb41f7e736a64137309f6c9917699cd"
+        },
+        {
+          "path": "docs/screenshots/solarized/Inbox.png",
+          "size_bytes": 284897,
+          "sha256": "3c13d0b087509a32f0548d2628e3e64a0405c6ce77f31e547eeb0b38d370a95c"
+        },
+        {
+          "path": "docs/screenshots/solarized/Itinerary.png",
+          "size_bytes": 911905,
+          "sha256": "5e1476a7369e681f285783b4eeae442ba6bc3ec7799873865340cffd377b9263"
+        },
+        {
+          "path": "docs/screenshots/solarized/Trip.png",
+          "size_bytes": 433259,
+          "sha256": "db30a388b86f2341617502f68e38a264ce57c5e1da1d6c20c54d8379a733b7f7"
+        },
+        {
+          "path": "docs/screenshots/solarized/TripItem-Confirmed.png",
+          "size_bytes": 302777,
+          "sha256": "361ba493e62eda2b8b771b29ea52e09f24a5f751f0fa46f13325732cc1c80a4f"
+        },
+        {
+          "path": "docs/screenshots/solarized/TripItem-Idea.png",
+          "size_bytes": 243525,
+          "sha256": "7854cbe9ba3f44e7b8e66c821269e82fc2b4b116d153330c0ac34b4250e426a6"
+        },
+        {
+          "path": "docs/screenshots/solarized/TripItem-New.png",
+          "size_bytes": 229737,
+          "sha256": "ad7dec981c0c984afe4e24c4f25af627252f8395dfed0791d4f066818c11e124"
+        },
+        {
+          "path": "docs/screenshots/stan/Desktop.png",
+          "size_bytes": 1149432,
+          "sha256": "7f21a84f91e5975d8de184dd48bc58a9a2e4f690cddefc543936915a4f8b1eb9"
+        },
+        {
+          "path": "docs/screenshots/stan/ExpenseDetail.png",
+          "size_bytes": 235144,
+          "sha256": "4801b9e735ae846e44bab401dd8041f55f401c6c88fd8b316243d76c39c4d429"
+        },
+        {
+          "path": "docs/screenshots/stan/Expenses.png",
+          "size_bytes": 480089,
+          "sha256": "f9a38c2e65c01786727b526811e4d6a617311d7d6e82f98d4d1e81b5a2a11892"
+        },
+        {
+          "path": "docs/screenshots/stan/ImportAI.png",
+          "size_bytes": 254301,
+          "sha256": "f112b74370aec10cd31aabfb3ffcb6687e00310bf0658c3098dc47d3ec57b904"
+        },
+        {
+          "path": "docs/screenshots/stan/Inbox.png",
+          "size_bytes": 284643,
+          "sha256": "b373cf609089116986dd2599c3b2ace55fb94368f1afb7a3990ed89e7df2eb08"
+        },
+        {
+          "path": "docs/screenshots/stan/Itinerary.png",
+          "size_bytes": 1577295,
+          "sha256": "14694738eec2719d77f5022d7a8046a1b9a500e0aa28137d4a4c3249cf72b4f2"
+        },
+        {
+          "path": "docs/screenshots/stan/Trip.png",
+          "size_bytes": 437102,
+          "sha256": "ed0f0627e5a90d63c3f4f5573b4b75c62d5407d118537a8401373398b26cb9de"
+        },
+        {
+          "path": "docs/screenshots/stan/TripItem-Confirmed.png",
+          "size_bytes": 305252,
+          "sha256": "e8c4de50239f63414373edc91f668c01b505eab044ecb7e315201ac1a2b68838"
+        },
+        {
+          "path": "docs/screenshots/stan/TripItem-Idea.png",
+          "size_bytes": 243594,
+          "sha256": "27007f118b9baeca63506e274e7495784558a357e9f3f74792a1f2d5c0f9e210"
+        },
+        {
+          "path": "docs/screenshots/stan/TripItem-New.png",
+          "size_bytes": 230635,
+          "sha256": "bc9600313cfa568ac96087f2d26920ebbd8e5c8ad31d9086a511afc3126e93fd"
+        },
+        {
+          "path": "docs/screenshots-webp/gruvbox/Desktop.webp",
+          "size_bytes": 56818,
+          "sha256": "3401752508576af960a813b22887b99df923d878abb07ed07872634b68ce6e8c"
+        },
+        {
+          "path": "docs/screenshots-webp/gruvbox/ExpenseDetail.webp",
+          "size_bytes": 14388,
+          "sha256": "7a72f25968da469b7cd72dbe4383755f09b0240bd18e4eeec8c7cb6b418062f5"
+        },
+        {
+          "path": "docs/screenshots-webp/gruvbox/Expenses.webp",
+          "size_bytes": 33816,
+          "sha256": "209f31f885f7414bd2d5bc94512a4d191274b9fec6d80007cbdfff559827cc5f"
+        },
+        {
+          "path": "docs/screenshots-webp/gruvbox/ImportAI.webp",
+          "size_bytes": 18962,
+          "sha256": "98d68e3c866a90150d43225ce08812f7e5ad9f4b8ecde19c1705a6928eaa82e4"
+        },
+        {
+          "path": "docs/screenshots-webp/gruvbox/Inbox.webp",
+          "size_bytes": 22330,
+          "sha256": "7c433305659f9d9d1348cd44482e3c866a8634e6bb2f6550161139ad852c53ee"
+        },
+        {
+          "path": "docs/screenshots-webp/gruvbox/Itinerary.webp",
+          "size_bytes": 44814,
+          "sha256": "a68c4c81ce327f98bfb2531f9677a6f688411110b39e309a91f78ddcfa36abe6"
+        },
+        {
+          "path": "docs/screenshots-webp/gruvbox/Trip.webp",
+          "size_bytes": 20652,
+          "sha256": "5e6b8ad839c7eb13fa63f59bc69851eff29b4d658a6c9341917cc45664d8ca2e"
+        },
+        {
+          "path": "docs/screenshots-webp/gruvbox/TripItem-Confirmed.webp",
+          "size_bytes": 25488,
+          "sha256": "155e7f2fb750cd973fdf161722268037aa1b9474cfa87845cae48acf781fa7c5"
+        },
+        {
+          "path": "docs/screenshots-webp/gruvbox/TripItem-Idea.webp",
+          "size_bytes": 17852,
+          "sha256": "20db6167d48b45bb3ad72e0dd868f08ddfc4cb90e7f97df577c5e1e9b7f26b9e"
+        },
+        {
+          "path": "docs/screenshots-webp/gruvbox/TripItem-New.webp",
+          "size_bytes": 13100,
+          "sha256": "896ee65de55f3e7a8a159ec5f3e3daeabf64051d77c4d173a4bf4c8c60bf7a5c"
+        },
+        {
+          "path": "docs/screenshots-webp/rosepine/Desktop.webp",
+          "size_bytes": 56150,
+          "sha256": "0adb4eb81006b67d9048077dcdcedeaac2737fb4ac89c67b83dba064726cf5ef"
+        },
+        {
+          "path": "docs/screenshots-webp/rosepine/ExpenseDetail.webp",
+          "size_bytes": 13680,
+          "sha256": "94cfdf0b4047de85053f9ead5e7098df76acb1ed59472933f5049b342bb36d95"
+        },
+        {
+          "path": "docs/screenshots-webp/rosepine/Expenses.webp",
+          "size_bytes": 32420,
+          "sha256": "46b276bd73ef70a6ddc8b67ee92f48466aa8d20601575900051b45ef847e6e0b"
+        },
+        {
+          "path": "docs/screenshots-webp/rosepine/ImportAI.webp",
+          "size_bytes": 17756,
+          "sha256": "0285d42eb91b885719144c2f75882dfb9e63591a0c5ea9dacc07f64b573919e0"
+        },
+        {
+          "path": "docs/screenshots-webp/rosepine/Inbox.webp",
+          "size_bytes": 19692,
+          "sha256": "4ffe157f38215342d470dd58b32722c53a0f511017239fc787c48d99eadd7fea"
+        },
+        {
+          "path": "docs/screenshots-webp/rosepine/Itinerary.webp",
+          "size_bytes": 43814,
+          "sha256": "2e04cb57c17b3044468d8135d013c28f97e0947d45a333d8e885cee18f222d99"
+        },
+        {
+          "path": "docs/screenshots-webp/rosepine/Trip.webp",
+          "size_bytes": 19686,
+          "sha256": "dfee2a2b9db3fe7d0521f61b9cb0b3125483a2fe7631a62f6855303f9619ecf8"
+        },
+        {
+          "path": "docs/screenshots-webp/rosepine/TripItem-Confirmed.webp",
+          "size_bytes": 22316,
+          "sha256": "03cfcd23fa224ce1befbd476a325e5cb28d502ca98b4ff5a9ff1312edebaa2de"
+        },
+        {
+          "path": "docs/screenshots-webp/rosepine/TripItem-Idea.webp",
+          "size_bytes": 15864,
+          "sha256": "810f48258283878f3c465f084d07085a3ac31916c04a8040db07fbc1416ab392"
+        },
+        {
+          "path": "docs/screenshots-webp/rosepine/TripItem-New.webp",
+          "size_bytes": 12464,
+          "sha256": "5e216eaf4c6892b6cb3083980396016846faf431cc08ac861d77126315efa6f7"
+        },
+        {
+          "path": "docs/screenshots-webp/sand/Desktop.webp",
+          "size_bytes": 57674,
+          "sha256": "122cd0fdf5132c470f4f87c19d69f88d7ddd25b2f3bb5fc3993b0bce4459f4e0"
+        },
+        {
+          "path": "docs/screenshots-webp/sand/ExpenseDetail.webp",
+          "size_bytes": 14376,
+          "sha256": "91be45cd4d6248850333e08b5b6076eaa670c7e847f32a855b7304df92e1ab97"
+        },
+        {
+          "path": "docs/screenshots-webp/sand/Expenses.webp",
+          "size_bytes": 34444,
+          "sha256": "70fe579c6b7fffa81f39f5214caf7b1fa5c702cdfbfeeb0d1f0c64aac3e26f66"
+        },
+        {
+          "path": "docs/screenshots-webp/sand/ImportAI.webp",
+          "size_bytes": 18748,
+          "sha256": "85ff3acac22396c3f0356c9889b41523782370a8e4166a5da7a8ade1cbde86e6"
+        },
+        {
+          "path": "docs/screenshots-webp/sand/Inbox.webp",
+          "size_bytes": 21094,
+          "sha256": "cd37290850e1c19ead9084538d7d5d2d0602f24aacd5788389281a5900a641fb"
+        },
+        {
+          "path": "docs/screenshots-webp/sand/Itinerary.webp",
+          "size_bytes": 45200,
+          "sha256": "456f05e56c06f53e08e19bd37784a85398eb1916d7c973aec7a5110c53d0718c"
+        },
+        {
+          "path": "docs/screenshots-webp/sand/Trip.webp",
+          "size_bytes": 20948,
+          "sha256": "d3c38ce18401b6a5fc8f114f396ffd8355039cc0c2dcc18433dc2add2db20eeb"
+        },
+        {
+          "path": "docs/screenshots-webp/sand/TripItem-Confirmed.webp",
+          "size_bytes": 24274,
+          "sha256": "3502c84a127351f85bbf863d7c5271a3b167ef73c5514c5022fe1eccd2908708"
+        },
+        {
+          "path": "docs/screenshots-webp/sand/TripItem-Idea.webp",
+          "size_bytes": 17300,
+          "sha256": "2f98789204ba9bea50d5f7efdd138b3d3b923bae4412774871ef7e5cff5a8084"
+        },
+        {
+          "path": "docs/screenshots-webp/sand/TripItem-New.webp",
+          "size_bytes": 13062,
+          "sha256": "149b0baf07d866c71ef9f120edb066c504d02dc5bc7b55a27ebee21f1bbe5fc8"
+        },
+        {
+          "path": "docs/screenshots-webp/solarized/Desktop.webp",
+          "size_bytes": 58964,
+          "sha256": "d6dfb740211a714899c0124b30d139f931f4ed119f6204e40506ea8aa09dfa93"
+        },
+        {
+          "path": "docs/screenshots-webp/solarized/ExpenseDetail.webp",
+          "size_bytes": 14934,
+          "sha256": "cb5c363d2ecb083b26b67215f2f388ae3132b4417fec3e7b129baedcbad2814a"
+        },
+        {
+          "path": "docs/screenshots-webp/solarized/Expenses.webp",
+          "size_bytes": 33832,
+          "sha256": "4f1bf4b4ac4c6c38ed238616e762d5e8619db17f43fc038cbd8631a11456b9f1"
+        },
+        {
+          "path": "docs/screenshots-webp/solarized/ImportAI.webp",
+          "size_bytes": 19906,
+          "sha256": "95ab60369e85f410e46b0e9ccc6cf3e338d3b51e9d51e202660f3baec72d1e68"
+        },
+        {
+          "path": "docs/screenshots-webp/solarized/Inbox.webp",
+          "size_bytes": 23628,
+          "sha256": "8dec0487cc0711f7785248071a5de5b8c3c80452a6b77ff7c671518ab9a0b83f"
+        },
+        {
+          "path": "docs/screenshots-webp/solarized/Itinerary.webp",
+          "size_bytes": 41720,
+          "sha256": "6f946338b495a9e523cb6306c73c4aeb02c9c53d88cd7e536a81384c5becc3a3"
+        },
+        {
+          "path": "docs/screenshots-webp/solarized/Trip.webp",
+          "size_bytes": 21310,
+          "sha256": "aa397101aef414616c194b152344988750106d807806f0acb48612e83d93073d"
+        },
+        {
+          "path": "docs/screenshots-webp/solarized/TripItem-Confirmed.webp",
+          "size_bytes": 25168,
+          "sha256": "9d73d4455281bc84a4c3421d29f4ef5bd2f4c882fe1aa389421bbcf13df9d962"
+        },
+        {
+          "path": "docs/screenshots-webp/solarized/TripItem-Idea.webp",
+          "size_bytes": 18942,
+          "sha256": "9f2189f8d0e8b20d034f6b790fb8a325678311789970b0792a6795437706263f"
+        },
+        {
+          "path": "docs/screenshots-webp/solarized/TripItem-New.webp",
+          "size_bytes": 13772,
+          "sha256": "3bda11216587db788a358f90cf3192bba557cdd0fb73319ded46771b6fd96782"
+        },
+        {
+          "path": "docs/screenshots-webp/stan/Desktop.webp",
+          "size_bytes": 56684,
+          "sha256": "45fe1ceda18455af524966f44104491ad35f54fe912a8a08250bf4de0d077971"
+        },
+        {
+          "path": "docs/screenshots-webp/stan/ExpenseDetail.webp",
+          "size_bytes": 14312,
+          "sha256": "d2e8a8d0d77385c7876fbc5b6658de5f7296f4d264016e4889bf1850a4f25e2a"
+        },
+        {
+          "path": "docs/screenshots-webp/stan/Expenses.webp",
+          "size_bytes": 34552,
+          "sha256": "5add5821000c9ddb159cdcdf2e7f30453db3dd380bc7382b5c259defdb21f43a"
+        },
+        {
+          "path": "docs/screenshots-webp/stan/ImportAI.webp",
+          "size_bytes": 18712,
+          "sha256": "7d18b23390654b641ac81f8aa410fb1311c981228491479ef7f5bbf6f3f9a0f2"
+        },
+        {
+          "path": "docs/screenshots-webp/stan/Inbox.webp",
+          "size_bytes": 20718,
+          "sha256": "5e8fc4f90f174f6b928134e5926283e9e9691058879d88c4db6f592a16502309"
+        },
+        {
+          "path": "docs/screenshots-webp/stan/Itinerary.webp",
+          "size_bytes": 44096,
+          "sha256": "e7c32cc1942412c4c65ebb34996bd5aa04d0a4e372f23899ccfa25a869755d87"
+        },
+        {
+          "path": "docs/screenshots-webp/stan/Trip.webp",
+          "size_bytes": 20296,
+          "sha256": "bf792973db156ffc07b834fd266e137058b2c4ce1b4d87a18caa9f2d295e4231"
+        },
+        {
+          "path": "docs/screenshots-webp/stan/TripItem-Confirmed.webp",
+          "size_bytes": 23334,
+          "sha256": "e1bfeec48fcd041b9281e3e869cc5548492f3013cd0a07f5aba39ec140b127a7"
+        },
+        {
+          "path": "docs/screenshots-webp/stan/TripItem-Idea.webp",
+          "size_bytes": 16338,
+          "sha256": "12bd6d00730aba8645cb41f9107bfc09e088a9676ec28e033c8c3547735a3281"
+        },
+        {
+          "path": "docs/screenshots-webp/stan/TripItem-New.webp",
+          "size_bytes": 13094,
+          "sha256": "da80773625dbf787a86d275c7a461559d940ba5426f264c021a490dc9a1780b1"
+        },
+        {
+          "path": "docs/site.webmanifest",
+          "size_bytes": 735,
+          "sha256": "a458d6e089d8db332633267fe1b38ab77829733f7f7418e9db5578338e408ac2"
+        },
+        {
+          "path": "lib/tasks/.keep",
+          "size_bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "public/400.html",
+          "size_bytes": 7054,
+          "sha256": "e4611b7ecd95c05bc42597702de6f2775aa5414c1bec28a8173165e143159371"
+        },
+        {
+          "path": "public/404.html",
+          "size_bytes": 5201,
+          "sha256": "6f48aec35400a1e5fb88b7cef034a18d55ce810653b04f93d7162e02053745d0"
+        },
+        {
+          "path": "public/406-unsupported-browser.html",
+          "size_bytes": 7283,
+          "sha256": "37e250b92c485478422b11e0bf4686d5bcc919f4a6877115aa2bf9e4753c1e08"
+        },
+        {
+          "path": "public/422.html",
+          "size_bytes": 8747,
+          "sha256": "f91269998d46c1b59f51c933cb86d8079e3155f4e48fe1566e2f1a34c946287f"
+        },
+        {
+          "path": "public/500.html",
+          "size_bytes": 8283,
+          "sha256": "0e135e717e9d1a5dd6db932ec70bd9524363064979cd2d8b216ee1c0300e36b5"
+        },
+        {
+          "path": "public/apple-touch-icon.png",
+          "size_bytes": 17212,
+          "sha256": "97da3f29d249a2dbf7567440d2b8a3027816591a141428e3630d40d6ec0c4e1d"
+        },
+        {
+          "path": "public/favicon-96x96.png",
+          "size_bytes": 8403,
+          "sha256": "7ef070fc645ccfe105ee94b2aa5022a831cffb0e7f93370b25433b1ee9d16689"
+        },
+        {
+          "path": "public/favicon.ico",
+          "size_bytes": 2531,
+          "sha256": "0011ce92bdf09ccb4f2a2acc335fed580cea30df8eab358f55fddba280a41608"
+        },
+        {
+          "path": "public/favicon.svg",
+          "size_bytes": 4255,
+          "sha256": "51e72276ffbdb22c92ebe73b1890ef205dd2a797447a092b68508628090a9ea2"
+        },
+        {
+          "path": "public/icon-192.png",
+          "size_bytes": 18418,
+          "sha256": "4d56dd6e248f868fe9d3adb338c1e3770c00cbfb5f0e88d6a676b8bed8a0e45a"
+        },
+        {
+          "path": "public/icon-512.png",
+          "size_bytes": 39515,
+          "sha256": "fe10a14b452956ff617c82ca7f8a0bad16fc3c7989ea50fbf67df9a0c716da01"
+        },
+        {
+          "path": "public/robots.txt",
+          "size_bytes": 99,
+          "sha256": "2f15987e4606501202b9d337085439339e53a374e3d194847192c12f85ba78f8"
+        },
+        {
+          "path": "public/site.webmanifest",
+          "size_bytes": 735,
+          "sha256": "a458d6e089d8db332633267fe1b38ab77829733f7f7418e9db5578338e408ac2"
+        },
+        {
+          "path": "script/.keep",
+          "size_bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "setup.sh",
+          "size_bytes": 4672,
+          "sha256": "28058c8b83138f5b609f483ce43cbcaa4d3aa73a311ac096ed6be7a6f33fa76d"
+        },
+        {
+          "path": "test/controllers/itinerary_generations_controller_test.rb",
+          "size_bytes": 4491,
+          "sha256": "adadd53e03a72fc4fb2b2801cead67adaa17158f75cec2536e150d0c2b722084"
+        },
+        {
+          "path": "test/controllers/trip_items_controller_test.rb",
+          "size_bytes": 3720,
+          "sha256": "ac15a68944979d6a696273d6834c641cc0e5b780bce4c35b5ea62c2a16429f9b"
+        },
+        {
+          "path": "test/controllers/trips_controller_test.rb",
+          "size_bytes": 697,
+          "sha256": "67ee8bf2330a1bceb9c6abf56aed93422890cd2791f15af4ec9b7945285044fb"
+        },
+        {
+          "path": "test/jobs/generate_itinerary_job_test.rb",
+          "size_bytes": 3428,
+          "sha256": "24e91edb25554dfdf6870dfa11c386f801b4f244e6ad511a8d35589bb6de5a35"
+        },
+        {
+          "path": "test/models/booking_provider_test.rb",
+          "size_bytes": 929,
+          "sha256": "3f70e898647f9fe6b6bef585921021da3801dc43def92b711832845a04919419"
+        },
+        {
+          "path": "test/models/cancellation_policy_test.rb",
+          "size_bytes": 2133,
+          "sha256": "5f46abfef1af884224c85b99456438eccb96f8cb00e7ae341020df2a615263ba"
+        },
+        {
+          "path": "test/models/inbox_item_test.rb",
+          "size_bytes": 2302,
+          "sha256": "a53415cfba1fd9dbbf9e3f9258985a0b0179395f59855c9eda2cc9823a0670ee"
+        },
+        {
+          "path": "test/models/trip_item_test.rb",
+          "size_bytes": 1599,
+          "sha256": "fbd7f29b3e41e95503a9f601a549da8c8aa73bce22cb4f8fef67d7df06ec6df7"
+        },
+        {
+          "path": "test/services/itinerary_generator_test.rb",
+          "size_bytes": 6732,
+          "sha256": "858de4b87c5e40a5c01bb7764821a8de89e7b6d3e06372ab561a49c0c006c4a7"
+        },
+        {
+          "path": "test/services/trip_items_bulk_import_test.rb",
+          "size_bytes": 2573,
+          "sha256": "68acd2c2a1b8681639c2c4ed81bf109f45e3f741cea5c38f3accf857dbc2dc0a"
+        },
+        {
+          "path": "test/support/fake_anthropic.rb",
+          "size_bytes": 1457,
+          "sha256": "819ecf400576d92e8ddedfa0fc0d0f32bef15f70cc22436c567046e41893e944"
+        },
+        {
+          "path": "test/support/minitest_stub.rb",
+          "size_bytes": 924,
+          "sha256": "eb26d2f01a86887666b6d92f5c77b596891ae40f8215a83160fabe7df77ea59d"
+        },
+        {
+          "path": "test/test_helper.rb",
+          "size_bytes": 1661,
+          "sha256": "d9d335f88933c551f2f3ea91f5c36edbdf3a316dc71fe5a31099a9b2623b3d34"
+        }
+      ]
+    }
+  }
+}
