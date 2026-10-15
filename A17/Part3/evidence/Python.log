@@ -1,0 +1,17 @@
+PASS empty: |
+PASS single: Order|
+PASS link: Order,Customer|Order->Customer
+PASS bracketed: [Order],[Customer]|Order->Customer
+PASS adapter: ["Order","Customer"]
+PASS nested: Order,Customer,Invoice|Order->Customer
+PASS empty_groups: []
+PASS duplicate: ERROR:duplicate
+PASS missing_endpoint: ERROR:missing endpoint
+PASS unknown_command: ERROR:syntax
+PASS arity: ERROR:syntax
+PASS unmatched: ERROR:unmatched end
+PASS unclosed: ERROR:unclosed group
+PASS whitespace: Order,Customer|
+PASS self_link: [Order]|Order->Order
+PASS escaping: ["A\"B","C\\D"]
+RESULT 16/16

@@ -1,0 +1,24 @@
+[
+  {
+    "snapshot": "baseline",
+    "tests": 3191,
+    "failures": 2,
+    "skipped": 12,
+    "failure_names": [
+      "net.sourceforge.plantuml.picoweb.PicowebTest.get_png_bad_graphviz(StdErr)",
+      "net.sourceforge.plantuml.picoweb.PicowebTest.get_png_svg_graphviz(StdErr)"
+    ],
+    "passed": 3177
+  },
+  {
+    "snapshot": "final",
+    "tests": 3191,
+    "failures": 2,
+    "skipped": 12,
+    "failure_names": [
+      "net.sourceforge.plantuml.picoweb.PicowebTest.get_png_bad_graphviz(StdErr)",
+      "net.sourceforge.plantuml.picoweb.PicowebTest.get_png_svg_graphviz(StdErr)"
+    ],
+    "passed": 3177
+  }
+]

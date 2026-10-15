@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="net.sourceforge.plantuml.picoweb.PicowebTest" tests="13" skipped="0" failures="2" errors="0" timestamp="2026-10-11T08:21:14.946Z" hostname="Sathviks-MacBook-Air.local" time="0.136">
+  <properties/>
+  <testcase name="get_language_returns_java_keywords()" classname="net.sourceforge.plantuml.picoweb.PicowebTest" time="0.06"/>
+  <testcase name="get_txt_with_valid_source_returns_ascii()" classname="net.sourceforge.plantuml.picoweb.PicowebTest" time="0.004"/>
+  <testcase name="get_png_bad_graphviz(StdErr)" classname="net.sourceforge.plantuml.picoweb.PicowebTest" time="0.014">
+    <failure message="org.opentest4j.AssertionFailedError: expected: &lt;200&gt; but was: &lt;503&gt;" type="org.opentest4j.AssertionFailedError">org.opentest4j.AssertionFailedError: expected: &lt;200&gt; but was: &lt;503&gt;
+	at org.junit.jupiter.api.Assertions.assertEquals(Assertions.java:569)
+	at net.sourceforge.plantuml.picoweb.PicowebTest.assertStatus(PicowebTest.java:301)
+	at net.sourceforge.plantuml.picoweb.PicowebTest.get_png_bad_graphviz(PicowebTest.java:233)
+</failure>
+  </testcase>
+  <testcase name="get_svg_with_valid_source_returns_svg_root()" classname="net.sourceforge.plantuml.picoweb.PicowebTest" time="0.009"/>
+  <testcase name="post_render_png_with_valid_source_returns_png()" classname="net.sourceforge.plantuml.picoweb.PicowebTest" time="0.007"/>
+  <testcase name="get_png_with_valid_source_decodes_image()" classname="net.sourceforge.plantuml.picoweb.PicowebTest" time="0.008"/>
+  <testcase name="post_render_svg_with_tsvg_option_returns_svg()" classname="net.sourceforge.plantuml.picoweb.PicowebTest" time="0.005"/>
+  <testcase name="get_unknown_path_redirects_with_302()" classname="net.sourceforge.plantuml.picoweb.PicowebTest" time="0.002"/>
+  <testcase name="get_svg_via_plantuml_alias_returns_svg_root()" classname="net.sourceforge.plantuml.picoweb.PicowebTest" time="0.003"/>
+  <testcase name="post_render_with_malformed_json_returns_400_and_message()" classname="net.sourceforge.plantuml.picoweb.PicowebTest" time="0.002"/>
+  <testcase name="get_png_via_plantuml_alias_decodes_image()" classname="net.sourceforge.plantuml.picoweb.PicowebTest" time="0.005"/>
+  <testcase name="get_png_svg_graphviz(StdErr)" classname="net.sourceforge.plantuml.picoweb.PicowebTest" time="0.003">
+    <failure message="org.opentest4j.AssertionFailedError: expected: &lt;200&gt; but was: &lt;503&gt;" type="org.opentest4j.AssertionFailedError">org.opentest4j.AssertionFailedError: expected: &lt;200&gt; but was: &lt;503&gt;
+	at org.junit.jupiter.api.Assertions.assertEquals(Assertions.java:569)
+	at net.sourceforge.plantuml.picoweb.PicowebTest.assertStatus(PicowebTest.java:301)
+	at net.sourceforge.plantuml.picoweb.PicowebTest.get_png_svg_graphviz(PicowebTest.java:249)
+</failure>
+  </testcase>
+  <testcase name="get_png_with_invalid_source_returns_400_and_error_headers()" classname="net.sourceforge.plantuml.picoweb.PicowebTest" time="0.014"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[java.io.IOException: Cannot run program "/Users/sathvik/PlantUML_CaseStudy/plantuml/this_exe_do_not_exist": Exec failed, error: 2 (No such file or directory) 
+	at java.base/java.lang.ProcessBuilder.start(ProcessBuilder.java:1112)
+	at java.base/java.lang.ProcessBuilder.start(ProcessBuilder.java:1046)
+	at net.sourceforge.plantuml.dot.ProcessRunner.run(ProcessRunner.java:71)
+	at net.sourceforge.plantuml.dot.ProcessRunner.run(ProcessRunner.java:60)
+	at net.sourceforge.plantuml.dot.GraphvizVersionFinder.dotVersion(GraphvizVersionFinder.java:120)
+	at net.sourceforge.plantuml.dot.GraphvizVersionFinder.getVersion(GraphvizVersionFinder.java:75)
+	at net.sourceforge.plantuml.dot.GraphvizRuntimeEnvironment.getVersion(GraphvizRuntimeEnvironment.java:87)
+	at net.sourceforge.plantuml.svek.DotStringFactory.getGraphvizVersionInternal(DotStringFactory.java:278)
+	at net.sourceforge.plantuml.svek.DotStringFactory.getGraphvizVersion(DotStringFactory.java:263)
+	at net.sourceforge.plantuml.svek.GraphvizImageBuilder.printEntityInternal(GraphvizImageBuilder.java:379)
+	at net.sourceforge.plantuml.svek.GraphvizImageBuilder.printEntity(GraphvizImageBuilder.java:361)
+	at net.sourceforge.plantuml.svek.GraphvizImageBuilder.printEntities(GraphvizImageBuilder.java:353)
+	at net.sourceforge.plantuml.svek.GraphvizImageBuilder.buildImage(GraphvizImageBuilder.java:227)
+	at net.sourceforge.plantuml.svek.CucaDiagramFileMakerSvek.getTextBlock(CucaDiagramFileMakerSvek.java:83)
+	at net.atmp.CucaDiagram.getTextBlock(CucaDiagram.java:485)
+	at net.sourceforge.plantuml.UgDiagram.getExporter(UgDiagram.java:124)
+	at net.sourceforge.plantuml.UgDiagram.exportDiagram(UgDiagram.java:96)
+	at net.sourceforge.plantuml.picoweb.PicoWebServer.handleGET(PicoWebServer.java:249)
+	at net.sourceforge.plantuml.picoweb.PicoWebServer.run(PicoWebServer.java:131)
+	at java.base/java.lang.Thread.run(Thread.java:1474)
+Caused by: java.io.IOException: Exec failed, error: 2 (No such file or directory) 
+	at java.base/java.lang.ProcessImpl.forkAndExec(Native Method)
+	at java.base/java.lang.ProcessImpl.<init>(ProcessImpl.java:300)
+	at java.base/java.lang.ProcessImpl.start(ProcessImpl.java:231)
+	at java.base/java.lang.ProcessBuilder.start(ProcessBuilder.java:1078)
+	... 19 more
+]]></system-err>
+</testsuite>

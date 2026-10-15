@@ -1,0 +1,18 @@
+[
+  {"name":"empty", "mode":"compact", "input":"", "expected":"|"},
+  {"name":"single", "mode":"compact", "input":"class Order\n", "expected":"Order|"},
+  {"name":"link", "mode":"compact", "input":"class Order\nclass Customer\nlink Order Customer\n", "expected":"Order,Customer|Order->Customer"},
+  {"name":"bracketed", "mode":"bracketed", "input":"class Order\nclass Customer\nlink Order Customer\n", "expected":"[Order],[Customer]|Order->Customer"},
+  {"name":"adapter", "mode":"json", "input":"class Order\nclass Customer\nlink Order Customer\n", "expected":"[\"Order\",\"Customer\"]"},
+  {"name":"nested", "mode":"compact", "input":"group\nclass Order\ngroup\nclass Customer\nend\nend\nclass Invoice\nlink Order Customer\n", "expected":"Order,Customer,Invoice|Order->Customer"},
+  {"name":"empty_groups", "mode":"json", "input":"group\ngroup\nend\nend\n", "expected":"[]"},
+  {"name":"duplicate", "mode":"compact", "input":"class Order\ngroup\nclass Order\nend\n", "expected":"ERROR:duplicate"},
+  {"name":"missing_endpoint", "mode":"compact", "input":"class Order\nlink Order Customer\n", "expected":"ERROR:missing endpoint"},
+  {"name":"unknown_command", "mode":"compact", "input":"erase Order\n", "expected":"ERROR:syntax"},
+  {"name":"arity", "mode":"compact", "input":"class Order Customer\n", "expected":"ERROR:syntax"},
+  {"name":"unmatched", "mode":"compact", "input":"end\n", "expected":"ERROR:unmatched end"},
+  {"name":"unclosed", "mode":"compact", "input":"group\nclass Order\n", "expected":"ERROR:unclosed group"},
+  {"name":"whitespace", "mode":"compact", "input":"  \n class   Order \n\tclass Customer\n", "expected":"Order,Customer|"},
+  {"name":"self_link", "mode":"bracketed", "input":"class Order\nlink Order Order\n", "expected":"[Order]|Order->Order"},
+  {"name":"escaping", "mode":"json", "input":"class A\"B\nclass C\\D\n", "expected":"[\"A\\\"B\",\"C\\\\D\"]"}
+]

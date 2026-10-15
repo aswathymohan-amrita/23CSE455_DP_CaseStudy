@@ -1,0 +1,12 @@
+PASS patterns.csv: 5 records, workbook matches
+PASS pattern_counts.csv: 28 records, workbook matches
+PASS patterns_evolution.csv: 22 records, workbook matches
+PASS evolution_metrics.csv: 4 records, workbook matches
+PASS cross_language.csv: 20 records, workbook matches
+PASS llm.csv: 3 records, workbook matches
+PASS human_verification.csv: 3 records, workbook matches
+PASS 174 participant source locations exist and have valid line ranges
+PASS LLM paths resolve
+PASS saved integration, upstream and four-language test summaries
+PASS report, slide deck and editable sources exist
+PASS no local symlinks, JARs, class files or Python bytecode

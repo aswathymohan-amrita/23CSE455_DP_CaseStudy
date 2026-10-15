@@ -1,0 +1,31 @@
+@startuml
+skinparam backgroundColor white
+skinparam shadowing false
+skinparam defaultFontName SansSerif
+skinparam defaultFontSize 13
+skinparam classAttributeIconSize 0
+skinparam ArrowColor #334155
+skinparam classBackgroundColor #F1F5F9
+hide empty members
+class CommandCreateClass
+class CommandPragma
+class Entity {
+ -reviewStatus : String
+}
+class EntityImageClassHeader
+class EntityImageClass
+interface ReviewPalette {
+ +background(status) : String
+}
+class "ReviewPalette.Pastel" as Pastel
+class "ReviewPalette.Mono" as Mono
+class PortableSvgDocument
+CommandCreateClass --> Entity : CH01 stores
+EntityImageClassHeader --> Entity : CH01 label
+CommandPragma --> EntityImageClass : CH02 / CH03 via Pragma
+EntityImageClass --> ReviewPalette : CH02 delegates
+ReviewPalette <|.. Pastel
+ReviewPalette <|.. Mono
+EntityImageClass --> Entity : reads status
+EntityImageClass --> PortableSvgDocument : CH03 via UGroup
+@enduml

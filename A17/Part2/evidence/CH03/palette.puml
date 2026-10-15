@@ -1,0 +1,7 @@
+@startuml
+!pragma layout smetana
+!pragma classReviewPalette pastel
+class Order [review=pending]
+class Customer [review=approved]
+Order --> Customer
+@enduml

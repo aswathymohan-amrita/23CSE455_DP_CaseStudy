@@ -1,0 +1,4 @@
+part,model_and_date,prompt_file,input_file,output_file,evaluation,verification_file
+Pattern discovery,gpt-6-astra (runtime record); 2026-10-11; UI label and access tier unverified,prompts/exact_user_prompts.txt,prompts/input_manifest.txt,prompts/raw_public_outputs.jsonl,partial initially; corrected and automatically checked; human review pending,prompts/verification.md
+Evolution,gpt-6-astra (runtime record); 2026-10-11; UI label and access tier unverified,prompts/exact_user_prompts.txt,prompts/input_manifest.txt,prompts/raw_public_outputs.jsonl,partial initially; corrected and automatically checked; human review pending,prompts/verification.md
+Cross-language analysis,gpt-6-astra (runtime record); 2026-10-11; UI label and access tier unverified,prompts/exact_user_prompts.txt,prompts/input_manifest.txt,prompts/raw_public_outputs.jsonl,partial initially; corrected and automatically checked; human review pending,prompts/verification.md

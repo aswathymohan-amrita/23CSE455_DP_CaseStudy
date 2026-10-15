@@ -1,0 +1,110 @@
+[
+  {
+    "name": "Node::Node",
+    "start": 7,
+    "end": 7,
+    "cc": 1
+  },
+  {
+    "name": "Node::names",
+    "start": 8,
+    "end": 8,
+    "cc": 1
+  },
+  {
+    "name": "Group::names",
+    "start": 12,
+    "end": 16,
+    "cc": 2
+  },
+  {
+    "name": "Diagram::Diagram",
+    "start": 23,
+    "end": 23,
+    "cc": 1
+  },
+  {
+    "name": "Diagram::add",
+    "start": 24,
+    "end": 27,
+    "cc": 2
+  },
+  {
+    "name": "Diagram::link",
+    "start": 28,
+    "end": 33,
+    "cc": 3
+  },
+  {
+    "name": "Create::execute",
+    "start": 37,
+    "end": 37,
+    "cc": 1
+  },
+  {
+    "name": "Link::execute",
+    "start": 40,
+    "end": 40,
+    "cc": 1
+  },
+  {
+    "name": "OpenGroup::execute",
+    "start": 43,
+    "end": 47,
+    "cc": 1
+  },
+  {
+    "name": "CloseGroup::execute",
+    "start": 50,
+    "end": 53,
+    "cc": 2
+  },
+  {
+    "name": "Parser::parse",
+    "start": 60,
+    "end": 72,
+    "cc": 6
+  },
+  {
+    "name": "DiagramParser::createModel",
+    "start": 75,
+    "end": 75,
+    "cc": 1
+  },
+  {
+    "name": "Compact::render",
+    "start": 79,
+    "end": 81,
+    "cc": 1
+  },
+  {
+    "name": "Bracketed::render",
+    "start": 84,
+    "end": 88,
+    "cc": 2
+  },
+  {
+    "name": "LegacyNames::encode",
+    "start": 91,
+    "end": 96,
+    "cc": 2
+  },
+  {
+    "name": "NamesAdapter::render",
+    "start": 100,
+    "end": 100,
+    "cc": 1
+  },
+  {
+    "name": "Exporter::Exporter",
+    "start": 104,
+    "end": 104,
+    "cc": 1
+  },
+  {
+    "name": "Exporter::export",
+    "start": 105,
+    "end": 105,
+    "cc": 1
+  }
+]

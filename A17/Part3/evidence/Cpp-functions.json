@@ -1,0 +1,116 @@
+[
+  {
+    "name": "diagram::join",
+    "start": 12,
+    "end": 19,
+    "cc": 3
+  },
+  {
+    "name": "diagram::Node::Node",
+    "start": 26,
+    "end": 26,
+    "cc": 1
+  },
+  {
+    "name": "diagram::Node::names",
+    "start": 27,
+    "end": 27,
+    "cc": 1
+  },
+  {
+    "name": "diagram::Group::names",
+    "start": 31,
+    "end": 38,
+    "cc": 2
+  },
+  {
+    "name": "diagram::Diagram::add",
+    "start": 48,
+    "end": 53,
+    "cc": 2
+  },
+  {
+    "name": "diagram::Diagram::link",
+    "start": 54,
+    "end": 60,
+    "cc": 3
+  },
+  {
+    "name": "diagram::Create::execute",
+    "start": 67,
+    "end": 67,
+    "cc": 1
+  },
+  {
+    "name": "diagram::Link::execute",
+    "start": 70,
+    "end": 70,
+    "cc": 1
+  },
+  {
+    "name": "diagram::OpenGroup::execute",
+    "start": 73,
+    "end": 78,
+    "cc": 1
+  },
+  {
+    "name": "diagram::CloseGroup::execute",
+    "start": 81,
+    "end": 84,
+    "cc": 2
+  },
+  {
+    "name": "diagram::Parser::Parser",
+    "start": 92,
+    "end": 97,
+    "cc": 1
+  },
+  {
+    "name": "diagram::Parser::parse",
+    "start": 99,
+    "end": 114,
+    "cc": 7
+  },
+  {
+    "name": "diagram::DiagramParser::createModel",
+    "start": 117,
+    "end": 117,
+    "cc": 1
+  },
+  {
+    "name": "diagram::Compact::render",
+    "start": 124,
+    "end": 126,
+    "cc": 1
+  },
+  {
+    "name": "diagram::Bracketed::render",
+    "start": 129,
+    "end": 133,
+    "cc": 2
+  },
+  {
+    "name": "diagram::LegacyNames::encode",
+    "start": 136,
+    "end": 147,
+    "cc": 5
+  },
+  {
+    "name": "diagram::NamesAdapter::render",
+    "start": 151,
+    "end": 151,
+    "cc": 1
+  },
+  {
+    "name": "diagram::Exporter::Exporter",
+    "start": 155,
+    "end": 155,
+    "cc": 1
+  },
+  {
+    "name": "diagram::Exporter::exportModel",
+    "start": 156,
+    "end": 156,
+    "cc": 1
+  }
+]

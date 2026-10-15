@@ -1,0 +1,125 @@
+{
+  "totals": [
+    {
+      "stage": 0,
+      "types": 5,
+      "instances": 5,
+      "concrete": 13,
+      "symbols": 30,
+      "rejected": 2,
+      "uncertain": 1
+    },
+    {
+      "stage": 1,
+      "types": 5,
+      "instances": 5,
+      "concrete": 13,
+      "symbols": 30,
+      "rejected": 2,
+      "uncertain": 1
+    },
+    {
+      "stage": 2,
+      "types": 5,
+      "instances": 6,
+      "concrete": 15,
+      "symbols": 34,
+      "rejected": 2,
+      "uncertain": 1
+    },
+    {
+      "stage": 3,
+      "types": 5,
+      "instances": 6,
+      "concrete": 15,
+      "symbols": 34,
+      "rejected": 2,
+      "uncertain": 1
+    }
+  ],
+  "evolution": [
+    {
+      "source_version": "149874a1bb2b64c42889d7178cb89f6647ac14bc",
+      "scope": "nine production Java files listed in Part2/evidence/measurement_scope.txt",
+      "source_loc": 1314,
+      "max_function_cc": 20,
+      "integration_result": "RESULT 3/3"
+    },
+    {
+      "source_version": "8e9f313b8f589012115d631df4aad2a369a22f53",
+      "scope": "nine production Java files listed in Part2/evidence/measurement_scope.txt",
+      "source_loc": 1329,
+      "max_function_cc": 20,
+      "integration_result": "RESULT 11/11"
+    },
+    {
+      "source_version": "0d170a89f61fc811f729f236a28634c697f985a6",
+      "scope": "nine production Java files listed in Part2/evidence/measurement_scope.txt",
+      "source_loc": 1366,
+      "max_function_cc": 20,
+      "integration_result": "RESULT 15/15"
+    },
+    {
+      "source_version": "dd5c91b457c13fb1a20ae51a62fa73c3b8485847",
+      "scope": "nine production Java files listed in Part2/evidence/measurement_scope.txt",
+      "source_loc": 1376,
+      "max_function_cc": 20,
+      "integration_result": "RESULT 20/20"
+    }
+  ],
+  "languages": [
+    {
+      "language": "Java",
+      "source_loc": 106,
+      "max_function_cc": 6,
+      "median_process_ms": 27.205791,
+      "runtime": "openjdk version \"25.0.2\" 2026-01-20"
+    },
+    {
+      "language": "Python",
+      "source_loc": 101,
+      "max_function_cc": 6,
+      "median_process_ms": 16.826958,
+      "runtime": "Python 3.14.2"
+    },
+    {
+      "language": "JavaScript",
+      "source_loc": 97,
+      "max_function_cc": 6,
+      "median_process_ms": 21.727541,
+      "runtime": "v22.19.0"
+    },
+    {
+      "language": "C++",
+      "source_loc": 156,
+      "max_function_cc": 7,
+      "median_process_ms": 2.279125,
+      "runtime": "Apple clang version 21.0.0 (clang-2100.3.34.2)"
+    }
+  ],
+  "upstream": [
+    {
+      "snapshot": "baseline",
+      "tests": 3191,
+      "failures": 2,
+      "skipped": 12,
+      "failure_names": [
+        "net.sourceforge.plantuml.picoweb.PicowebTest.get_png_bad_graphviz(StdErr)",
+        "net.sourceforge.plantuml.picoweb.PicowebTest.get_png_svg_graphviz(StdErr)"
+      ],
+      "passed": 3177
+    },
+    {
+      "snapshot": "final",
+      "tests": 3191,
+      "failures": 2,
+      "skipped": 12,
+      "failure_names": [
+        "net.sourceforge.plantuml.picoweb.PicowebTest.get_png_bad_graphviz(StdErr)",
+        "net.sourceforge.plantuml.picoweb.PicowebTest.get_png_svg_graphviz(StdErr)"
+      ],
+      "passed": 3177
+    }
+  ],
+  "baseline": "149874a1bb2b64c42889d7178cb89f6647ac14bc"
+}

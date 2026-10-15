@@ -1,0 +1,26 @@
+[
+  {
+    "stage": 0,
+    "commit": "149874a1bb2b64c42889d7178cb89f6647ac14bc",
+    "changed_java_files": 0,
+    "result": "RESULT 3/3"
+  },
+  {
+    "stage": 1,
+    "commit": "8e9f313b8f589012115d631df4aad2a369a22f53",
+    "changed_java_files": 3,
+    "result": "RESULT 11/11"
+  },
+  {
+    "stage": 2,
+    "commit": "0d170a89f61fc811f729f236a28634c697f985a6",
+    "changed_java_files": 7,
+    "result": "RESULT 15/15"
+  },
+  {
+    "stage": 3,
+    "commit": "dd5c91b457c13fb1a20ae51a62fa73c3b8485847",
+    "changed_java_files": 9,
+    "result": "RESULT 20/20"
+  }
+]

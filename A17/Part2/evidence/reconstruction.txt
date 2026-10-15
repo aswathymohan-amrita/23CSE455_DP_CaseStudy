@@ -1,0 +1,1 @@
+2026-10-11: In a detached worktree at baseline commit 149874a1bb2b64c42889d7178cb89f6647ac14bc, applied Change1, Change2 and Change3 patches sequentially with git apply --check and git apply. After including the new ReviewPalette.java file in git diff, the reconstructed binary diff matched git diff baseline..dd5c91b457c13fb1a20ae51a62fa73c3b8485847 byte for byte.

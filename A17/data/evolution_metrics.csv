@@ -1,0 +1,5 @@
+source_version,scope,source_loc,max_function_cc,integration_result
+149874a1bb2b64c42889d7178cb89f6647ac14bc,nine production Java files listed in Part2/evidence/measurement_scope.txt,1314,20,RESULT 3/3
+8e9f313b8f589012115d631df4aad2a369a22f53,nine production Java files listed in Part2/evidence/measurement_scope.txt,1329,20,RESULT 11/11
+0d170a89f61fc811f729f236a28634c697f985a6,nine production Java files listed in Part2/evidence/measurement_scope.txt,1366,20,RESULT 15/15
+dd5c91b457c13fb1a20ae51a62fa73c3b8485847,nine production Java files listed in Part2/evidence/measurement_scope.txt,1376,20,RESULT 20/20

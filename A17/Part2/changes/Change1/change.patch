@@ -1,0 +1,65 @@
+diff --git a/src/main/java/net/sourceforge/plantuml/abel/Entity.java b/src/main/java/net/sourceforge/plantuml/abel/Entity.java
+index 85efa37..8dac1a4 100644
+--- a/src/main/java/net/sourceforge/plantuml/abel/Entity.java
++++ b/src/main/java/net/sourceforge/plantuml/abel/Entity.java
+@@ -310,6 +310,18 @@ final public class Entity implements SpecificBackcolorable, Hideable, Removeable
+ 		this.svekImage = svekImage;
+ 	}
+ 
++	private String reviewStatus;
++
++	public final void setReviewStatus(String reviewStatus) {
++		checkNotGroup();
++		this.reviewStatus = reviewStatus;
++	}
++
++	public final String getReviewStatus() {
++		checkNotGroup();
++		return reviewStatus;
++	}
++
+ 	public final void setGeneric(String generic) {
+ 		checkNotGroup();
+ 		this.generic = generic;
+diff --git a/src/main/java/net/sourceforge/plantuml/classdiagram/command/CommandCreateClass.java b/src/main/java/net/sourceforge/plantuml/classdiagram/command/CommandCreateClass.java
+index 79c37e2..04d28b6 100644
+--- a/src/main/java/net/sourceforge/plantuml/classdiagram/command/CommandCreateClass.java
++++ b/src/main/java/net/sourceforge/plantuml/classdiagram/command/CommandCreateClass.java
+@@ -108,6 +108,8 @@ public class CommandCreateClass extends SingleLineCommand2<ClassDiagram> {
+ 								"(implements)[%s]+(" + CommandCreateClassMultilines.CODES + "|[%g]([^%g]+)[%g])"))), //
+ 				new RegexOptional(new RegexConcat(RegexLeaf.spaceZeroOrMore(), new RegexLeaf("\\{"),
+ 						RegexLeaf.spaceZeroOrMore(), new RegexLeaf("\\}"))), //
++				new RegexOptional(new RegexConcat(RegexLeaf.spaceOneOrMore(),
++						new RegexLeaf(1, "REVIEW", "\\[review=(pending|approved|rejected)\\]"))),
+ 				RegexLeaf.end());
+ 	}
+ 
+@@ -204,6 +206,8 @@ public class CommandCreateClass extends SingleLineCommand2<ClassDiagram> {
+ 
+ 		diagram.setLastEntity(entity);
+ 		entity.setVisibilityModifier(visibilityModifier);
++		if (arg.get("REVIEW", 0) != null)
++			entity.setReviewStatus(StringUtils.goLowerCase(arg.get("REVIEW", 0)));
+ 		if (stereo != null) {
+ 			final Stereotype stereotype = Stereotype.build(stereo, diagram.getSkinParam().getCircledCharacterRadius(),
+ 					diagram.getSkinParam().getFont(null, false, FontParam.CIRCLED_CHARACTER),
+@@ -244,4 +248,4 @@ public class CommandCreateClass extends SingleLineCommand2<ClassDiagram> {
+ 		return CommandExecutionResult.ok();
+ 	}
+ 
+-}
+\ No newline at end of file
++}
+diff --git a/src/main/java/net/sourceforge/plantuml/svek/image/EntityImageClassHeader.java b/src/main/java/net/sourceforge/plantuml/svek/image/EntityImageClassHeader.java
+index 38a4e95..206d800 100644
+--- a/src/main/java/net/sourceforge/plantuml/svek/image/EntityImageClassHeader.java
++++ b/src/main/java/net/sourceforge/plantuml/svek/image/EntityImageClassHeader.java
+@@ -101,6 +101,8 @@ public class EntityImageClassHeader extends AbstractEntityImage {
+ 			fontConfigurationName = fontConfigurationName.italic();
+ 
+ 		Display display = entity.getDisplay();
++		if (entity.getReviewStatus() != null)
++			display = display.add("[review: " + entity.getReviewStatus() + "]");
+ 		if (displayGenericWithOldFashion && entity.getGeneric() != null)
+ 			display = display.addGeneric(entity.getGeneric());
+ 

@@ -1,0 +1,102 @@
+diff --git a/src/main/java/net/sourceforge/plantuml/command/CommandPragma.java b/src/main/java/net/sourceforge/plantuml/command/CommandPragma.java
+index 44cb1a5..07e1377 100644
+--- a/src/main/java/net/sourceforge/plantuml/command/CommandPragma.java
++++ b/src/main/java/net/sourceforge/plantuml/command/CommandPragma.java
+@@ -108,6 +108,9 @@ public class CommandPragma extends SingleLineCommand2<TitledDiagram> {
+ 				&& !"default".equalsIgnoreCase(value) && !"pastel".equalsIgnoreCase(value)
+ 				&& !"mono".equalsIgnoreCase(value))
+ 			return CommandExecutionResult.error("classReviewPalette expects default, pastel or mono");
++		if (PragmaKey.lazyFrom(name) == PragmaKey.SVG_REVIEW_METADATA
++				&& !"true".equalsIgnoreCase(value) && !"false".equalsIgnoreCase(value))
++			return CommandExecutionResult.error("svgReviewMetadata expects true or false");
+ 		if (name.equalsIgnoreCase("svgsize")) {
+ 			if (value.contains(" ")) {
+ 				final StringTokenizer st = new StringTokenizer(value);
+diff --git a/src/main/java/net/sourceforge/plantuml/klimt/UGroupType.java b/src/main/java/net/sourceforge/plantuml/klimt/UGroupType.java
+index 0335795..931f8a3 100644
+--- a/src/main/java/net/sourceforge/plantuml/klimt/UGroupType.java
++++ b/src/main/java/net/sourceforge/plantuml/klimt/UGroupType.java
+@@ -41,6 +41,7 @@ public enum UGroupType {
+ 	CLASS,
+ 	TITLE,
+ 	DATA_ENTITY,
++	DATA_REVIEW_STATUS,
+ 	DATA_QUALIFIED_NAME,
+ 	DATA_ENTITY_1,
+ 	DATA_ENTITY_2,
+diff --git a/src/main/java/net/sourceforge/plantuml/klimt/drawing/svg/PortableSvgDocument.java b/src/main/java/net/sourceforge/plantuml/klimt/drawing/svg/PortableSvgDocument.java
+index 5f6d3e0..d809f16 100644
+--- a/src/main/java/net/sourceforge/plantuml/klimt/drawing/svg/PortableSvgDocument.java
++++ b/src/main/java/net/sourceforge/plantuml/klimt/drawing/svg/PortableSvgDocument.java
+@@ -71,6 +71,7 @@ public abstract class PortableSvgDocument {
+ 		case DATA_ENTITY_UID:
+ 		case DATA_VISIBILITY_MODIFIER:
+ 		case DATA_LINK_TYPE:
++		case DATA_REVIEW_STATUS:
+ 			element.setAttribute(key.getSvgKeyAttributeName(), value);
+ 			break;
+ 		// default: other keys are intentionally ignored
+diff --git a/src/main/java/net/sourceforge/plantuml/skin/PragmaKey.java b/src/main/java/net/sourceforge/plantuml/skin/PragmaKey.java
+index 403b785..ea5dfb1 100644
+--- a/src/main/java/net/sourceforge/plantuml/skin/PragmaKey.java
++++ b/src/main/java/net/sourceforge/plantuml/skin/PragmaKey.java
+@@ -46,6 +46,7 @@ public enum PragmaKey {
+ 	EMULATE_GRAPHVIZ_244_ON_WINDOWS,
+ 
+ 	CLASS_REVIEW_PALETTE,
++	SVG_REVIEW_METADATA,
+ 	ASPECT, //
+ 	COMPACT, //
+ 	DEFAULT_LABEL_ANGLE, //
+diff --git a/src/main/java/net/sourceforge/plantuml/svek/image/EntityImageClass.java b/src/main/java/net/sourceforge/plantuml/svek/image/EntityImageClass.java
+index b03e2a4..38241c0 100644
+--- a/src/main/java/net/sourceforge/plantuml/svek/image/EntityImageClass.java
++++ b/src/main/java/net/sourceforge/plantuml/svek/image/EntityImageClass.java
+@@ -150,6 +150,9 @@ public class EntityImageClass extends AbstractEntityImage implements Stencil, Wi
+ 		group.put(UGroupType.DATA_ENTITY, getEntity().getName());
+ 		group.put(UGroupType.DATA_UID, getEntity().getUid());
+ 		group.put(UGroupType.DATA_QUALIFIED_NAME, getEntity().getQuark().getQualifiedName());
++		if (getSkinParam().getPragma().isTrue(PragmaKey.SVG_REVIEW_METADATA)
++				&& getEntity().getReviewStatus() != null)
++			group.put(UGroupType.DATA_REVIEW_STATUS, getEntity().getReviewStatus());
+ 		ug.startGroup(group);
+ 		drawInternal(ug);
+ 		ug.closeGroup();
+@@ -179,6 +182,7 @@ public class EntityImageClass extends AbstractEntityImage implements Stencil, Wi
+ 	}
+ 
+ 	private void drawInternal(UGraphic ug) {
++		final Style resolvedStyle = getStyle();
+ 		final StringBounder stringBounder = ug.getStringBounder();
+ 		final XDimension2D dimTotal = calculateDimension(stringBounder);
+ 		final XDimension2D dimHeader = header.calculateDimension(stringBounder);
+@@ -200,10 +204,10 @@ public class EntityImageClass extends AbstractEntityImage implements Stencil, Wi
+ 			backcolor = getSkinParam().getIHtmlColorSet().getColorOrWhite(
+ 					reviewPalette.background(getEntity().getReviewStatus()));
+ 
+-		shadow = getStyle().getShadowing();
++		shadow = resolvedStyle.getShadowing();
+ 
+ 		if (borderColor == null)
+-			borderColor = getStyle().value(PName.LineColor).asColor(getSkinParam().getIHtmlColorSet());
++			borderColor = resolvedStyle.value(PName.LineColor).asColor(getSkinParam().getIHtmlColorSet());
+ 
+ 		if (headerBackcolor == null)
+ 			headerBackcolor = backcolor == null
+@@ -211,14 +215,14 @@ public class EntityImageClass extends AbstractEntityImage implements Stencil, Wi
+ 					: backcolor;
+ 
+ 		if (backcolor == null)
+-			backcolor = getStyle().value(PName.BackGroundColor).asColor(getSkinParam().getIHtmlColorSet());
++			backcolor = resolvedStyle.value(PName.BackGroundColor).asColor(getSkinParam().getIHtmlColorSet());
+ 
+ 		rect.setDeltaShadow(shadow);
+ 
+ 		ug = ug.apply(borderColor);
+ 		ug = ug.apply(backcolor.bg());
+ 
+-		final UStroke stroke = getStyle().getStroke(lineConfig.getColors());
++		final UStroke stroke = resolvedStyle.getStroke(lineConfig.getColors());
+ 
+ 		UGraphic ugHeader = ug;
+ 		if (roundCorner == 0 && headerBackcolor != null && backcolor.equals(headerBackcolor) == false) {

@@ -1,0 +1,12 @@
+PASS plain model has 2 nodes and 1 link
+PASS plain SVG contains class label
+PASS review preserves topology
+PASS status stored on entity
+PASS visible pending
+PASS visible approved
+PASS visible rejected
+PASS unknown status rejected
+PASS plain redeclaration retains status
+PASS existing stereotype and explicit color coexist
+PASS review renders PNG
+RESULT 11/11

@@ -1,0 +1,4 @@
+PASS plain model has 2 nodes and 1 link
+PASS plain SVG contains class label
+PASS baseline rejects new syntax
+RESULT 3/3

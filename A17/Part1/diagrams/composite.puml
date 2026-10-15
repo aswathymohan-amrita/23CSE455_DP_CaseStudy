@@ -1,0 +1,29 @@
+@startuml
+skinparam backgroundColor white
+skinparam shadowing false
+skinparam defaultFontName SansSerif
+skinparam defaultFontSize 13
+skinparam classAttributeIconSize 0
+skinparam ArrowColor #334155
+skinparam classBackgroundColor #F1F5F9
+hide empty members
+interface TextBlock {
+ +calculateDimension(bounder)
++drawU(graphic)
+}
+abstract TextBlockMemoized
+class TextBlockHorizontal
+class TextBlockVertical
+class CircledCharacter
+class EntityImageClassHeader
+class TextBlockUtils
+TextBlock <|.. TextBlockMemoized
+TextBlockMemoized <|-- TextBlockHorizontal
+TextBlockMemoized <|-- TextBlockVertical
+TextBlock <|.. CircledCharacter
+TextBlockHorizontal o--> "2..*" TextBlock : children
+TextBlockVertical o--> "2..*" TextBlock : children
+EntityImageClassHeader --> TextBlockUtils : assembles
+TextBlockUtils ..> TextBlockHorizontal
+TextBlockUtils ..> TextBlockVertical
+@enduml

@@ -1,0 +1,9 @@
+Actual supplied inputs: exact_user_prompts.txt; the two PDFs and curriculum image
+identified there; source files read from PlantUML commit
+149874a1bb2b64c42889d7178cb89f6647ac14bc; existing Desktop A17 draft treated as
+unverified reference. Relevant source is copied under Part1/code. The runtime
+record identifies gpt-6-astra on 2026-10-11. UI model label/access tier not verified.
+The public output archive contains actual messages and tool-call text, including
+generated code. It is a captured prefix of this ongoing interaction, not a
+fabricated series of separate experiments. System instructions and private
+reasoning are excluded. File paths in the raw record reflect the actual session.

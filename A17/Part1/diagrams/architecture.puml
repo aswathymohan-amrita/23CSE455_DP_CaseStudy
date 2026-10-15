@@ -1,0 +1,24 @@
+@startuml
+skinparam backgroundColor white
+skinparam shadowing false
+skinparam defaultFontName SansSerif
+skinparam defaultFontSize 13
+skinparam classAttributeIconSize 0
+skinparam ArrowColor #334155
+skinparam classBackgroundColor #F1F5F9
+hide empty members
+top to bottom direction
+rectangle "SourceStringReader\ntext / preprocessing" as Input
+rectangle "ClassDiagramFactory\ncommand registration" as Factory
+rectangle "PSystemCommandFactory\nmatch and execute" as Parser
+rectangle "ClassDiagram\nEntity + Link" as Model
+rectangle "CucaDiagramFileMaker\nSvek / Smetana / ELK" as Layout
+rectangle "EntityImageClass\nheader + body + style" as Renderer
+rectangle "UGraphicSvg / PNG\noutput stream" as Output
+Input --> Factory
+Factory --> Parser
+Parser --> Model
+Model --> Layout
+Layout --> Renderer
+Renderer --> Output
+@enduml

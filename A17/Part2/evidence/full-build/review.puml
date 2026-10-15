@@ -1,0 +1,6 @@
+@startuml
+!pragma layout smetana
+class Order [review=pending]
+class Customer [review=approved]
+Order --> Customer
+@enduml

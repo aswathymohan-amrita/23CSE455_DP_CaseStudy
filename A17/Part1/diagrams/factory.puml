@@ -1,0 +1,27 @@
+@startuml
+skinparam backgroundColor white
+skinparam shadowing false
+skinparam defaultFontName SansSerif
+skinparam defaultFontSize 13
+skinparam classAttributeIconSize 0
+skinparam ArrowColor #334155
+skinparam classBackgroundColor #F1F5F9
+hide empty members
+abstract PSystemCommandFactory {
+ +createSystem(...)
+ {abstract} +createEmptyDiagram(...) : AbstractDiagram
+}
+class ClassDiagramFactory {
+ +createEmptyDiagram(...) : ClassDiagram
+}
+abstract AbstractDiagram
+class ClassDiagram
+PSystemCommandFactory <|-- ClassDiagramFactory
+AbstractDiagram <|-- ClassDiagram : indirect inheritance
+PSystemCommandFactory --> AbstractDiagram : uses product
+ClassDiagramFactory ..> ClassDiagram : creates
+note bottom of PSystemCommandFactory
+ createSystem calls the virtual creation hook.
+ Parsing control stays in the superclass.
+end note
+@enduml

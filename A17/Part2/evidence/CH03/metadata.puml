@@ -1,0 +1,7 @@
+@startuml
+!pragma layout smetana
+!pragma svgReviewMetadata true
+class Order [review=pending]
+class Customer [review=approved]
+Order --> Customer
+@enduml

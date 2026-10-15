@@ -1,0 +1,30 @@
+@startuml
+skinparam backgroundColor white
+skinparam shadowing false
+skinparam defaultFontName SansSerif
+skinparam defaultFontSize 13
+skinparam classAttributeIconSize 0
+skinparam ArrowColor #334155
+skinparam classBackgroundColor #F1F5F9
+hide empty members
+interface Graphviz {
+ +createFile3(outputStream) : ProcessState
+}
+class GraphvizJs {
+ +createFile3(outputStream)
+-submitJob()
+}
+class VizJsEngine {
+ +execute(dot) : String
+}
+class DotStringFactory
+class "ch.braincell.viz.VizJS\noptional external dependency" as External
+Graphviz <|.. GraphvizJs
+DotStringFactory --> Graphviz : requests output
+GraphvizJs --> VizJsEngine : obtains SVG String
+VizJsEngine ..> External : reflection
+note bottom of GraphvizJs
+ Converts a String result to stream output
+ and a ProcessState return value.
+end note
+@enduml

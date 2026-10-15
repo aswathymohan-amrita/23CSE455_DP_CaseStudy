@@ -1,0 +1,9 @@
+src/main/java/net/sourceforge/plantuml/abel/Entity.java
+src/main/java/net/sourceforge/plantuml/classdiagram/command/CommandCreateClass.java
+src/main/java/net/sourceforge/plantuml/command/CommandPragma.java
+src/main/java/net/sourceforge/plantuml/klimt/UGroupType.java
+src/main/java/net/sourceforge/plantuml/klimt/drawing/svg/PortableSvgDocument.java
+src/main/java/net/sourceforge/plantuml/skin/PragmaKey.java
+src/main/java/net/sourceforge/plantuml/svek/image/EntityImageClass.java
+src/main/java/net/sourceforge/plantuml/svek/image/EntityImageClassHeader.java
+src/main/java/net/sourceforge/plantuml/svek/image/ReviewPalette.java

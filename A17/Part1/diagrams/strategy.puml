@@ -1,0 +1,25 @@
+@startuml
+skinparam backgroundColor white
+skinparam shadowing false
+skinparam defaultFontName SansSerif
+skinparam defaultFontSize 13
+skinparam classAttributeIconSize 0
+skinparam ArrowColor #334155
+skinparam classBackgroundColor #F1F5F9
+hide empty members
+class "net.atmp.CucaDiagram" as Context {
+ +getTextBlock(...)
+}
+abstract CucaDiagramFileMaker {
+ {abstract} +getTextBlock(...) : TextBlock
+}
+class CucaDiagramFileMakerSvek
+class CucaDiagramFileMakerSmetana
+class CucaDiagramFileMakerElk
+class CucaDiagramFileMakerTeaVM
+Context --> CucaDiagramFileMaker : selects and delegates
+CucaDiagramFileMaker <|-- CucaDiagramFileMakerSvek
+CucaDiagramFileMaker <|-- CucaDiagramFileMakerSmetana
+CucaDiagramFileMaker <|-- CucaDiagramFileMakerElk
+CucaDiagramFileMaker <|-- CucaDiagramFileMakerTeaVM
+@enduml

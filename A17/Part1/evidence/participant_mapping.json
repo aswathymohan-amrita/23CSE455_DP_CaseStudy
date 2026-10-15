@@ -1,0 +1,358 @@
+[
+  {
+    "id": "command",
+    "pattern": "Command",
+    "category": "Behavioral",
+    "instance": "Class diagram command dispatch",
+    "intent": "Encapsulate recognized source instructions as interchangeable executable objects, separating command selection from model mutation.",
+    "evidence": "PSystemCommandFactory.getCandidate selects a Command using isValid; executeFewLines delegates through AbstractDiagram.executeCommand. CommandCreateClass.executeArg creates or updates an Entity; CommandLinkClass.executeArg creates a Link and adds it to the receiver. CommandPragma handles the layout directive in the traced input. No undo/history support is claimed.",
+    "participants": [
+      {
+        "role": "Command",
+        "symbol": "net.sourceforge.plantuml.command.Command",
+        "path": "src/main/java/net/sourceforge/plantuml/command/Command.java",
+        "start": 42,
+        "end": 58,
+        "methods": "isValid; execute",
+        "concrete": false
+      },
+      {
+        "role": "Shared command implementation",
+        "symbol": "net.sourceforge.plantuml.command.SingleLineCommand2",
+        "path": "src/main/java/net/sourceforge/plantuml/command/SingleLineCommand2.java",
+        "start": 51,
+        "end": 193,
+        "methods": "execute; executeArg",
+        "concrete": false
+      },
+      {
+        "role": "ConcreteCommand",
+        "symbol": "net.sourceforge.plantuml.classdiagram.command.CommandCreateClass",
+        "path": "src/main/java/net/sourceforge/plantuml/classdiagram/command/CommandCreateClass.java",
+        "start": 71,
+        "end": 247,
+        "methods": "getRegexConcat; executeArg",
+        "concrete": true
+      },
+      {
+        "role": "ConcreteCommand",
+        "symbol": "net.sourceforge.plantuml.classdiagram.command.CommandLinkClass",
+        "path": "src/main/java/net/sourceforge/plantuml/classdiagram/command/CommandLinkClass.java",
+        "start": 73,
+        "end": 553,
+        "methods": "executeArg; addLink",
+        "concrete": true
+      },
+      {
+        "role": "ConcreteCommand",
+        "symbol": "net.sourceforge.plantuml.command.CommandPragma",
+        "path": "src/main/java/net/sourceforge/plantuml/command/CommandPragma.java",
+        "start": 52,
+        "end": 139,
+        "methods": "executeArg",
+        "concrete": true
+      },
+      {
+        "role": "Invoker/selector",
+        "symbol": "net.sourceforge.plantuml.command.PSystemCommandFactory",
+        "path": "src/main/java/net/sourceforge/plantuml/command/PSystemCommandFactory.java",
+        "start": 61,
+        "end": 309,
+        "methods": "getCandidate; executeFewLines",
+        "concrete": false
+      },
+      {
+        "role": "Execution bridge",
+        "symbol": "net.sourceforge.plantuml.core.AbstractDiagram",
+        "path": "src/main/java/net/sourceforge/plantuml/core/AbstractDiagram.java",
+        "start": 67,
+        "end": 273,
+        "methods": "executeCommand",
+        "concrete": false
+      },
+      {
+        "role": "Client/registration",
+        "symbol": "net.sourceforge.plantuml.classdiagram.ClassDiagramFactory",
+        "path": "src/main/java/net/sourceforge/plantuml/classdiagram/ClassDiagramFactory.java",
+        "start": 88,
+        "end": 173,
+        "methods": "initCommandsList",
+        "concrete": false
+      },
+      {
+        "role": "Receiver",
+        "symbol": "net.sourceforge.plantuml.classdiagram.ClassDiagram",
+        "path": "src/main/java/net/sourceforge/plantuml/classdiagram/ClassDiagram.java",
+        "start": 49,
+        "end": 101,
+        "methods": "inherited reallyCreateLeaf; addLink",
+        "concrete": false
+      },
+      {
+        "role": "Receiver base",
+        "symbol": "net.sourceforge.plantuml.objectdiagram.AbstractClassOrObjectDiagram",
+        "path": "src/main/java/net/sourceforge/plantuml/objectdiagram/AbstractClassOrObjectDiagram.java",
+        "start": 60,
+        "end": 365,
+        "methods": "class diagram shared model",
+        "concrete": false
+      },
+      {
+        "role": "Model element",
+        "symbol": "net.sourceforge.plantuml.abel.Entity",
+        "path": "src/main/java/net/sourceforge/plantuml/abel/Entity.java",
+        "start": 89,
+        "end": 775,
+        "methods": "setColors; setStereotype",
+        "concrete": false
+      },
+      {
+        "role": "Model relationship",
+        "symbol": "net.sourceforge.plantuml.abel.Link",
+        "path": "src/main/java/net/sourceforge/plantuml/abel/Link.java",
+        "start": 65,
+        "end": 580,
+        "methods": "constructor",
+        "concrete": false
+      }
+    ]
+  },
+  {
+    "id": "factory",
+    "pattern": "Factory Method",
+    "category": "Creational",
+    "instance": "Class diagram product creation",
+    "intent": "Let a specialized parser factory choose the diagram product while the superclass retains the parsing lifecycle.",
+    "evidence": "PSystemCommandFactory.createSystem calls the abstract createEmptyDiagram hook. ClassDiagramFactory overrides it with a covariant ClassDiagram return and constructs that product. This is a virtual creation hook used by superclass code, not merely a helper named factory.",
+    "participants": [
+      {
+        "role": "Creator",
+        "symbol": "net.sourceforge.plantuml.command.PSystemCommandFactory",
+        "path": "src/main/java/net/sourceforge/plantuml/command/PSystemCommandFactory.java",
+        "start": 61,
+        "end": 309,
+        "methods": "createSystem; createEmptyDiagram",
+        "concrete": false
+      },
+      {
+        "role": "ConcreteCreator",
+        "symbol": "net.sourceforge.plantuml.classdiagram.ClassDiagramFactory",
+        "path": "src/main/java/net/sourceforge/plantuml/classdiagram/ClassDiagramFactory.java",
+        "start": 88,
+        "end": 173,
+        "methods": "createEmptyDiagram",
+        "concrete": true
+      },
+      {
+        "role": "Product",
+        "symbol": "net.sourceforge.plantuml.core.AbstractDiagram",
+        "path": "src/main/java/net/sourceforge/plantuml/core/AbstractDiagram.java",
+        "start": 67,
+        "end": 273,
+        "methods": "executeCommand; exportDiagram contract",
+        "concrete": false
+      },
+      {
+        "role": "ConcreteProduct",
+        "symbol": "net.sourceforge.plantuml.classdiagram.ClassDiagram",
+        "path": "src/main/java/net/sourceforge/plantuml/classdiagram/ClassDiagram.java",
+        "start": 49,
+        "end": 101,
+        "methods": "constructor",
+        "concrete": true
+      }
+    ]
+  },
+  {
+    "id": "strategy",
+    "pattern": "Strategy",
+    "category": "Behavioral",
+    "instance": "Class diagram layout backend selection",
+    "intent": "Select a layout algorithm without forcing the caller to know each backend's graph processing steps.",
+    "evidence": "CucaDiagram.getTextBlock selects a CucaDiagramFileMaker based on TeaVM, ELK, Smetana and Graphviz availability, then delegates to getTextBlock with the same arguments. Svek uses the external dot pipeline; Smetana performs layout in Java. ELK and TeaVM branches are source-verified but not exercised by the A17 tests.",
+    "participants": [
+      {
+        "role": "Context",
+        "symbol": "net.atmp.CucaDiagram",
+        "path": "src/main/java/net/atmp/CucaDiagram.java",
+        "start": 109,
+        "end": 959,
+        "methods": "getTextBlock; dotIsAvailable",
+        "concrete": false
+      },
+      {
+        "role": "Strategy",
+        "symbol": "net.sourceforge.plantuml.svek.CucaDiagramFileMaker",
+        "path": "src/main/java/net/sourceforge/plantuml/svek/CucaDiagramFileMaker.java",
+        "start": 46,
+        "end": 71,
+        "methods": "getTextBlock",
+        "concrete": false
+      },
+      {
+        "role": "ConcreteStrategy",
+        "symbol": "net.sourceforge.plantuml.svek.CucaDiagramFileMakerSvek",
+        "path": "src/main/java/net/sourceforge/plantuml/svek/CucaDiagramFileMakerSvek.java",
+        "start": 52,
+        "end": 116,
+        "methods": "getTextBlock",
+        "concrete": true
+      },
+      {
+        "role": "ConcreteStrategy",
+        "symbol": "net.sourceforge.plantuml.sdot.CucaDiagramFileMakerSmetana",
+        "path": "src/main/java/net/sourceforge/plantuml/sdot/CucaDiagramFileMakerSmetana.java",
+        "start": 116,
+        "end": 925,
+        "methods": "getTextBlock",
+        "concrete": true
+      },
+      {
+        "role": "ConcreteStrategy",
+        "symbol": "net.sourceforge.plantuml.elk.CucaDiagramFileMakerElk",
+        "path": "src/main/java/net/sourceforge/plantuml/elk/CucaDiagramFileMakerElk.java",
+        "start": 138,
+        "end": 501,
+        "methods": "getTextBlock",
+        "concrete": true
+      },
+      {
+        "role": "ConcreteStrategy",
+        "symbol": "net.sourceforge.plantuml.svek.CucaDiagramFileMakerTeaVM",
+        "path": "src/main/java/net/sourceforge/plantuml/svek/CucaDiagramFileMakerTeaVM.java",
+        "start": 56,
+        "end": 148,
+        "methods": "getTextBlock",
+        "concrete": true
+      }
+    ]
+  },
+  {
+    "id": "composite",
+    "pattern": "Composite",
+    "category": "Structural",
+    "instance": "Class header text-block composition",
+    "intent": "Treat a single drawable and an aggregate of drawables through the same measurement and drawing interface.",
+    "evidence": "TextBlockHorizontal and TextBlockVertical hold lists of TextBlock children, recursively measure them, and draw each through the component interface with translated coordinates. CircledCharacter is the inspected leaf. EntityImageClassHeader builds the header from smaller blocks through TextBlockUtils. The entity/link graph itself is not the evidence for Composite.",
+    "participants": [
+      {
+        "role": "Component",
+        "symbol": "net.sourceforge.plantuml.klimt.shape.TextBlock",
+        "path": "src/main/java/net/sourceforge/plantuml/klimt/shape/TextBlock.java",
+        "start": 47,
+        "end": 67,
+        "methods": "calculateDimension; inherited drawU",
+        "concrete": false
+      },
+      {
+        "role": "Composite base",
+        "symbol": "net.sourceforge.plantuml.klimt.shape.TextBlockMemoized",
+        "path": "src/main/java/net/sourceforge/plantuml/klimt/shape/TextBlockMemoized.java",
+        "start": 50,
+        "end": 72,
+        "methods": "calculateDimension; calculateDimensionSlow",
+        "concrete": false
+      },
+      {
+        "role": "Composite",
+        "symbol": "net.sourceforge.plantuml.klimt.shape.TextBlockHorizontal",
+        "path": "src/main/java/net/sourceforge/plantuml/klimt/shape/TextBlockHorizontal.java",
+        "start": 48,
+        "end": 95,
+        "methods": "calculateDimensionSlow; drawU",
+        "concrete": true
+      },
+      {
+        "role": "Composite",
+        "symbol": "net.sourceforge.plantuml.klimt.shape.TextBlockVertical",
+        "path": "src/main/java/net/sourceforge/plantuml/klimt/shape/TextBlockVertical.java",
+        "start": 51,
+        "end": 134,
+        "methods": "calculateDimensionSlow; drawU",
+        "concrete": true
+      },
+      {
+        "role": "Representative leaf",
+        "symbol": "net.sourceforge.plantuml.klimt.shape.CircledCharacter",
+        "path": "src/main/java/net/sourceforge/plantuml/klimt/shape/CircledCharacter.java",
+        "start": 46,
+        "end": 88,
+        "methods": "calculateDimension; drawU",
+        "concrete": true
+      },
+      {
+        "role": "Client",
+        "symbol": "net.sourceforge.plantuml.svek.image.EntityImageClassHeader",
+        "path": "src/main/java/net/sourceforge/plantuml/svek/image/EntityImageClassHeader.java",
+        "start": 74,
+        "end": 279,
+        "methods": "constructor",
+        "concrete": false
+      },
+      {
+        "role": "Assembly helper",
+        "symbol": "net.sourceforge.plantuml.klimt.shape.TextBlockUtils",
+        "path": "src/main/java/net/sourceforge/plantuml/klimt/shape/TextBlockUtils.java",
+        "start": 55,
+        "end": 183,
+        "methods": "mergeLR; mergeTB",
+        "concrete": false
+      }
+    ]
+  },
+  {
+    "id": "adapter",
+    "pattern": "Adapter",
+    "category": "Structural",
+    "instance": "VizJs output-stream bridge",
+    "intent": "Expose a string-returning JavaScript layout engine through PlantUML's existing Graphviz output-stream interface.",
+    "evidence": "GraphvizJs implements Graphviz.createFile3(OutputStream). It submits a VizJsEngine.execute(dotString) operation, obtains its SVG String, writes bytes to the requested stream and returns ProcessState. VizJsEngine reflectively calls ch.braincell.viz.VizJS. This incompatible-interface conversion establishes Adapter intent. Optional VizJs execution is not claimed.",
+    "participants": [
+      {
+        "role": "Target",
+        "symbol": "net.sourceforge.plantuml.dot.Graphviz",
+        "path": "src/main/java/net/sourceforge/plantuml/dot/Graphviz.java",
+        "start": 41,
+        "end": 52,
+        "methods": "createFile3",
+        "concrete": false
+      },
+      {
+        "role": "Adapter",
+        "symbol": "net.sourceforge.plantuml.vizjs.GraphvizJs",
+        "path": "src/main/java/net/sourceforge/plantuml/vizjs/GraphvizJs.java",
+        "start": 52,
+        "end": 153,
+        "methods": "createFile3; submitJob",
+        "concrete": true
+      },
+      {
+        "role": "Adaptee facade",
+        "symbol": "net.sourceforge.plantuml.vizjs.VizJsEngine",
+        "path": "src/main/java/net/sourceforge/plantuml/vizjs/VizJsEngine.java",
+        "start": 41,
+        "end": 68,
+        "methods": "execute",
+        "concrete": false
+      },
+      {
+        "role": "Client",
+        "symbol": "net.sourceforge.plantuml.svek.DotStringFactory",
+        "path": "src/main/java/net/sourceforge/plantuml/svek/DotStringFactory.java",
+        "start": 70,
+        "end": 654,
+        "methods": "getSvg; createFile3 call",
+        "concrete": false
+      },
+      {
+        "role": "Adapter selection",
+        "symbol": "net.sourceforge.plantuml.dot.GraphvizRuntimeEnvironment",
+        "path": "src/main/java/net/sourceforge/plantuml/dot/GraphvizRuntimeEnvironment.java",
+        "start": 56,
+        "end": 238,
+        "methods": "create",
+        "concrete": false
+      }
+    ]
+  }
+]

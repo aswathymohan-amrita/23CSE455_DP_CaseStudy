@@ -1,0 +1,43 @@
+@startuml
+skinparam backgroundColor white
+skinparam shadowing false
+skinparam defaultFontName SansSerif
+skinparam defaultFontSize 13
+skinparam classAttributeIconSize 0
+skinparam ArrowColor #334155
+skinparam classBackgroundColor #F1F5F9
+hide empty members
+interface Command {
+ +execute(diagram, lines, pass)
+}
+abstract SingleLineCommand2 {
+ #executeArg(diagram, location, args, pass)
+}
+class CommandCreateClass
+class CommandLinkClass
+class CommandPragma
+class PSystemCommandFactory {
+ -getCandidate(lines)
+}
+class ClassDiagramFactory {
+ #initCommandsList(commands)
+}
+class AbstractDiagram {
+ +executeCommand(command, lines, pass)
+}
+class ClassDiagram
+class Entity
+class Link
+Command <|.. SingleLineCommand2
+SingleLineCommand2 <|-- CommandCreateClass
+SingleLineCommand2 <|-- CommandLinkClass
+SingleLineCommand2 <|-- CommandPragma
+ClassDiagramFactory --> Command : registers
+PSystemCommandFactory o--> Command : selects
+PSystemCommandFactory --> AbstractDiagram : invokes
+AbstractDiagram --> Command : execute
+CommandCreateClass --> ClassDiagram : mutates
+CommandLinkClass --> ClassDiagram : mutates
+ClassDiagram o--> Entity
+ClassDiagram o--> Link
+@enduml

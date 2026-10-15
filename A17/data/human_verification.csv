@@ -1,0 +1,4 @@
+claim,reviewer,date,status,evidence,correction
+Pattern mappings,,,pending,Part1/evidence/participant_mapping.json,
+Evolution behavior,,,pending,Part2/evidence/snapshots.json,
+Language equivalence,,,pending,Part3/evidence/results.json,

@@ -1,0 +1,294 @@
+Starting a Gradle Daemon, 1 busy Daemon could not be reused, use --status for details
+Running settings.gradle.kts
+Version is 1.2026.8
+Current Java version is 25
+-Pfast: only GPL will be built (skipping licence subprojects)
+Skipping plantuml-natif (as it requires Java 11 or higher)
+Skipping plantuml-mcp-js (as it requires Java 11 or higher)
+
+> Configure project :
+Running build.gradle.kts
+1.2026.8
+
+> Task :compileJava
+Note: Some input files use or override a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+Note: Some input files use unchecked or unsafe operations.
+Note: Recompile with -Xlint:unchecked for details.
+
+> Task :generateGitProperties
+::group::[Git Properties]
+----- git.properties -----
+git.branch=codex/a17-case-study
+git.build.host=Sathviks-MacBook-Air.local
+git.build.user.email=sathvikpasuvula2023@gmail.com
+git.build.user.name=sathvik9105
+git.build.version=1.2026.8
+git.closest.tag.commit.count=3
+git.closest.tag.name=v1.2026.8
+git.commit.id.abbrev=dd5c91b
+git.commit.id.describe=v1.2026.8-3-gdd5c91b
+git.commit.id=dd5c91b457c13fb1a20ae51a62fa73c3b8485847
+git.commit.message.full=CH03\: export opt-in review attributes through existing SVG groups\n
+git.commit.message.short=CH03\: export opt-in review attributes through existing SVG groups
+git.commit.time=2026-10-11T13\:50\:30+05
+git.commit.user.email=a17@example.invalid
+git.commit.user.name=A17 case-study tooling
+git.dirty=false
+git.remote.origin.url=https\://github.com/plantuml/plantuml.git
+git.tags=
+git.total.commit.count=4
+--------------------------
+::endgroup::
+
+> Task :processResources
+> Task :classes
+> Task :jar
+
+> Task :checkJarEntries
+All required entries found in plantuml-1.2026.8.jar
+
+> Task :compileTeavmJava NO-SOURCE
+> Task :processTeavmResources NO-SOURCE
+> Task :teavmClasses UP-TO-DATE
+
+> Task :compileTestJava
+Note: Some input files use or override a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+
+> Task :processTestResources
+> Task :testClasses
+
+> Task :test
+Java Home:/opt/homebrew/Cellar/openjdk/25.0.2/libexec/openjdk.jdk/Contents/Home
+Java Version: 25.0.2
+
+RunRenderCrashExitCodeTest > pipeMode_renderCrash_exitsWithError(StdOut) STANDARD_ERROR
+    java.lang.IllegalStateException: Simulated rendering crash (GlobalConfigKey.SIMULATE_RENDER_CRASH_FOR_TESTS) - for unit tests only
+    	at net.sourceforge.plantuml.UgDiagram.exportDiagram(UgDiagram.java:94)
+    	at net.sourceforge.plantuml.SourceStringReader.outputImage(SourceStringReader.java:192)
+    	at net.sourceforge.plantuml.Pipe.generateDiagram(Pipe.java:121)
+    	at net.sourceforge.plantuml.Pipe.managePipe(Pipe.java:109)
+    	at net.sourceforge.plantuml.Run.main(Run.java:183)
+    	at net.sourceforge.plantuml.cli.RunRenderCrashExitCodeTest.lambda$pipeMode_renderCrash_exitsWithError$0(RunRenderCrashExitCodeTest.java:93)
+    	at net.sourceforge.plantuml.cli.AbstractCliTest.assertExitCode(AbstractCliTest.java:52)
+    	at net.sourceforge.plantuml.cli.AbstractCliTest.assertExit(AbstractCliTest.java:61)
+    	at net.sourceforge.plantuml.cli.RunRenderCrashExitCodeTest.pipeMode_renderCrash_exitsWithError(RunRenderCrashExitCodeTest.java:92)
+    	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104)
+    	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+    	at org.junit.platform.commons.util.ReflectionUtils.invokeMethod(ReflectionUtils.java:700)
+    	at org.junit.platform.commons.support.ReflectionSupport.invokeMethod(ReflectionSupport.java:528)
+    	at org.junit.jupiter.engine.support.MethodReflectionUtils.invoke(MethodReflectionUtils.java:53)
+    	at org.junit.jupiter.engine.execution.MethodInvocation.proceed(MethodInvocation.java:61)
+    	at org.junit.jupiter.engine.execution.InvocationInterceptorChain$ValidatingInvocation.proceed(InvocationInterceptorChain.java:124)
+    	at org.junit.jupiter.engine.extension.TimeoutExtension.intercept(TimeoutExtension.java:163)
+    	at org.junit.jupiter.engine.extension.TimeoutExtension.interceptTestableMethod(TimeoutExtension.java:148)
+    	at org.junit.jupiter.engine.extension.TimeoutExtension.interceptTestMethod(TimeoutExtension.java:86)
+    	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker$ReflectiveInterceptorCall.lambda$ofVoidMethod$0(InterceptingExecutableInvoker.java:124)
+    	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker.lambda$invoke$0(InterceptingExecutableInvoker.java:105)
+    	at org.junit.jupiter.engine.execution.InvocationInterceptorChain$InterceptedInvocation.proceed(InvocationInterceptorChain.java:99)
+    	at org.junit.jupiter.engine.execution.InvocationInterceptorChain.proceed(InvocationInterceptorChain.java:66)
+    	at org.junit.jupiter.engine.execution.InvocationInterceptorChain.chainAndInvoke(InvocationInterceptorChain.java:47)
+    	at org.junit.jupiter.engine.execution.InvocationInterceptorChain.invoke(InvocationInterceptorChain.java:39)
+    	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker.invoke(InterceptingExecutableInvoker.java:104)
+    	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker.invoke(InterceptingExecutableInvoker.java:98)
+    	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker.invokeVoid(InterceptingExecutableInvoker.java:71)
+    	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.lambda$invokeTestMethod$0(TestMethodTestDescriptor.java:219)
+    	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:74)
+    	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.invokeTestMethod(TestMethodTestDescriptor.java:215)
+    	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.execute(TestMethodTestDescriptor.java:157)
+    	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.execute(TestMethodTestDescriptor.java:70)
+    	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$2(NodeTestTask.java:176)
+    	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:74)
+    	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$1(NodeTestTask.java:166)
+    	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:139)
+    	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$0(NodeTestTask.java:164)
+    	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:74)
+    	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:163)
+    	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:116)
+    	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
+    	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.invokeAll(SameThreadHierarchicalTestExecutorService.java:42)
+    	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$2(NodeTestTask.java:180)
+    	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:74)
+    	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$1(NodeTestTask.java:166)
+    	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:139)
+    	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$0(NodeTestTask.java:164)
+    	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:74)
+    	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:163)
+    	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:116)
+    	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
+    	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.invokeAll(SameThreadHierarchicalTestExecutorService.java:42)
+    	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$2(NodeTestTask.java:180)
+    	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:74)
+    	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$1(NodeTestTask.java:166)
+    	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:139)
+    	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$0(NodeTestTask.java:164)
+    	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:74)
+    	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:163)
+    	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:116)
+    	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.submit(SameThreadHierarchicalTestExecutorService.java:36)
+    	at org.junit.platform.engine.support.hierarchical.HierarchicalTestExecutor.execute(HierarchicalTestExecutor.java:52)
+    	at org.junit.platform.engine.support.hierarchical.HierarchicalTestEngine.execute(HierarchicalTestEngine.java:58)
+    	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.executeEngine(EngineExecutionOrchestrator.java:256)
+    	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.failOrExecuteEngine(EngineExecutionOrchestrator.java:228)
+    	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:189)
+    	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:109)
+    	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.lambda$execute$0(EngineExecutionOrchestrator.java:66)
+    	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.withInterceptedStreams(EngineExecutionOrchestrator.java:168)
+    	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:65)
+    	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:137)
+    	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:126)
+    	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:100)
+    	at org.junit.platform.launcher.core.DelegatingLauncher.execute(DelegatingLauncher.java:57)
+    	at org.junit.platform.launcher.core.InterceptingLauncher.lambda$execute$0(InterceptingLauncher.java:46)
+    	at org.junit.platform.launcher.core.ClasspathAlignmentCheckingLauncherInterceptor.intercept(ClasspathAlignmentCheckingLauncherInterceptor.java:25)
+    	at org.junit.platform.launcher.core.InterceptingLauncher.execute(InterceptingLauncher.java:45)
+    	at org.junit.platform.launcher.core.DelegatingLauncher.execute(DelegatingLauncher.java:57)
+    	at org.gradle.api.internal.tasks.testing.junitplatform.JUnitPlatformTestDefinitionProcessor$CollectThenExecuteTestDefinitionConsumer.processAllTestClasses(JUnitPlatformTestDefinitionProcessor.java:172)
+    	at org.gradle.api.internal.tasks.testing.junitplatform.JUnitPlatformTestDefinitionProcessor$CollectThenExecuteTestDefinitionConsumer.access$000(JUnitPlatformTestDefinitionProcessor.java:121)
+    	at org.gradle.api.internal.tasks.testing.junitplatform.JUnitPlatformTestDefinitionProcessor.stop(JUnitPlatformTestDefinitionProcessor.java:114)
+    	at org.gradle.api.internal.tasks.testing.SuiteTestDefinitionProcessor.stop(SuiteTestDefinitionProcessor.java:64)
+    	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104)
+    	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+    	at org.gradle.internal.dispatch.MethodInvocation.invokeOn(MethodInvocation.java:77)
+    	at org.gradle.internal.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:28)
+    	at org.gradle.internal.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:19)
+    	at org.gradle.internal.dispatch.ContextClassLoaderDispatch.dispatch(ContextClassLoaderDispatch.java:33)
+    	at org.gradle.internal.dispatch.ProxyDispatchAdapter$DispatchingInvocationHandler.invoke(ProxyDispatchAdapter.java:88)
+    	at jdk.proxy2/jdk.proxy2.$Proxy6.stop(Unknown Source)
+    	at org.gradle.api.internal.tasks.testing.worker.TestWorker$3.run(TestWorker.java:195)
+    	at org.gradle.api.internal.tasks.testing.worker.TestWorker.executeAndMaintainThreadName(TestWorker.java:126)
+    	at org.gradle.api.internal.tasks.testing.worker.TestWorker.execute(TestWorker.java:103)
+    	at org.gradle.api.internal.tasks.testing.worker.TestWorker.execute(TestWorker.java:63)
+    	at org.gradle.process.internal.worker.child.ActionExecutionWorker.execute(ActionExecutionWorker.java:56)
+    	at org.gradle.process.internal.worker.child.SystemApplicationClassLoaderWorker.call(SystemApplicationClassLoaderWorker.java:122)
+    	at org.gradle.process.internal.worker.child.SystemApplicationClassLoaderWorker.call(SystemApplicationClassLoaderWorker.java:72)
+    	at worker.org.gradle.process.internal.worker.GradleWorkerMain.run(GradleWorkerMain.java:69)
+    	at worker.org.gradle.process.internal.worker.GradleWorkerMain.main(GradleWorkerMain.java:74)
+
+RunRenderCrashExitCodeTest > fileMode_renderCrash_exitsWithError() STANDARD_ERROR
+    java.lang.IllegalStateException: Simulated rendering crash (GlobalConfigKey.SIMULATE_RENDER_CRASH_FOR_TESTS) - for unit tests only
+    	at net.sourceforge.plantuml.UgDiagram.exportDiagram(UgDiagram.java:94)
+    	at net.sourceforge.plantuml.PSystemUtils.exportDiagramsSequence(PSystemUtils.java:151)
+    	at net.sourceforge.plantuml.PSystemUtils.exportDiagrams(PSystemUtils.java:89)
+    	at net.sourceforge.plantuml.SourceFileReaderAbstract.getGeneratedImages(SourceFileReaderAbstract.java:206)
+    	at net.sourceforge.plantuml.Run.manageFileInternal(Run.java:355)
+    	at net.sourceforge.plantuml.Run.lambda$processInputsInParallel$0(Run.java:316)
+    	at net.sourceforge.plantuml.Run.lambda$processInParallel$1(Run.java:332)
+    	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:545)
+    	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:328)
+    	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1090)
+    	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:614)
+    	at java.base/java.lang.Thread.run(Thread.java:1474)
+    Some diagram description contains errors
+
+PicowebTest > get_png_bad_graphviz(StdErr) STANDARD_ERROR
+    java.io.IOException: Cannot run program "/Users/sathvik/PlantUML_CaseStudy/plantuml/this_exe_do_not_exist": Exec failed, error: 2 (No such file or directory) 
+    	at java.base/java.lang.ProcessBuilder.start(ProcessBuilder.java:1112)
+    	at java.base/java.lang.ProcessBuilder.start(ProcessBuilder.java:1046)
+    	at net.sourceforge.plantuml.dot.ProcessRunner.run(ProcessRunner.java:71)
+    	at net.sourceforge.plantuml.dot.ProcessRunner.run(ProcessRunner.java:60)
+    	at net.sourceforge.plantuml.dot.GraphvizVersionFinder.dotVersion(GraphvizVersionFinder.java:120)
+    	at net.sourceforge.plantuml.dot.GraphvizVersionFinder.getVersion(GraphvizVersionFinder.java:75)
+    	at net.sourceforge.plantuml.dot.GraphvizRuntimeEnvironment.getVersion(GraphvizRuntimeEnvironment.java:87)
+    	at net.sourceforge.plantuml.svek.DotStringFactory.getGraphvizVersionInternal(DotStringFactory.java:278)
+    	at net.sourceforge.plantuml.svek.DotStringFactory.getGraphvizVersion(DotStringFactory.java:263)
+    	at net.sourceforge.plantuml.svek.GraphvizImageBuilder.printEntityInternal(GraphvizImageBuilder.java:379)
+    	at net.sourceforge.plantuml.svek.GraphvizImageBuilder.printEntity(GraphvizImageBuilder.java:361)
+    	at net.sourceforge.plantuml.svek.GraphvizImageBuilder.printEntities(GraphvizImageBuilder.java:353)
+    	at net.sourceforge.plantuml.svek.GraphvizImageBuilder.buildImage(GraphvizImageBuilder.java:227)
+    	at net.sourceforge.plantuml.svek.CucaDiagramFileMakerSvek.getTextBlock(CucaDiagramFileMakerSvek.java:83)
+    	at net.atmp.CucaDiagram.getTextBlock(CucaDiagram.java:485)
+    	at net.sourceforge.plantuml.UgDiagram.getExporter(UgDiagram.java:124)
+    	at net.sourceforge.plantuml.UgDiagram.exportDiagram(UgDiagram.java:96)
+    	at net.sourceforge.plantuml.picoweb.PicoWebServer.handleGET(PicoWebServer.java:249)
+    	at net.sourceforge.plantuml.picoweb.PicoWebServer.run(PicoWebServer.java:131)
+    	at java.base/java.lang.Thread.run(Thread.java:1474)
+    Caused by: java.io.IOException: Exec failed, error: 2 (No such file or directory) 
+    	at java.base/java.lang.ProcessImpl.forkAndExec(Native Method)
+    	at java.base/java.lang.ProcessImpl.<init>(ProcessImpl.java:300)
+    	at java.base/java.lang.ProcessImpl.start(ProcessImpl.java:231)
+    	at java.base/java.lang.ProcessBuilder.start(ProcessBuilder.java:1078)
+    	... 19 more
+
+PicowebTest > get_png_bad_graphviz(StdErr) FAILED
+    org.opentest4j.AssertionFailedError at PicowebTest.java:301
+
+PicowebTest > get_png_svg_graphviz(StdErr) FAILED
+    org.opentest4j.AssertionFailedError at PicowebTest.java:301
+
+RealMaxRecursionGuardTest > a_cyclic_max_still_throws_infinite_recursion() STANDARD_ERROR
+    The faulty RealMax max 2
+    has been created here:
+    (creation point not captured; rerun with -DPLANTUML_REAL_DEBUG=true to capture it)
+
+BundledSkinTest > An unknown skin is reported on the skin line, not as a crash STANDARD_ERROR
+    No .skin file seems to be available
+    No .skin file seems to be available
+    No .skin file seems to be available
+    No .skin file seems to be available
+    No .skin file seems to be available
+    No .skin file seems to be available
+    No .skin file seems to be available
+    No .skin file seems to be available
+
+VegaTest > testAllPumlFiles() > crash > crash-when-parsing.puml STANDARD_ERROR
+    Error java.lang.IllegalStateException: This is a normal crash when PARSING
+    You should send a mail to plantuml@gmail.com with this log
+
+VegaTest > testAllPumlFiles() > nonreg/group2727 > log_basic.puml STANDARD_ERROR
+    [Log] WTF!?
+
+VegaTest > testAllPumlFiles() > nonreg/group2727 > log_multiple_calls_sequence_diagram.puml STANDARD_ERROR
+    [Log] first
+    [Log] second
+
+VegaTest > testAllPumlFiles() > nonreg/group2727 > log_still_clean_with_verbose.puml STANDARD_ERROR
+    [Log] WTF!?
+
+VegaTest > testAllPumlFiles() > nonreg/group2727 > log_with_variable.puml STANDARD_ERROR
+    [Log] Value is hello
+
+===========================================
+ TEST SUMMARY
+===========================================
+ Total:    3189
+ Passed:   3177
+ Failed:   2
+ Skipped:  10
+ Result:   FAILURE
+===========================================
+ Failed tests:
+   - net.sourceforge.plantuml.picoweb.PicowebTest.get_png_bad_graphviz(StdErr)
+   - net.sourceforge.plantuml.picoweb.PicowebTest.get_png_svg_graphviz(StdErr)
+===========================================
+ Skipped tests:
+   - net.sourceforge.plantuml.tim.builtin.FeatureTest.Test_without_Param() [FeatureTest: Test without Param]
+   - net.sourceforge.plantuml.tim.builtin.GetJsonKeyTest.Test_without_Param() [GetJsonKeyTest: Test without Param]
+   - net.sourceforge.plantuml.tim.builtin.GetJsonTypeTest.Test_without_Param() [GetJsonTypeTest: Test without Param]
+   - net.sourceforge.plantuml.tim.builtin.LowerTest.Test_without_Param() [LowerTest: Test without Param]
+   - net.sourceforge.plantuml.tim.builtin.SizeTest.Test_without_Param() [SizeTest: Test without Param]
+   - net.sourceforge.plantuml.tim.builtin.UpperTest.Test_without_Param() [UpperTest: Test without Param]
+   - test.vega.VegaTest.testAllPumlFiles()[5][2] [hello-debug-skipped.puml]
+   - test.vega.VegaTest.testAllPumlFiles()[23][24] [R07.01-Range_Error1.puml]
+   - test.vega.VegaTest.testAllPumlFiles()[23][25] [R07.02-Range_Error2.puml]
+   - test.vega.VegaTest.testAllPumlFiles()[23][34] [R11.01-len_0.puml]
+===========================================
+
+3189 tests completed, 2 failed, 10 skipped
+
+> Task :test FAILED
+
+[Incubating] Problems report is available at: file:///Users/sathvik/PlantUML_CaseStudy/plantuml/build/reports/problems/problems-report.html
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':test'.
+> There were failing tests. See the report at: file:///Users/sathvik/PlantUML_CaseStudy/plantuml/build/reports/tests/test/index.html
+
+* Try:
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+
+BUILD FAILED in 48s
+8 actionable tasks: 8 executed

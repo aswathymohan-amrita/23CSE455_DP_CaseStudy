@@ -1,0 +1,95 @@
+diff --git a/src/main/java/net/sourceforge/plantuml/command/CommandPragma.java b/src/main/java/net/sourceforge/plantuml/command/CommandPragma.java
+index 3123441..44cb1a5 100644
+--- a/src/main/java/net/sourceforge/plantuml/command/CommandPragma.java
++++ b/src/main/java/net/sourceforge/plantuml/command/CommandPragma.java
+@@ -47,6 +47,7 @@ import net.sourceforge.plantuml.regex.RegexLeaf;
+ import net.sourceforge.plantuml.regex.RegexOptional;
+ import net.sourceforge.plantuml.regex.RegexResult;
+ import net.sourceforge.plantuml.teavm.TeaVM;
++import net.sourceforge.plantuml.skin.PragmaKey;
+ import net.sourceforge.plantuml.utils.LineLocation;
+ 
+ public class CommandPragma extends SingleLineCommand2<TitledDiagram> {
+@@ -103,6 +104,10 @@ public class CommandPragma extends SingleLineCommand2<TitledDiagram> {
+ 			ParserPass currentPass) {
+ 		final String name = StringUtils.goLowerCase(arg.get("NAME", 0));
+ 		final String value = arg.get("VALUE", 0);
++		if (PragmaKey.lazyFrom(name) == PragmaKey.CLASS_REVIEW_PALETTE
++				&& !"default".equalsIgnoreCase(value) && !"pastel".equalsIgnoreCase(value)
++				&& !"mono".equalsIgnoreCase(value))
++			return CommandExecutionResult.error("classReviewPalette expects default, pastel or mono");
+ 		if (name.equalsIgnoreCase("svgsize")) {
+ 			if (value.contains(" ")) {
+ 				final StringTokenizer st = new StringTokenizer(value);
+diff --git a/src/main/java/net/sourceforge/plantuml/skin/PragmaKey.java b/src/main/java/net/sourceforge/plantuml/skin/PragmaKey.java
+index 856da75..403b785 100644
+--- a/src/main/java/net/sourceforge/plantuml/skin/PragmaKey.java
++++ b/src/main/java/net/sourceforge/plantuml/skin/PragmaKey.java
+@@ -45,6 +45,7 @@ public enum PragmaKey {
+ 	EMULATE_GRAPHVIZ_CRASH,
+ 	EMULATE_GRAPHVIZ_244_ON_WINDOWS,
+ 
++	CLASS_REVIEW_PALETTE,
+ 	ASPECT, //
+ 	COMPACT, //
+ 	DEFAULT_LABEL_ANGLE, //
+diff --git a/src/main/java/net/sourceforge/plantuml/svek/image/EntityImageClass.java b/src/main/java/net/sourceforge/plantuml/svek/image/EntityImageClass.java
+index 24cdf8b..b03e2a4 100644
+--- a/src/main/java/net/sourceforge/plantuml/svek/image/EntityImageClass.java
++++ b/src/main/java/net/sourceforge/plantuml/svek/image/EntityImageClass.java
+@@ -70,6 +70,7 @@ import net.sourceforge.plantuml.svek.WithPorts;
+ import net.sourceforge.plantuml.url.Url;
+ import net.sourceforge.plantuml.utils.Direction;
+ import net.sourceforge.plantuml.utils.LineLocation;
++import net.sourceforge.plantuml.skin.PragmaKey;
+ 
+ public class EntityImageClass extends AbstractEntityImage implements Stencil, WithPorts {
+ 
+@@ -193,6 +194,11 @@ public class EntityImageClass extends AbstractEntityImage implements Stencil, Wi
+ 		HColor borderColor = lineConfig.getColors().getColor(ColorType.LINE);
+ 		HColor headerBackcolor = getEntity().getColors().getColor(ColorType.HEADER);
+ 		HColor backcolor = getEntity().getColors().getColor(ColorType.BACK);
++		final ReviewPalette reviewPalette = ReviewPalette.select(
++				getSkinParam().getPragma().getValue(PragmaKey.CLASS_REVIEW_PALETTE));
++		if (backcolor == null && getEntity().getReviewStatus() != null && reviewPalette != null)
++			backcolor = getSkinParam().getIHtmlColorSet().getColorOrWhite(
++					reviewPalette.background(getEntity().getReviewStatus()));
+ 
+ 		shadow = getStyle().getShadowing();
+ 
+diff --git a/src/main/java/net/sourceforge/plantuml/svek/image/ReviewPalette.java b/src/main/java/net/sourceforge/plantuml/svek/image/ReviewPalette.java
+new file mode 100644
+index 0000000..f15137b
+--- /dev/null
++++ b/src/main/java/net/sourceforge/plantuml/svek/image/ReviewPalette.java
+@@ -0,0 +1,30 @@
++package net.sourceforge.plantuml.svek.image;
++
++/** Optional review-state fill policy. Explicit class colors take precedence. */
++interface ReviewPalette {
++	String background(String status);
++
++	static ReviewPalette select(String name) {
++		if ("pastel".equalsIgnoreCase(name))
++			return new Pastel();
++		if ("mono".equalsIgnoreCase(name))
++			return new Mono();
++		return null;
++	}
++
++	final class Pastel implements ReviewPalette {
++		public String background(String status) {
++			switch (status) {
++			case "approved": return "#D4EDDA";
++			case "rejected": return "#F8D7DA";
++			default: return "#FFF3CD";
++			}
++		}
++	}
++
++	final class Mono implements ReviewPalette {
++		public String background(String status) {
++			return "#EEEEEE";
++		}
++	}
++}

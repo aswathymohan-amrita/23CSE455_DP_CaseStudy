@@ -1,0 +1,5 @@
+@startuml
+class Order
+class Customer
+Order --> Customer
+@enduml
