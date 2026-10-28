@@ -11,7 +11,6 @@ The team repository now contains both the original Part 1 baseline snapshot and 
 - **Application PR #1:** https://github.com/nivedita-rmsh/nextjs-blog-cms/pull/1
 - **Case-study feature snapshot PR #2:** https://github.com/nivedita-rmsh/23CSE455_DP_CaseStudy/pull/2
 - **Case-study snapshot merge:** [`691e13ae50ed6e087a224b8e7904fa3f512037b4`](https://github.com/nivedita-rmsh/23CSE455_DP_CaseStudy/commit/691e13ae50ed6e087a224b8e7904fa3f512037b4)
-- **Latest known case-study main commit before this handoff update:** [`457cb327d5da7bd4f8ef1f717243a88b7f439e44`](https://github.com/nivedita-rmsh/23CSE455_DP_CaseStudy/commit/457cb327d5da7bd4f8ef1f717243a88b7f439e44)
 
 ## Required feature scope and implementation
 
