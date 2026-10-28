@@ -24,3 +24,8 @@ After CH01 related-article recommendations feature (commit 68cd127),per_pattern,
 After CH01 related-article recommendations feature (commit 68cd127),per_pattern,Role-Based Access Control (RBAC),1
 After CH01 related-article recommendations feature (commit 68cd127),total_pattern_types,,3
 After CH01 related-article recommendations feature (commit 68cd127),total_pattern_instances,,3
+"Evolved feature snapshot (application merge commit cd435883; case-study snapshot commit 691e13a)","per_pattern","Strategy","1"
+"Evolved feature snapshot (application merge commit cd435883; case-study snapshot commit 691e13a)","per_pattern","Observer","1"
+"Evolved feature snapshot (application merge commit cd435883; case-study snapshot commit 691e13a)","per_pattern","Role-Based Access Control (RBAC)","1"
+"Evolved feature snapshot (application merge commit cd435883; case-study snapshot commit 691e13a)","total_pattern_types","","3"
+"Evolved feature snapshot (application merge commit cd435883; case-study snapshot commit 691e13a)","total_pattern_instances","","3"
