@@ -1,4 +1,3 @@
-% Updated source for reproducible PDF regeneration (2026-10-28).
 \documentclass[11pt,a4paper]{article}
 \usepackage[utf8]{inputenc}
 \usepackage[margin=2.2cm]{geometry}
@@ -22,7 +21,7 @@
 \textbf{Case study:} & Design Pattern Identification and Evolution in a Next.js-Based\\
  & Digital News and Publishing Application\\
 \textbf{Application:} & Next.js Blog CMS\\
-\textbf{Date:} & 2026-10-28 (Part 2 verification update)\\
+\textbf{Date:} & 2026-10-28 (Part 3 records corrected)\\
 \textbf{Submission repository:} & 23CSE455\_DP\_CaseStudy
 \end{tabular}
 
@@ -311,10 +310,11 @@ R7 & React Context as a separate Observer & Folded into the Auth State Observer 
 
 \textbf{Scope and traceability.} Part 2 evolves the application from the baseline
 source snapshot \code{de5bc25} in three requested areas: related-article
-recommendations, content moderation, and premium-content access control. required features are implemented in the application repository
-\url{https://github.com/nivedita-rmsh/nextjs-blog-cms}. The merged feature snapshot is commit
-\code{cd435883} on \code{main} (full SHA: \code{cd435883322dc29da6943fc871dd40cb1c662299}); the team repository stores a changed-file snapshot in
-\code{B14/Part2/evolved-code/}, not a standalone runnable application. The report's baseline copy in \code{B14/code/} remains the
+recommendations, content moderation, and premium-content access control. The
+implementation is maintained in the application fork
+\url{https://github.com/nivedita-rmsh/nextjs-blog-cms}, branch
+\code{part2/content-moderation-paywall}. The latest inspected commit is
+\code{7ecfa65}. The report's baseline copy in \code{B14/code/} remains the
 Part 1 snapshot; it is not a copy of the evolved application branch. The Part 1
 pattern inventory is tied to commit
 \code{90ec6565877053ee0e93e9f09dcc7c7213aa4832}, while the Part 2 feature work
@@ -331,8 +331,10 @@ CH03 & Premium-content access & \code{a7d6990}--\code{7ecfa65} & Premium entitle
 \bottomrule
 \end{tabular}
 
-The feature records above refer to the merged application snapshot at
-\code{cd435883322dc29da6943fc871dd40cb1c662299}. Earlier commit IDs identify historical development points, not the final snapshot. The evolved-code folder is a changed-file snapshot; unchanged collaborators must be checked in the full application repository.
+The changes are cumulative on the feature branch. The short commit IDs above
+identify the first or final relevant commits; the complete history is available
+in the application repository. Code paths and line ranges below refer to that
+branch, rather than the Part 1 baseline.
 
 \subsection*{CH01: Related-article recommendations}
 \textbf{Requirement.} Show a small set of useful related articles on an article
@@ -405,7 +407,11 @@ preserved.
 \textbf{Verification status.} Five unit cases were added in
 \code{__tests__/features/posts/moderation.test.ts} for state transitions and
 public visibility, and existing post-action and REST tests were adjusted.
-These focused tests could not be rerun in this execution environment because cloning the application repository failed (network DNS resolution to github.com failed). The migration has not been applied and verified against a running Supabase database. Historical TypeScript checking is not a fresh check of the merged snapshot.
+These focused tests were added but their run result had not been captured at the
+time of this report update. The migration has not yet been applied and verified
+against a running Supabase database. TypeScript checking passed on the cumulative
+feature branch, but this is not a substitute for running the tests or the
+migration.
 
 \subsection*{CH03: Premium-content access control}
 \textbf{Requirement.} Allow an author to mark an article premium, show a public
@@ -450,7 +456,12 @@ subscription table.
 \textbf{Verification status.} Six test cases were added in
 \code{__tests__/features/premium/access.test.ts} for anonymous denial, active and
 expired entitlements, revoked entitlements, administrator access, author access
-to a protected body and denial before protected content is queried. The focused file contains six cases. A fresh run could not be performed in this execution environment because cloning the application repository failed (network DNS resolution to github.com failed). Historical TypeScript checking on a development branch is not a fresh check of the merged snapshot. The Supabase migrations and premium-content flows still require database/runtime verification; no full-suite passing result is claimed.
+to a protected body and denial before protected content is queried. The test file
+was added but its run result had not been captured at the time of this report
+update. The cumulative branch's TypeScript command
+\code{pnpm exec tsc --noEmit} completed with exit code 0. The new Supabase
+migrations and premium-content flows still require database/runtime verification;
+no full-suite passing result is claimed for this branch.
 
 \subsection*{Pattern evolution summary}
 The baseline inventory contains three confirmed instances: LLM Provider
@@ -478,10 +489,10 @@ Moderation and premium access extend the application's authorization surface
 through explicit checks and RLS, but are not recorded as separate RBAC-pattern
 instances without evidence of a new, centralized role/permission collaboration.
 The recommendation ranker likewise remains a normal helper rather than a
-formal Strategy. The feature snapshot records are included in the machine-readable
-\code{pattern_evolution.csv} and \code{Pattern_count.csv}. These files record the
-three confirmed pattern/architecture instances without treating the new feature
-modules as new GoF patterns.
+formal Strategy. The feature snapshots and counts must be reflected in the
+final machine-readable \code{pattern_evolution.csv} and \code{Pattern_count.csv};
+the current CSVs need a final consistency check against these snapshots before
+submission.
 
 \subsection*{Supporting refactoring analysis}
 In addition to the three required feature changes, three refactoring experiments
@@ -501,14 +512,21 @@ Refactoring evidence & Code smell and technique & Pattern/verification note\\
 The refactoring commits have separate branch histories and are not automatically
 part of the feature branch. Supporting records reside in the existing
 \code{changes/Change1}, \code{changes/Change2} and \code{changes/Change3}
-folders. The existing \code{changes/Change1}, \code{changes/Change2} and
-\code{changes/Change3} folders retain their original refactoring requirements,
-implementation notes and evidence. Each now also contains a separate
-\code{required-feature.md} record for the corresponding required feature, so
-historical refactoring evidence is preserved and the two scopes are distinguished.
+folders. Those folder names originated with the refactoring experiments and
+should be renamed or reorganized so they cannot be confused with the required
+feature records CH01--CH03.
 
 \subsection*{LOC and remaining verification}
-LOC was measured as non-empty physical lines; blank lines are excluded and comments are included. The measurements in \code{Part2/loc_measurements.csv} cover selected production files for historical refactorings plus added feature files, tests and SQL migrations in the merged snapshot. They are not whole-repository LOC and LOC is not a quality metric. Historical refactoring measurements are: CH01 provider-inference helper, 335 to 340 lines (+5) in \code{features/ai-assistant/llmService.ts}; CH02 publication validation, 125 to 153 lines (+28) in \code{features/posts/publication.ts}; and CH03 shared JSON parser, 335 to 336 lines (+1) in \code{features/ai-assistant/llmService.ts}. New production files are additions from a zero-file baseline: CH01 recommendations module 44 lines and UI component 21 lines; CH02 moderation helper 10 lines, moderation actions 58 lines and queue component 55 lines; CH03 premium access module 26 lines. Test and migration LOC are listed separately in the CSV. Fresh test results are only claimed where actual output has been captured; database migration/runtime behavior still requires a configured Supabase environment.
+A consistent before/after source-lines-of-code (LOC) metric has not yet been
+captured using an explicit counting rule across the same paths. This report does
+not invent a LOC delta. Before final submission, count production source lines
+using the same tool and rule at each stated snapshot and record the commands and
+outputs. Also run the focused tests for CH02 and CH03, investigate the two
+reported author-byline test failures alongside CH01, run the full test suite on
+the cumulative feature branch, and apply/verify both Supabase migrations against
+a test database. The baseline report's lack of a local Docker/Supabase setup
+explains why runtime verification was unavailable at that point; it does not
+prove the new database changes work.
 
 %------------------------------------------------------------
 \section{Part 3: Cross-language comparison}
@@ -523,10 +541,12 @@ testing; they are not complete ports of the Next.js application and do
 not call real LLM services or Supabase.
 
 \textbf{Language scope.}
-The current implementation contains Java and C++ only. The assignment
-instructions specify Java, Python, JavaScript and C++; therefore, this
-is a two-language working comparison, not a completed four-language
-submission, unless the instructor has approved the reduced scope.
+The repository contains Python and JavaScript examples by Govind and
+Java and C++ examples by Soorya for both selected patterns. Python and
+JavaScript share 26 saved input/output cases. Java and C++ share a
+different, smaller specification with four cases per pattern. All four
+languages are present, but one common four-language behavioral check
+has not yet been run.
 
 %------------------------------------------------------------
 \subsection*{Selected patterns and source mapping}
@@ -539,12 +559,14 @@ functions are \code{streamClaude}, \code{streamOpenAI} and
 \code{params.provider} and delegates to the corresponding function.
 The original TypeScript code has an implicit function contract and a
 hard-coded conditional chain rather than a separately declared strategy
-interface. For comparison, the Java version defines an
+interface. Govind's Python and JavaScript examples keep function-based
+strategies, using \code{run} to select a provider-specific extractor for
+saved sample events. For comparison, the Java version defines an
 \code{LlmStrategy} interface and concrete strategy classes, while the
 C++ version uses an abstract base class and concrete implementations.
-Both examples return deterministic chunks so they can be tested without
-network services. This is an explicit-pattern teaching adaptation, not
-a claim that the production TypeScript code has the same class structure.
+The Java and C++ examples return fixed chunks. None of the four
+examples calls a provider service. These are teaching adaptations,
+not claims that the TypeScript code has the same class structure.
 
 \textbf{Observer --- Auth State Observer.}
 Part 1 confirms this instance in
@@ -554,10 +576,10 @@ Part 1 confirms this instance in
 \code{supabase.auth}, supplied by the Supabase dependency;
 \code{AuthProvider} registers the callback for
 \code{onAuthStateChange}, updates session state and unsubscribes in
-effect cleanup. The Java and C++ examples model an event source,
-listeners, event delivery and unsubscribe behaviour. They do not invent
-a subject class for the original application and do not connect to
-Supabase.
+effect cleanup. Govind's Python and JavaScript examples use an
+in-memory \code{AuthSubject} and an \code{AuthStateObserver} that records
+user IDs. The Java and C++ examples model an event source, listeners,
+event delivery and unsubscribe behaviour. None connects to Supabase.
 
 %------------------------------------------------------------
 \subsection*{Relationship to Part 2}
@@ -584,9 +606,8 @@ recorded separately in the Part 2 section and must not be conflated.
 %------------------------------------------------------------
 \subsection*{Common test specification}
 
-The language-independent fixture file is
-\code{Part3/test-cases/common_test_cases.csv}. Both language
-implementations use the same expected behaviour:
+Java and C++ use the same cases from
+\code{Part3/test-cases/common_test_cases.csv}:
 
 \begin{center}
 \begin{tabular}{@{}p{1.5cm}p{4.3cm}p{8.4cm}@{}}
@@ -620,7 +641,7 @@ O04 & Observer: two active observers
 \end{tabular}
 \end{center}
 
-\textbf{Actual test results.}
+\textbf{Java and C++ test results.}
 The recorded output in \code{Part3/evidence/test_results.txt} shows:
 
 \begin{center}
@@ -639,11 +660,37 @@ The test runners are
 \code{Part3/strategy/cpp/test_strategy.cpp},
 \code{Part3/observer/java/ObserverTest.java} and
 \code{Part3/observer/cpp/test_observer.cpp}.
-Production snippets and build commands are documented in
-\code{Part3/README.md}.
+
+\textbf{Python and JavaScript test results.}
+Govind's two languages use the same JSON cases in
+\code{Part3/llm_provider_streaming/fixtures.json} and
+\code{Part3/auth_state_observer/fixtures.json}. Each test runner checks
+the expected result and that its input was not changed. A separate
+process check invokes both programs for each saved input:
+
+\begin{center}
+\begin{tabular}{@{}lccc@{}}
+\toprule
+Pattern & Python & JavaScript & Process check \\
+\midrule
+Strategy & 11/11 passed & 11/11 passed & 11/11 matched \\
+Observer & 15/15 passed & 15/15 passed & 15/15 matched \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The combined process check passed 26/26. Its script is
+\code{Part3/verify_cross_language.py}; the saved output and four
+language-specific logs are in \code{Part3/evidence/tests/}.
+Production snippets and run commands are in \code{Part3/README.md}.
+The Python/JavaScript JSON contract differs from Java/C++ direct
+provider/prompt and event/session calls. The two pass counts do not
+establish one shared four-language test result.
 
 %------------------------------------------------------------
 \subsection*{Measurement method}
+
+Soorya measured the Java and C++ examples as follows:
 
 \begin{itemize}
     \item \textbf{Source LOC:}
@@ -668,6 +715,15 @@ Production snippets and build commands are documented in
     \code{Part3/evidence/environment.txt}.
 \end{itemize}
 
+Govind used Lizard 1.24.1 for production source lines and maximum
+function complexity in Python and JavaScript. His timing script ran one
+warm-up and five measured whole-process launches on Windows, including
+startup and JSON input/output. The raw records are in
+\code{Part3/evidence/static_metrics.json} and
+\code{Part3/evidence/timings/process_timings.json}. These methods and
+machines differ, so the two sets of measurements are descriptive rather
+than a fair language speed ranking.
+
 %------------------------------------------------------------
 \subsection*{Results}
 
@@ -677,6 +733,10 @@ Production snippets and build commands are documented in
 Pattern & Language & Production LOC & Max function CC
 & Median process time (ms) \\
 \midrule
+Strategy & Python & 53 & 8 & 96.870 \\
+Observer & Python & 74 & 21 & 100.344 \\
+Strategy & JavaScript & 47 & 9 & 57.485 \\
+Observer & JavaScript & 62 & 20 & 57.960 \\
 Strategy & Java & 33 & 4 & 36.116 \\
 Observer & Java & 24 & 2 & 42.995 \\
 Strategy & C++ & 35 & 4 & 1.115 \\
@@ -685,44 +745,37 @@ Observer & C++ & 30 & 2 & 1.070 \\
 \end{tabular}
 \end{center}
 
-The maximum-complexity functions are \code{LlmContext.select()}
-(Java Strategy), \code{LlmContext::stream()} (C++ Strategy), and
-\code{AuthEventSource.publish()} for Observer in both languages.
-The Strategy selector has three non-default provider decisions in each
-version, giving a manual maximum CC of 4. The Observer publication
-loop gives a manual maximum CC of 2. The function-by-function decision
-counts are available in the audit CSV.
+In Python and JavaScript, most of the Observer maximum function
+complexity comes from validation in \code{run}, not notification itself.
+For Java and C++, the maximum-complexity functions are
+\code{LlmContext.select()} (Java Strategy),
+\code{LlmContext::stream()} (C++ Strategy), and
+\code{AuthEventSource.publish()} for Observer. Their manual decision
+counts are in \code{Part3/evidence/complexity_audit.csv}.
 
-The execution times are specific to the recorded machine and are not
-a universal language-performance ranking. These snippets are small,
-so JVM startup and runtime initialization substantially affect Java
-process times. LOC, complexity and timing alone do not establish that
-one design is better than another. The C++ Observer uses non-owning
-pointers in this teaching example; production C++ would require a clear
-lifetime and ownership policy.
+The two pairs were measured on different machines and with different
+process boundaries. These numbers cannot rank the languages. The
+snippets are small, so startup and the test harness affect timing.
+The C++ Observer uses non-owning pointers in this teaching example;
+production C++ would require a clear lifetime and ownership policy.
 
 %------------------------------------------------------------
 \subsection*{Interpretation and limitations}
 
-Java expresses the Strategy contract through an interface and concrete
-strategy classes; C++ uses an abstract base class and virtual methods.
-Both select a provider and return the same deterministic chunks for the
-shared fixtures. Both Observer examples maintain a listener collection,
-notify active listeners and support unsubscribe. The original
-application instead uses a Supabase subscription and React Context,
-which the snippets intentionally isolate from external dependencies.
+Python and JavaScript express Strategy as functions selected by a map.
+Java uses an interface and concrete classes; C++ uses an abstract base
+class and virtual methods. All four Observer examples hold listeners,
+notify active ones and support unsubscribe. The original app instead
+uses Supabase's subscription API and React Context.
 
-The current comparison is reproducible from the source and test files
-and contains four implementation records in
-\code{Part3/cross\_language.csv} (two patterns by two languages).
-Remaining work for full assignment compliance is to implement and test
-Python and JavaScript unless the instructor has approved the reduced
-language scope; verify the manual complexity figures with a required
-static-analysis tool if the course mandates one; complete
-\code{Part3/llm/llm.csv} using actual AI interaction records; and
-reconcile the Part 2 source snapshot before describing any result as
-post-refactoring. No missing measurements or AI records are inferred
-here.
+Govind's four records are in \code{data/cross_language.csv}; Soorya's
+four separate records remain in \code{Part3/cross_language.csv}. The
+team still needs one input/output specification, a shared four-language
+test run and a consistent measurement boundary before combining them.
+The Part 3 LLM record is partial: the prompt and tests are saved, but
+raw output and reliable model/date details were not archived. The Part 2
+feature branch also needs its own remaining verification; no result
+here claims to measure its post-change application code.
 \section{LLM records and human verification}
 
 \textbf{Run and model.} Part 1 pattern analysis used an LLM chat assistant on
@@ -744,7 +797,17 @@ reading \code{route.ts}. No generated code was used in Part 1.
 this section and in the Part 2 change records. The raw Part 2 model-response
 transcripts were not separately archived as reproducible files when this report
 was updated, so this report does not invent model output or treat proposed
-prompts as completed model runs.
+prompts as completed model runs. The Part 2 LLM-use record and verification
+status should be checked against the actual saved chat transcripts before final
+submission.
+
+\textbf{Part 3 records.} Govind's saved task prompt is in
+\code{Part3/llm/govind_prompt.txt}. Source and test checks are described
+in \code{Part3/llm/verification.md}. The row in
+\code{Part3/llm/llm.csv} marks the full raw assistant output, displayed
+model name and interaction date unavailable. It does not claim a complete
+transcript or completed human review. Those fields should only be updated
+from verifiable saved history.
 
 %------------------------------------------------------------
 \section{Findings, contributions and references}
@@ -754,17 +817,21 @@ prompts as completed model runs.
 The application mostly relies on framework idioms and plain functions rather than
 classical GoF structures. The Strategy is function-based with an \code{if}-chain
 selector and no declared interface. The Observer subject comes from a dependency.
-RBAC is an architectural pattern. At the original baseline, related-article recommendations, publication moderation and premium-content access were not implemented in the inspected scope. Part 2 adds related-article recommendations, an administrator moderation queue and entitlement-based premium-body access. The latter is not a payment-processing system: entitlement rows must be provisioned separately. Unit tests and source inspection do not replace runtime verification of Supabase migrations/RLS or end-to-end flows.
+RBAC is an architectural pattern. Of the eight areas in the brief, articles,
+authors, categories, comments, authentication and newsletter subscription exist;
+moderation exists only as comment deletion, and recommendations and a paywall were
+not found. Limitations: the app was not run (no Docker), and behavior was verified
+from source and the unit-test suite only.
 
 \textbf{Contributions.}
-\begin{tabular}{@{}p{2.8cm}p{2.8cm}p{1.0cm}p{7.0cm}@{}}
+\begin{tabular}{@{}p{3.3cm}p{3.6cm}p{1.2cm}p{6.6cm}@{}}
 \toprule
 Roll number & Name & Batch & Contribution\\
 \midrule
-AM.SC.U4AIE23121 & Keziah Suzaine George & AIE & Part 1: baseline pattern discovery and evidence\\
-AM.SC.U4AIE23139 & Nivedita Ramesh & AIE & Part 2: feature implementation records and pattern evolution\\
-AM.SC.U4CSE23360 & Soorya Krishna & CSE & Part 3: Java and C++ pattern comparison\\
-AM.SC.U4CSE23309 & B R Govind & CSE & Part 3: Python and JavaScript pattern comparison\\
+AM.SC.U4AIE23121 & Keziah Suzaine George & AIE & Part 1 pattern analysis\\
+AM.SC.U4AIE23139 & Nivedita Ramesh & AIE & Part 2 change records\\
+AM.SC.U4CSE23360 & Soorya Krishna & CSE & Part 3 Java and C++ examples\\
+AM.SC.U4CSE23309 & B R Govind & CSE & Part 3 Python and JavaScript examples\\
 \bottomrule
 \end{tabular}
 
@@ -779,5 +846,10 @@ AM.SC.U4CSE23309 & B R Govind & CSE & Part 3: Python and JavaScript pattern comp
 \end{enumerate}
 
 \section{Team folder and datasets}
-The team deliverables, source snapshots, evidence, datasets and supporting records are maintained in the B14 directory of the case-study repository: \url{https://github.com/nivedita-rmsh/23CSE455_DP_CaseStudy/tree/main/B14}. The Part 2 implementation handoff and verification log are in \code{Part2/HANDOFF.md} and \code{Part2/FINAL_VERIFICATION_LOG.md}.
+The \code{B14/} folder contains the baseline application in \code{code/},
+its baseline test evidence in \code{test_result/}, pattern discovery in
+\code{Part1/}, change records in \code{Part2/}, and the cross-language
+examples in \code{Part3/}. The central cross-language CSV is
+\code{data/cross_language.csv}; the separate Java/C++ rows are still in
+\code{Part3/cross_language.csv} until one common comparison is verified.
 \end{document}

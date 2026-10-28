@@ -1,16 +1,24 @@
-# Pattern selection and Part 2 reconciliation
+# Pattern selection and Part 2 notes
 
 ## Why these two patterns?
-1. **Strategy** is a confirmed GoF Behavioral pattern in Part1 and has direct relevance to Part2 Change 1 (provider inference centralization).
-2. **Observer** is a confirmed GoF Behavioral pattern in Part1 and offers a second clear, independent collaboration suitable for equivalent event tests.
-3. **RBAC** was intentionally excluded to meet the user's instruction to compare only two patterns.
 
-## Part 2 changes
-- **CH01 (AI provider selection):** The implementation record says `inferProviderFromModel()` was added and `generateBlogPost()` was updated to use it; it explicitly notes not every provider-selection branch was refactored. This is related to Strategy's provider selection, but is not by itself proof that the Strategy collaboration's participants changed.
-- **CH02 (publication validation):** Named validation helpers were extracted. No GoF pattern was claimed; unrelated to selected Strategy and Observer instances.
-- **CH03 (generated-post JSON parsing):** Shared parsing was extracted to `parseGeneratedPostJson()`. This is a refactoring of duplicated parsing logic, not a new pattern claim for this comparison.
-- The uploaded Part2 folder contains implementation notes and test logs. The included `code/features/ai-assistant/llmService.ts` source snapshot still shows the original provider-selection branches and does not contain the named CH01/CH03 helpers. Therefore, this Part3 uses Part1's verified baseline behavior and describes Part2 changes from the uploaded evidence without pretending those changes are present in the copied source. If Part2 source changes are merged into the code folder, update this note and re-verify the selected source paths.
+Part 1 confirmed Strategy in the AI provider streaming code and Observer in the auth subscription code. Both have roles that we can point to in the original app. RBAC remains in the Part 1 count, but the team chose Strategy and Observer for the two-pattern Part 3 comparison.
 
-## Source mapping
-- Strategy: `Part1/patterns.csv`; original source path `code/features/ai-assistant/llmService.ts`, baseline commit `90ec6565877053ee0e93e9f09dcc7c7213aa4832`.
-- Observer: `Part1/patterns.csv`; original source paths `code/features/auth/context/AuthProvider.tsx`, `code/features/auth/context/AuthContext.tsx`, and `code/features/auth/hooks/useSession.ts`.
+## Part 2 feature changes
+
+The cumulative application work uses these labels:
+
+- **CH01, related articles:** ranks published, approved posts using shared tags and category. It adds one ranking function, not a family of interchangeable strategies.
+- **CH02, content moderation:** adds a review step before publication. It adds access and status rules, but no confirmed GoF State pattern.
+- **CH03, premium content:** stores the full body separately and checks entitlement before reading it. This extends access control, not the selected Strategy or Observer collaboration.
+
+The existing LLM streaming Strategy and auth Observer remain in the evolved app. The feature implementation lives in the separate application branch documented in `../Part2/` and the team report. The copy under `../code/` is the original baseline, not the cumulative feature branch.
+
+## Separate refactoring experiments
+
+Part 2 also records three small refactoring experiments on separate branches: provider inference in `generateBlogPost()`, publication title/content validation helpers, and a shared generated-post JSON parser. These are different from feature changes CH01 to CH03. The baseline `../code/features/ai-assistant/llmService.ts` does not contain the provider-inference or JSON-parser helpers. These experiments do not establish a new confirmed pattern instance in Part 3.
+
+## Original source mapping
+
+- Strategy: `../Part1/patterns.csv`; `../code/features/ai-assistant/llmService.ts` at baseline commit `90ec6565877053ee0e93e9f09dcc7c7213aa4832`.
+- Observer: `../Part1/patterns.csv`; `../code/features/auth/context/AuthProvider.tsx` and `AuthContext.tsx` at the same baseline.

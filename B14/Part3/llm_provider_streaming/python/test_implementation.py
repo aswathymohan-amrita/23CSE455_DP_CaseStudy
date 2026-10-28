@@ -1,4 +1,4 @@
-"""Behavior checks from the shared language-neutral fixtures."""
+"""Check the saved Strategy examples."""
 
 import json
 import sys

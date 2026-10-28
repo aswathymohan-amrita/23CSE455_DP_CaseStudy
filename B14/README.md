@@ -36,6 +36,8 @@
 ## Source copy in `code/`
 Copied from the clone at the baseline commit with robocopy. Excluded from the copy: `node_modules`, `.next`, `.git`, `.agents`, `.claude`. Deleted after copying: `.husky/`, `.github/` (tooling and CI), `tsconfig.tsbuildinfo` (generated cache), `package-lock.json` (created by an accidental `npm install`; the project uses pnpm). Everything else is unchanged.
 
+This source copy already includes the app's AI writing assistant and its developer documentation about coding agents. Those documents belong to the original project at the baseline commit. The team's pattern analysis and Part 3 examples are outside `code/`.
+
 ## Run and test results (baseline)
 Run from the cloned repository at the baseline commit.
 
@@ -99,3 +101,4 @@ currently contains Govind's measured rows; Soorya's separate rows are in
 
 ## LLM use
 Part 1 analysis used an LLM chat assistant. Exact prompts: `Part1/Part1_prompt.txt`. Evaluation of each analysis against the source: `Part1/llm.csv`.
+Part 3's saved Govind prompt and partial verification record are in `Part3/llm/`. The full raw output, displayed model name and interaction date were not archived, so those fields are marked unavailable in `Part3/llm/llm.csv`.

@@ -1,4 +1,4 @@
-/** Provider-specific text streams behind one function-based Strategy context. */
+/** Read text from saved provider events using the selected function. */
 import { readFileSync } from 'node:fs';
 import { pathToFileURL } from 'node:url';
 
