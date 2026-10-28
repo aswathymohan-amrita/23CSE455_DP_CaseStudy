@@ -70,5 +70,7 @@ See [`loc_measurements.csv`](https://github.com/nivedita-rmsh/23CSE455_DP_CaseSt
 - `changes/Change1`, `Change2`, `Change3`: requirements, implementation notes and evidence. The historical refactoring records remain useful but are distinct from the required feature scope.
 - `diagrams/pattern-evolution.mmd`: editable diagram source. Render it if the report requires an image.
 - `llm.csv`: AI-use record; raw model transcripts were not separately archived, and this limitation must remain explicit.
-- Update and regenerate `B14_Report.pdf` if the report source changes.
+- `B14/B14_Report.tex` was updated on 2026-10-28 to correct the implementation summary, LOC method/values, contribution descriptions and test limitations. The binary `B14_Report.pdf` has **not** been regenerated from that source in this session; regenerate and inspect it before submission.
+- Fresh test reruns were blocked because the execution environment could not resolve `github.com` while cloning the app repository. No new test pass counts are claimed. See `B14/Part2/FINAL_VERIFICATION_LOG.md`.
+- Supabase migration/RLS and runtime end-to-end verification remain outstanding.
 - Review the final commit and ensure it is on the team repository's `main` branch before submission.
