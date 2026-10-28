@@ -477,10 +477,10 @@ Moderation and premium access extend the application's authorization surface
 through explicit checks and RLS, but are not recorded as separate RBAC-pattern
 instances without evidence of a new, centralized role/permission collaboration.
 The recommendation ranker likewise remains a normal helper rather than a
-formal Strategy. The feature snapshots and counts must be reflected in the
-final machine-readable \code{pattern_evolution.csv} and \code{Pattern_count.csv};
-the current CSVs need a final consistency check against these snapshots before
-submission.
+formal Strategy. The feature snapshot records are included in the machine-readable
+\code{pattern_evolution.csv} and \code{Pattern_count.csv}. These files record the
+three confirmed pattern/architecture instances without treating the new feature
+modules as new GoF patterns.
 
 \subsection*{Supporting refactoring analysis}
 In addition to the three required feature changes, three refactoring experiments
