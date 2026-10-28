@@ -18,7 +18,7 @@ Merged feature commit: [`cd435883322dc29da6943fc871dd40cb1c662299`](https://gith
 
 ## Verification record
 
-The focused test file contains 6 cases covering anonymous denial, active and expired entitlements, revoked subscriptions/admin access, author access to a protected body and denial before protected content is queried. **Fresh rerun status: pending until the merged-main test command has completed and its output has been recorded.** Unit tests do not verify SQL/RLS or runtime integration.
+The focused test file contains 6 cases covering anonymous denial, active and expired entitlements, revoked subscriptions/admin access, author access to a protected body and denial before protected content is queried. **Fresh rerun result: BLOCKED.** Attempted to clone the application repository to run the focused test; the environment could not resolve github.com (DNS/network failure), so no test process ran and no pass/fail test count can honestly be reported. Unit tests do not verify SQL/RLS or runtime integration.
 
 ## LOC record
 
