@@ -76,4 +76,5 @@ numbers.
 The original handoff request is in `SOORYA_INTEGRATION.md`. Prompt records are
 in `llm/part3_prompt.txt` for Soorya and `llm/govind_prompt.txt` for Govind.
 `llm/verification.md` records what was checked for Govind's examples. The
-team's final LLM record still needs actual inputs, outputs and verification.
+partial `llm/llm.csv` row marks missing output and model details as
+unavailable. The team can add them only if saved history supports them.

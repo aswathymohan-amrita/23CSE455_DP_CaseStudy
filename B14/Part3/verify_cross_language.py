@@ -1,4 +1,4 @@
-"""Run every shared fixture through both standalone process interfaces."""
+"""Run the same cases through Python and JavaScript programs."""
 
 from __future__ import annotations
 

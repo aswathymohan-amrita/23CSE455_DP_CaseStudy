@@ -1,4 +1,4 @@
-"""Report Lizard NLOC and maximum function CCN for production source only."""
+"""Measure code lines and complexity in the four example programs."""
 
 from __future__ import annotations
 

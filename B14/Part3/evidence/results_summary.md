@@ -1,7 +1,10 @@
-# Preliminary Results Summary
+# Java and C++ results summary
 
-This report uses exactly two patterns (Strategy and Observer) and two languages (Java and C++).
-All four test runners were compiled and executed in the recorded environment.
+This file records Soorya's Java and C++ runs for Strategy and Observer.
+The four Java/C++ test runners were compiled and executed in the recorded environment.
+Govind's Python and JavaScript results are in `../README.md` and
+`../../data/cross_language.csv`. The two language pairs use different inputs,
+so this file does not establish a four-language comparison.
 
 ## Actual test results
 
@@ -29,4 +32,4 @@ Cyclomatic complexity values are based on the documented function-by-function ma
 - The Observer examples demonstrate notification and unsubscribe behaviour. They do not connect to Supabase.
 - Process-level timing for tiny programs is strongly affected by runtime/process startup and is not a general language-performance ranking.
 - The original source has an implicit Strategy contract and uses an if-chain. The cross-language samples make the strategy roles explicit to compare the pattern clearly; this structural simplification must be acknowledged.
-- Only two languages are implemented in this working scope. The course handout requires Java, Python, JavaScript, and C++; confirm instructor approval if submitting only Java/C++.
+- This summary covers Java and C++ only. Python and JavaScript are also present in Part 3, with their own saved test evidence.

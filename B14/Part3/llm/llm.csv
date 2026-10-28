@@ -1,1 +1,2 @@
 part,model_and_date,prompt_file,input_file,output_file,evaluation,verification_file
+Part 3 Govind Python and JavaScript (partial record),unavailable,Part3/llm/govind_prompt.txt,unavailable,not archived,"Prompt saved; source mapping and executed tests recorded; full assistant output and human review record unavailable",Part3/llm/verification.md

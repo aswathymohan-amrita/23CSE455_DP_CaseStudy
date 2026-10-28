@@ -21,7 +21,7 @@
 \textbf{Case study:} & Design Pattern Identification and Evolution in a Next.js-Based\\
  & Digital News and Publishing Application\\
 \textbf{Application:} & Next.js Blog CMS\\
-\textbf{Date:} & 2026-10-12 (Part 2 updated)\\
+\textbf{Date:} & 2026-10-28 (Part 3 records corrected)\\
 \textbf{Submission repository:} & 23CSE455\_DP\_CaseStudy
 \end{tabular}
 
@@ -541,10 +541,12 @@ testing; they are not complete ports of the Next.js application and do
 not call real LLM services or Supabase.
 
 \textbf{Language scope.}
-The current implementation contains Java and C++ only. The assignment
-instructions specify Java, Python, JavaScript and C++; therefore, this
-is a two-language working comparison, not a completed four-language
-submission, unless the instructor has approved the reduced scope.
+The repository contains Python and JavaScript examples by Govind and
+Java and C++ examples by Soorya for both selected patterns. Python and
+JavaScript share 26 saved input/output cases. Java and C++ share a
+different, smaller specification with four cases per pattern. All four
+languages are present, but one common four-language behavioral check
+has not yet been run.
 
 %------------------------------------------------------------
 \subsection*{Selected patterns and source mapping}
@@ -557,12 +559,14 @@ functions are \code{streamClaude}, \code{streamOpenAI} and
 \code{params.provider} and delegates to the corresponding function.
 The original TypeScript code has an implicit function contract and a
 hard-coded conditional chain rather than a separately declared strategy
-interface. For comparison, the Java version defines an
+interface. Govind's Python and JavaScript examples keep function-based
+strategies, using \code{run} to select a provider-specific extractor for
+saved sample events. For comparison, the Java version defines an
 \code{LlmStrategy} interface and concrete strategy classes, while the
 C++ version uses an abstract base class and concrete implementations.
-Both examples return deterministic chunks so they can be tested without
-network services. This is an explicit-pattern teaching adaptation, not
-a claim that the production TypeScript code has the same class structure.
+The Java and C++ examples return fixed chunks. None of the four
+examples calls a provider service. These are teaching adaptations,
+not claims that the TypeScript code has the same class structure.
 
 \textbf{Observer --- Auth State Observer.}
 Part 1 confirms this instance in
@@ -572,10 +576,10 @@ Part 1 confirms this instance in
 \code{supabase.auth}, supplied by the Supabase dependency;
 \code{AuthProvider} registers the callback for
 \code{onAuthStateChange}, updates session state and unsubscribes in
-effect cleanup. The Java and C++ examples model an event source,
-listeners, event delivery and unsubscribe behaviour. They do not invent
-a subject class for the original application and do not connect to
-Supabase.
+effect cleanup. Govind's Python and JavaScript examples use an
+in-memory \code{AuthSubject} and an \code{AuthStateObserver} that records
+user IDs. The Java and C++ examples model an event source, listeners,
+event delivery and unsubscribe behaviour. None connects to Supabase.
 
 %------------------------------------------------------------
 \subsection*{Relationship to Part 2}
@@ -602,9 +606,8 @@ recorded separately in the Part 2 section and must not be conflated.
 %------------------------------------------------------------
 \subsection*{Common test specification}
 
-The language-independent fixture file is
-\code{Part3/test-cases/common_test_cases.csv}. Both language
-implementations use the same expected behaviour:
+Java and C++ use the same cases from
+\code{Part3/test-cases/common_test_cases.csv}:
 
 \begin{center}
 \begin{tabular}{@{}p{1.5cm}p{4.3cm}p{8.4cm}@{}}
@@ -638,7 +641,7 @@ O04 & Observer: two active observers
 \end{tabular}
 \end{center}
 
-\textbf{Actual test results.}
+\textbf{Java and C++ test results.}
 The recorded output in \code{Part3/evidence/test_results.txt} shows:
 
 \begin{center}
@@ -657,11 +660,37 @@ The test runners are
 \code{Part3/strategy/cpp/test_strategy.cpp},
 \code{Part3/observer/java/ObserverTest.java} and
 \code{Part3/observer/cpp/test_observer.cpp}.
-Production snippets and build commands are documented in
-\code{Part3/README.md}.
+
+\textbf{Python and JavaScript test results.}
+Govind's two languages use the same JSON cases in
+\code{Part3/llm_provider_streaming/fixtures.json} and
+\code{Part3/auth_state_observer/fixtures.json}. Each test runner checks
+the expected result and that its input was not changed. A separate
+process check invokes both programs for each saved input:
+
+\begin{center}
+\begin{tabular}{@{}lccc@{}}
+\toprule
+Pattern & Python & JavaScript & Process check \\
+\midrule
+Strategy & 11/11 passed & 11/11 passed & 11/11 matched \\
+Observer & 15/15 passed & 15/15 passed & 15/15 matched \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The combined process check passed 26/26. Its script is
+\code{Part3/verify_cross_language.py}; the saved output and four
+language-specific logs are in \code{Part3/evidence/tests/}.
+Production snippets and run commands are in \code{Part3/README.md}.
+The Python/JavaScript JSON contract differs from Java/C++ direct
+provider/prompt and event/session calls. The two pass counts do not
+establish one shared four-language test result.
 
 %------------------------------------------------------------
 \subsection*{Measurement method}
+
+Soorya measured the Java and C++ examples as follows:
 
 \begin{itemize}
     \item \textbf{Source LOC:}
@@ -686,6 +715,15 @@ Production snippets and build commands are documented in
     \code{Part3/evidence/environment.txt}.
 \end{itemize}
 
+Govind used Lizard 1.24.1 for production source lines and maximum
+function complexity in Python and JavaScript. His timing script ran one
+warm-up and five measured whole-process launches on Windows, including
+startup and JSON input/output. The raw records are in
+\code{Part3/evidence/static_metrics.json} and
+\code{Part3/evidence/timings/process_timings.json}. These methods and
+machines differ, so the two sets of measurements are descriptive rather
+than a fair language speed ranking.
+
 %------------------------------------------------------------
 \subsection*{Results}
 
@@ -695,6 +733,10 @@ Production snippets and build commands are documented in
 Pattern & Language & Production LOC & Max function CC
 & Median process time (ms) \\
 \midrule
+Strategy & Python & 53 & 8 & 96.870 \\
+Observer & Python & 74 & 21 & 100.344 \\
+Strategy & JavaScript & 47 & 9 & 57.485 \\
+Observer & JavaScript & 62 & 20 & 57.960 \\
 Strategy & Java & 33 & 4 & 36.116 \\
 Observer & Java & 24 & 2 & 42.995 \\
 Strategy & C++ & 35 & 4 & 1.115 \\
@@ -703,44 +745,37 @@ Observer & C++ & 30 & 2 & 1.070 \\
 \end{tabular}
 \end{center}
 
-The maximum-complexity functions are \code{LlmContext.select()}
-(Java Strategy), \code{LlmContext::stream()} (C++ Strategy), and
-\code{AuthEventSource.publish()} for Observer in both languages.
-The Strategy selector has three non-default provider decisions in each
-version, giving a manual maximum CC of 4. The Observer publication
-loop gives a manual maximum CC of 2. The function-by-function decision
-counts are available in the audit CSV.
+In Python and JavaScript, most of the Observer maximum function
+complexity comes from validation in \code{run}, not notification itself.
+For Java and C++, the maximum-complexity functions are
+\code{LlmContext.select()} (Java Strategy),
+\code{LlmContext::stream()} (C++ Strategy), and
+\code{AuthEventSource.publish()} for Observer. Their manual decision
+counts are in \code{Part3/evidence/complexity_audit.csv}.
 
-The execution times are specific to the recorded machine and are not
-a universal language-performance ranking. These snippets are small,
-so JVM startup and runtime initialization substantially affect Java
-process times. LOC, complexity and timing alone do not establish that
-one design is better than another. The C++ Observer uses non-owning
-pointers in this teaching example; production C++ would require a clear
-lifetime and ownership policy.
+The two pairs were measured on different machines and with different
+process boundaries. These numbers cannot rank the languages. The
+snippets are small, so startup and the test harness affect timing.
+The C++ Observer uses non-owning pointers in this teaching example;
+production C++ would require a clear lifetime and ownership policy.
 
 %------------------------------------------------------------
 \subsection*{Interpretation and limitations}
 
-Java expresses the Strategy contract through an interface and concrete
-strategy classes; C++ uses an abstract base class and virtual methods.
-Both select a provider and return the same deterministic chunks for the
-shared fixtures. Both Observer examples maintain a listener collection,
-notify active listeners and support unsubscribe. The original
-application instead uses a Supabase subscription and React Context,
-which the snippets intentionally isolate from external dependencies.
+Python and JavaScript express Strategy as functions selected by a map.
+Java uses an interface and concrete classes; C++ uses an abstract base
+class and virtual methods. All four Observer examples hold listeners,
+notify active ones and support unsubscribe. The original app instead
+uses Supabase's subscription API and React Context.
 
-The current comparison is reproducible from the source and test files
-and contains four implementation records in
-\code{Part3/cross\_language.csv} (two patterns by two languages).
-Remaining work for full assignment compliance is to implement and test
-Python and JavaScript unless the instructor has approved the reduced
-language scope; verify the manual complexity figures with a required
-static-analysis tool if the course mandates one; complete
-\code{Part3/llm/llm.csv} using actual AI interaction records; and
-reconcile the Part 2 source snapshot before describing any result as
-post-refactoring. No missing measurements or AI records are inferred
-here.
+Govind's four records are in \code{data/cross_language.csv}; Soorya's
+four separate records remain in \code{Part3/cross_language.csv}. The
+team still needs one input/output specification, a shared four-language
+test run and a consistent measurement boundary before combining them.
+The Part 3 LLM record is partial: the prompt and tests are saved, but
+raw output and reliable model/date details were not archived. The Part 2
+feature branch also needs its own remaining verification; no result
+here claims to measure its post-change application code.
 \section{LLM records and human verification}
 
 \textbf{Run and model.} Part 1 pattern analysis used an LLM chat assistant on
@@ -766,6 +801,14 @@ prompts as completed model runs. The Part 2 LLM-use record and verification
 status should be checked against the actual saved chat transcripts before final
 submission.
 
+\textbf{Part 3 records.} Govind's saved task prompt is in
+\code{Part3/llm/govind_prompt.txt}. Source and test checks are described
+in \code{Part3/llm/verification.md}. The row in
+\code{Part3/llm/llm.csv} marks the full raw assistant output, displayed
+model name and interaction date unavailable. It does not claim a complete
+transcript or completed human review. Those fields should only be updated
+from verifiable saved history.
+
 %------------------------------------------------------------
 \section{Findings, contributions and references}
 
@@ -785,10 +828,10 @@ from source and the unit-test suite only.
 \toprule
 Roll number & Name & Batch & Contribution\\
 \midrule
-AM.SC.U4AIE23121 & Keziah Suzaine George & AIE & \todo{Part 1}\\
-AM.SC.U4AIE23139 & Nivedita Ramesh & AIE & \todo{Part 2}\\
-AM.SC.U4CSE23360 & Soorya Krishna & CSE & \todo{Part 3: Java and C++}\\
-AM.SC.U4CSE23309 & B R Govind & CSE & \todo{Part 3: Python and Javascript}\\
+AM.SC.U4AIE23121 & Keziah Suzaine George & AIE & Part 1 pattern analysis\\
+AM.SC.U4AIE23139 & Nivedita Ramesh & AIE & Part 2 change records\\
+AM.SC.U4CSE23360 & Soorya Krishna & CSE & Part 3 Java and C++ examples\\
+AM.SC.U4CSE23309 & B R Govind & CSE & Part 3 Python and JavaScript examples\\
 \bottomrule
 \end{tabular}
 
@@ -803,9 +846,10 @@ AM.SC.U4CSE23309 & B R Govind & CSE & \todo{Part 3: Python and Javascript}\\
 \end{enumerate}
 
 \section{Team folder and datasets}
-\begin{figure}
-    \centering
-    \includegraphics[width=1.0\linewidth]{image.png}
-    \caption{Team folder in the course repository}
-\end{figure}
+The \code{B14/} folder contains the baseline application in \code{code/},
+its baseline test evidence in \code{test_result/}, pattern discovery in
+\code{Part1/}, change records in \code{Part2/}, and the cross-language
+examples in \code{Part3/}. The central cross-language CSV is
+\code{data/cross_language.csv}; the separate Java/C++ rows are still in
+\code{Part3/cross_language.csv} until one common comparison is verified.
 \end{document}

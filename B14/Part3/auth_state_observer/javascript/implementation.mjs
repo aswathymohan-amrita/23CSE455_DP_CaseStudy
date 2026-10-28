@@ -1,4 +1,4 @@
-/** In-memory auth subject, observer, and unsubscribe lifecycle. */
+/** Send saved auth events to a listener and support unsubscribe. */
 import { readFileSync } from 'node:fs';
 import { pathToFileURL } from 'node:url';
 
