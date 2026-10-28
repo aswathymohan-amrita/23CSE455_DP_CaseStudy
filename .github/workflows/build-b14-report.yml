@@ -62,14 +62,12 @@ jobs:
 
       - name: Commit regenerated PDF
         run: |
-          git stash push -m "generated report PDF" -- B14/B14_Report.pdf
-          git pull --rebase origin main
-          git stash pop || true
           if ! git diff --quiet -- B14/B14_Report.pdf; then
             git config user.name "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
             git add B14/B14_Report.pdf
             git commit -m "docs(report): regenerate B14 report PDF"
+            git pull --rebase origin main
             git push origin HEAD:main
           else
             echo "Generated PDF is identical to the committed PDF."
