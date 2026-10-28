@@ -1,17 +1,22 @@
 flowchart TB
-  subgraph Original["Pre-change (de5bc25)"]
+  subgraph Original["Pre-change baseline (de5bc25)"]
     A["LLM Provider Streaming Strategy<br/>sendMessage -> streamClaude / streamOpenAI / streamGemini"]
     B["Auth State Observer<br/>Supabase auth events -> AuthProvider -> AuthContext consumers"]
     C["RBAC Permission Table<br/>rolePermissions -> can / canAccess / canAny"]
   end
-  subgraph Evolved["After refactoring commits"]
-    A2["Strategy preserved<br/>provider inference helper in separate blog-generation path"]
-    B2["Observer preserved"]
-    C2["RBAC preserved"]
+  subgraph Refactors["Historical refactoring commits"]
+    A2["Provider inference helper<br/>inferProviderFromModel"]
     D["Publication validation helpers<br/>validatePublicationTitle / validatePublicationContent"]
     E["Shared JSON parser<br/>parseGeneratedPostJson"]
   end
+  subgraph Features["Merged feature snapshot (cd435883)"]
+    F["Related article recommendations<br/>rankRelatedPosts -> RelatedPosts UI"]
+    G["Content moderation<br/>moderation states -> admin review actions -> public visibility gate"]
+    H["Premium access control<br/>subscription entitlement -> protected body retrieval"]
+  end
   A --> A2
-  B --> B2
-  C --> C2
+  A --> E
+  B -. "preserved" .-> B
+  C -. "core table preserved; feature gates added" .-> H
   D -. "not classified as GoF pattern" .-> E
+  G -. "workflow checks; not automatically the GoF State pattern" .-> H
