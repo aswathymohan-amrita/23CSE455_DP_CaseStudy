@@ -21,7 +21,7 @@
 \textbf{Case study:} & Design Pattern Identification and Evolution in a Next.js-Based\\
  & Digital News and Publishing Application\\
 \textbf{Application:} & Next.js Blog CMS\\
-\textbf{Date:} & 2026-10-12 (Part 2 updated)\\
+\textbf{Date:} & 2026-10-28 (Part 2 verification update)\\
 \textbf{Submission repository:} & 23CSE455\_DP\_CaseStudy
 \end{tabular}
 
@@ -331,10 +331,8 @@ CH03 & Premium-content access & \code{a7d6990}--\code{7ecfa65} & Premium entitle
 \bottomrule
 \end{tabular}
 
-The changes are cumulative on the feature branch. The short commit IDs above
-identify the first or final relevant commits; the complete history is available
-in the application repository. Code paths and line ranges below refer to that
-branch, rather than the Part 1 baseline.
+The feature records above refer to the merged application snapshot at
+\code{cd435883322dc29da6943fc871dd40cb1c662299}. Earlier commit IDs identify historical development points, not the final snapshot. The evolved-code folder is a changed-file snapshot; unchanged collaborators must be checked in the full application repository.
 
 \subsection*{CH01: Related-article recommendations}
 \textbf{Requirement.} Show a small set of useful related articles on an article
@@ -456,12 +454,7 @@ subscription table.
 \textbf{Verification status.} Six test cases were added in
 \code{__tests__/features/premium/access.test.ts} for anonymous denial, active and
 expired entitlements, revoked entitlements, administrator access, author access
-to a protected body and denial before protected content is queried. The test file
-was added but its run result had not been captured at the time of this report
-update. The cumulative branch's TypeScript command
-\code{pnpm exec tsc --noEmit} completed with exit code 0. The new Supabase
-migrations and premium-content flows still require database/runtime verification;
-no full-suite passing result is claimed for this branch.
+to a protected body and denial before protected content is queried. The focused file contains six cases. A fresh run could not be performed in this execution environment because the application repository could not be cloned (network DNS resolution to github.com failed). Historical TypeScript checking on a development branch is not a fresh check of the merged snapshot. The Supabase migrations and premium-content flows still require database/runtime verification; no full-suite passing result is claimed.
 
 \subsection*{Pattern evolution summary}
 The baseline inventory contains three confirmed instances: LLM Provider
@@ -512,21 +505,14 @@ Refactoring evidence & Code smell and technique & Pattern/verification note\\
 The refactoring commits have separate branch histories and are not automatically
 part of the feature branch. Supporting records reside in the existing
 \code{changes/Change1}, \code{changes/Change2} and \code{changes/Change3}
-folders. Those folder names originated with the refactoring experiments and
-should be renamed or reorganized so they cannot be confused with the required
-feature records CH01--CH03.
+folders. The existing \code{changes/Change1}, \code{changes/Change2} and
+\code{changes/Change3} folders retain their original refactoring requirements,
+implementation notes and evidence. Each now also contains a separate
+\code{required-feature.md} record for the corresponding required feature, so
+historical refactoring evidence is preserved and the two scopes are distinguished.
 
 \subsection*{LOC and remaining verification}
-A consistent before/after source-lines-of-code (LOC) metric has not yet been
-captured using an explicit counting rule across the same paths. This report does
-not invent a LOC delta. Before final submission, count production source lines
-using the same tool and rule at each stated snapshot and record the commands and
-outputs. Also run the focused tests for CH02 and CH03, investigate the two
-reported author-byline test failures alongside CH01, run the full test suite on
-the cumulative feature branch, and apply/verify both Supabase migrations against
-a test database. The baseline report's lack of a local Docker/Supabase setup
-explains why runtime verification was unavailable at that point; it does not
-prove the new database changes work.
+LOC was measured as non-empty physical lines; blank lines are excluded and comments are included. The measurements in \code{Part2/loc_measurements.csv} cover selected production files for historical refactorings plus added feature files, tests and SQL migrations in the merged snapshot. They are not whole-repository LOC and LOC is not a quality metric. Historical refactoring measurements are: CH01 provider-inference helper, 335 to 340 lines (+5) in \code{features/ai-assistant/llmService.ts}; CH02 publication validation, 125 to 153 lines (+28) in \code{features/posts/publication.ts}; and CH03 shared JSON parser, 335 to 336 lines (+1) in \code{features/ai-assistant/llmService.ts}. New production files are additions from a zero-file baseline: CH01 recommendations module 44 lines and UI component 21 lines; CH02 moderation helper 10 lines, moderation actions 58 lines and queue component 55 lines; CH03 premium access module 26 lines. Test and migration LOC are listed separately in the CSV. Fresh test results are only claimed where actual output has been captured; database migration/runtime behavior still requires a configured Supabase environment.
 
 %------------------------------------------------------------
 \section{Part 3: Cross-language comparison}
@@ -762,9 +748,7 @@ reading \code{route.ts}. No generated code was used in Part 1.
 this section and in the Part 2 change records. The raw Part 2 model-response
 transcripts were not separately archived as reproducible files when this report
 was updated, so this report does not invent model output or treat proposed
-prompts as completed model runs. The Part 2 LLM-use record and verification
-status should be checked against the actual saved chat transcripts before final
-submission.
+prompts as completed model runs.
 
 %------------------------------------------------------------
 \section{Findings, contributions and references}
@@ -774,21 +758,17 @@ submission.
 The application mostly relies on framework idioms and plain functions rather than
 classical GoF structures. The Strategy is function-based with an \code{if}-chain
 selector and no declared interface. The Observer subject comes from a dependency.
-RBAC is an architectural pattern. Of the eight areas in the brief, articles,
-authors, categories, comments, authentication and newsletter subscription exist;
-moderation exists only as comment deletion, and recommendations and a paywall were
-not found. Limitations: the app was not run (no Docker), and behavior was verified
-from source and the unit-test suite only.
+RBAC is an architectural pattern. At the original baseline, related-article recommendations, publication moderation and premium-content access were not implemented in the inspected scope. Part 2 adds related-article recommendations, an administrator moderation queue and entitlement-based premium-body access. The latter is not a payment-processing system: entitlement rows must be provisioned separately. Unit tests and source inspection do not replace runtime verification of Supabase migrations/RLS or end-to-end flows.
 
 \textbf{Contributions.}
 \begin{tabular}{@{}p{3.3cm}p{3.6cm}p{1.2cm}p{6.6cm}@{}}
 \toprule
 Roll number & Name & Batch & Contribution\\
 \midrule
-AM.SC.U4AIE23121 & Keziah Suzaine George & AIE & \todo{Part 1}\\
-AM.SC.U4AIE23139 & Nivedita Ramesh & AIE & \todo{Part 2}\\
-AM.SC.U4CSE23360 & Soorya Krishna & CSE & \todo{Part 3: Java and C++}\\
-AM.SC.U4CSE23309 & B R Govind & CSE & \todo{Part 3: Python and Javascript}\\
+AM.SC.U4AIE23121 & Keziah Suzaine George & AIE & Part 1: baseline pattern discovery and evidence\\
+AM.SC.U4AIE23139 & Nivedita Ramesh & AIE & Part 2: feature implementation records and pattern evolution\\
+AM.SC.U4CSE23360 & Soorya Krishna & CSE & Part 3: Java and C++ pattern comparison\\
+AM.SC.U4CSE23309 & B R Govind & CSE & Part 3: Python and JavaScript pattern comparison\\
 \bottomrule
 \end{tabular}
 
