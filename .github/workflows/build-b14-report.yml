@@ -62,7 +62,9 @@ jobs:
 
       - name: Commit regenerated PDF
         run: |
+          git stash push -m "generated report PDF" -- B14/B14_Report.pdf
           git pull --rebase origin main
+          git stash pop || true
           if ! git diff --quiet -- B14/B14_Report.pdf; then
             git config user.name "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
