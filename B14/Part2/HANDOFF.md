@@ -1,49 +1,75 @@
 # Part 2 handoff — Team B14
 
-## What is present in the repository
+## Current status
 
-- `Part2_prompt.txt`: the original master prompt (retained as the record of the intended scope).
-- `changes/Change1`, `Change2`, `Change3`: requirements, implementation notes and test logs.
-- `pattern_evolution.csv` and `Pattern_count.csv`: source-based pattern records and counts using the Part 1 schemas.
-- `diagrams/pattern-evolution.mmd`: editable diagram source.
-- `code/README.md`: map to the actual source commits and explains that `B14/code/` is the original baseline copy.
-- `llm.csv`: Part 2 AI-use record; it distinguishes available verification evidence from raw outputs that were not archived.
-- `changes/*/evidence/*.patch`: GitHub commit diff archives for each refactor and the separate recommendations feature.
+The team repository now contains both the original Part 1 baseline snapshot and a changed-file snapshot for the evolved Part 2 feature implementation. The full runnable application remains in the application repository.
 
-## Actual application commits
+- **Team repository:** https://github.com/nivedita-rmsh/23CSE455_DP_CaseStudy
+- **Part 2 directory:** https://github.com/nivedita-rmsh/23CSE455_DP_CaseStudy/tree/main/B14/Part2
+- **Full application:** https://github.com/nivedita-rmsh/nextjs-blog-cms
+- **Application feature merge:** [`cd435883322dc29da6943fc871dd40cb1c662299`](https://github.com/nivedita-rmsh/nextjs-blog-cms/commit/cd435883322dc29da6943fc871dd40cb1c662299)
+- **Application PR #1:** https://github.com/nivedita-rmsh/nextjs-blog-cms/pull/1
+- **Case-study feature snapshot PR #2:** https://github.com/nivedita-rmsh/23CSE455_DP_CaseStudy/pull/2
+- **Case-study snapshot merge:** [`691e13ae50ed6e087a224b8e7904fa3f512037b4`](https://github.com/nivedita-rmsh/23CSE455_DP_CaseStudy/commit/691e13ae50ed6e087a224b8e7904fa3f512037b4)
+- **Latest known case-study main commit before this handoff update:** [`457cb327d5da7bd4f8ef1f717243a88b7f439e44`](https://github.com/nivedita-rmsh/23CSE455_DP_CaseStudy/commit/457cb327d5da7bd4f8ef1f717243a88b7f439e44)
 
-Application repository: https://github.com/nivedita-rmsh/nextjs-blog-cms
+## Required feature scope and implementation
 
-| Change | Branch | Commit | Actual scope |
-|---|---|---|---|
-| AI provider inference refactor | `part2/ch01-provider-refactor` | `e7dfd1c` | Extract `inferProviderFromModel()` and use it in blog generation |
-| Publication validation refactor | `part2/ch02-publishing-workflow` | `7be15fb` | Extract title and content validation helpers |
-| Shared AI JSON parser refactor | `part2/ch03-json-parsing-refactor` | `6ce7157` | Extract `parseGeneratedPostJson()` |
-| Related article recommendations (separate feature branch) | `part2/ch01-article-recommendations` | `68cd127` | Related post ranking and UI, with a focused 4-test file |
+The master prompt specifies:
 
-The three refactor commits are on separate branch histories; CH03 has CH02 as parent. The recommendations commit is separate.
+| Change | Required feature | Current source evidence |
+|---|---|---|
+| CH01 | Related article recommendations | `evolved-code/features/posts/recommendations.ts`, `evolved-code/features/posts/components/RelatedPosts.tsx`, `evolved-code/__tests__/features/posts/recommendations.test.ts` |
+| CH02 | Content moderation | `evolved-code/features/posts/moderation.ts`, `evolved-code/features/posts/moderation-actions.ts`, `evolved-code/components/dashboard/ModerationQueue.tsx`, moderation migration and tests |
+| CH03 | Subscription/paywall access control | `evolved-code/features/premium/access.ts`, premium access migration and tests |
 
-## Important unresolved scope discrepancy
+The `evolved-code/` directory is a changed-file snapshot, not a standalone runnable Next.js application. Use the full application repository for installation, environment configuration, execution and verification. The presence of tests does not itself prove they passed.
 
-The master prompt specifies CH01 article recommendations, CH02 content moderation, and CH03 subscription/paywall access control. The checked-in change records instead label CH01 as provider inference, CH02 as publication-validation refactoring, and CH03 as AI JSON parsing. The separate recommendations branch implements only the recommendations part. The inspected evidence does not show a content-moderation workflow or a server-side premium-access gate. Do not tell the instructor these two requirements are complete; obtain scope approval or implement them if they remain mandatory.
+## Historical refactoring work (separate from the required feature scope)
 
-## Test evidence caveats
+The following commits document earlier refactorings and should not be confused with CH01–CH03 feature implementations:
 
-- Change 1 full-suite log currently records 1,025 tests passing across 88 files. Its focused `after-tests.log` was later overwritten by a 20-test run while the recommendations branch was checked out; it does not prove the provider-refactor branch's focused result. Rerun the focused test on `part2/ch01-provider-refactor` before treating that log as definitive.
-- Change 2 targeted publication tests recorded 30 passing; its full-suite log records 1,022 passing across 88 files.
-- Change 3 full-suite log records 1,022 passing across 88 files. The most recent focused `after-tests.log` needs its branch context confirmed before it is presented as evidence specifically for commit `6ce7157`.
-- Two existing author-byline tests failed when the pre-commit hook ran on the recommendations branch. The recommendations-specific tests themselves passed. This failure must remain disclosed rather than hidden.
-- Part 1 reports local Supabase/Docker and end-to-end testing were unavailable.
-- Consistent before/after LOC metrics have not been measured. Do not invent LOC deltas.
-- Raw Part 2 LLM output transcripts were not separately archived. `llm.csv` discloses this; preserve actual transcripts if they are available from the chat history.
+| Refactoring | Branch | Commit |
+|---|---|---|
+| Provider inference helper | `part2/ch01-provider-refactor` | [`e7dfd1c`](https://github.com/nivedita-rmsh/nextjs-blog-cms/commit/e7dfd1c) |
+| Publication validation helpers | `part2/ch02-publishing-workflow` | [`7be15fb`](https://github.com/nivedita-rmsh/nextjs-blog-cms/commit/7be15fb) |
+| Shared generated-post JSON parser | `part2/ch03-json-parsing-refactor` | [`6ce7157`](https://github.com/nivedita-rmsh/nextjs-blog-cms/commit/6ce7157) |
+| Related article recommendations (earlier feature branch) | `part2/ch01-article-recommendations` | [`68cd127`](https://github.com/nivedita-rmsh/nextjs-blog-cms/commit/68cd127) |
 
-## Before final submission
+## Pattern analysis and counts
 
-1. Confirm with the instructor/team whether the implemented refactor scope is acceptable in place of content moderation and paywall access control.
-2. Rerun the focused test logs on each relevant branch so the evidence matches the documented commit.
-3. Measure before/after LOC using the same stated rule and tool, or record it as unavailable if time/tooling prevents reliable measurement.
-4. Render `diagrams/pattern-evolution.mmd` if the report requires a diagram image.
-5. Rebuild `B14_Report.pdf` from the updated `B14_Report.tex`; the existing PDF is not automatically refreshed by a source edit.
-6. Pull the latest team `main`, review the changes, and ensure the final commit is pushed.
+- `pattern_evolution.csv` now includes a record for the merged feature snapshot as well as the earlier snapshots.
+- `Pattern_count.csv` now includes counts for the merged feature snapshot.
+- The three confirmed pattern/architecture instances tracked are the implicit LLM Provider Streaming Strategy, Auth State Observer and RBAC Permission Table.
+- The current feature additions do not, by themselves, establish another GoF pattern. The moderation states use explicit workflow/state checks; do not label them the GoF State pattern without evidence of state-specific objects and delegated behavior.
+- The original RBAC permission-table implementation remains; the premium entitlement and moderation authorization checks are additional feature-specific access gates.
+- Source locations in the CSV should be interpreted against the named source version/commit. The evolved snapshot includes changed files only, so unchanged participants may be located in the full application repository.
 
-This handoff is deliberately explicit about limitations; it is safer than claiming features or metrics that are not evidenced.
+## LOC measurements
+
+See [`loc_measurements.csv`](https://github.com/nivedita-rmsh/23CSE455_DP_CaseStudy/blob/main/B14/Part2/loc_measurements.csv).
+
+- Counts use non-empty physical source lines; blank lines are excluded and comments are included.
+- Refactoring measurements cover the selected production source file only, not the entire repository.
+- New feature modules are recorded as added source files with a baseline count of zero; test and SQL migration lines are listed separately.
+- LOC is a size measure, not a quality measure. These counts do not establish maintainability or correctness by themselves.
+
+## Test and verification caveats
+
+- Existing evidence logs report results for earlier commits, not a fresh test run performed during this documentation update.
+- Change 1's focused after-test log was overwritten during the recommendations branch work; its full-suite log reports 1,025 tests across 88 files, but the focused result should be rerun on `e7dfd1c` before claiming branch-specific verification.
+- Change 2's evidence records 30 targeted publication tests and a full-suite result of 1,022 tests across 88 files.
+- Change 3's full-suite log reports 1,022 tests across 88 files; confirm focused-log branch context before presenting it as proof for `6ce7157`.
+- Two existing author-byline tests failed when the pre-commit hook ran on the recommendations branch; this failure remains a known caveat.
+- Local Supabase/Docker and end-to-end testing were previously unavailable. Database migrations and server-side access rules still need verification in a configured environment.
+- Do not claim that tests pass now unless they are rerun and the actual output is archived.
+
+## Other deliverables and remaining checks
+
+- `Part2_prompt.txt`: retained master prompt.
+- `code/README.md`: describes the baseline and evolved source snapshots.
+- `changes/Change1`, `Change2`, `Change3`: requirements, implementation notes and evidence. The historical refactoring records remain useful but are distinct from the required feature scope.
+- `diagrams/pattern-evolution.mmd`: editable diagram source. Render it if the report requires an image.
+- `llm.csv`: AI-use record; raw model transcripts were not separately archived, and this limitation must remain explicit.
+- Update and regenerate `B14_Report.pdf` if the report source changes.
+- Review the final commit and ensure it is on the team repository's `main` branch before submission.
