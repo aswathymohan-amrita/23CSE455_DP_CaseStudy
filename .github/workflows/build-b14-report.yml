@@ -1,0 +1,83 @@
+name: Build and inspect B14 report
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "B14/B14_Report.tex"
+      - "B14/Part1/**"
+      - ".github/workflows/build-b14-report.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-report:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install LaTeX and PDF inspection tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y texlive-latex-extra texlive-fonts-recommended poppler-utils imagemagick
+
+      - name: Compile report twice
+        working-directory: B14
+        run: |
+          pdflatex -interaction=nonstopmode -halt-on-error B14_Report.tex | tee /tmp/latex-pass1.log
+          pdflatex -interaction=nonstopmode -halt-on-error B14_Report.tex | tee /tmp/latex-pass2.log
+          test -s B14_Report.pdf
+          pdfinfo B14_Report.pdf | tee /tmp/pdfinfo.txt
+          pdftotext -layout B14_Report.pdf /tmp/B14_Report.txt
+          grep -q "Related-article recommendations" /tmp/B14_Report.txt
+          grep -q "Content moderation" /tmp/B14_Report.txt
+          grep -q "Premium-content access control" /tmp/B14_Report.txt
+
+      - name: Render every PDF page for visual inspection
+        working-directory: B14
+        run: |
+          mkdir -p /tmp/report-pages
+          pdftoppm -png -r 100 B14_Report.pdf /tmp/report-pages/page
+          test "$(find /tmp/report-pages -name 'page-*.png' | wc -l)" -eq "$(pdfinfo B14_Report.pdf | awk '/^Pages:/ {print $2}')"
+          montage /tmp/report-pages/page-*.png -thumbnail 320x414 -tile 4x -geometry +8+8 /tmp/B14_Report_contact_sheet.png
+          {
+            echo "## PDF metadata"
+            cat /tmp/pdfinfo.txt
+            echo
+            echo "## TeX warnings/errors"
+            grep -E '(^!|Warning|Overfull|Underfull|missing image)' B14_Report.log || true
+            echo
+            echo "## Missing-image placeholders in extracted PDF text"
+            grep -in 'missing image' /tmp/B14_Report.txt || true
+          } > /tmp/report-inspection.txt
+
+      - name: Commit regenerated PDF
+        run: |
+          if ! git diff --quiet -- B14/B14_Report.pdf; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add B14/B14_Report.pdf
+            git commit -m "docs(report): regenerate B14 report PDF"
+            git push origin HEAD:main
+          else
+            echo "Generated PDF is identical to the committed PDF."
+          fi
+
+      - name: Upload PDF inspection evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: b14-report-inspection
+          path: |
+            B14/B14_Report.pdf
+            B14/B14_Report.log
+            /tmp/B14_Report_contact_sheet.png
+            /tmp/report-inspection.txt
+            /tmp/report-pages/page-*.png
+          if-no-files-found: warn
+          retention-days: 14
