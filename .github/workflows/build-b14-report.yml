@@ -12,6 +12,10 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: b14-report-build
+  cancel-in-progress: true
+
 jobs:
   build-report:
     runs-on: ubuntu-latest
@@ -58,6 +62,7 @@ jobs:
 
       - name: Commit regenerated PDF
         run: |
+          git pull --rebase origin main
           if ! git diff --quiet -- B14/B14_Report.pdf; then
             git config user.name "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
