@@ -405,11 +405,7 @@ preserved.
 \textbf{Verification status.} Five unit cases were added in
 \code{__tests__/features/posts/moderation.test.ts} for state transitions and
 public visibility, and existing post-action and REST tests were adjusted.
-These focused tests were added but their run result had not been captured at the
-time of this report update. The migration has not yet been applied and verified
-against a running Supabase database. TypeScript checking passed on the cumulative
-feature branch, but this is not a substitute for running the tests or the
-migration.
+These focused tests could not be rerun in this execution environment because cloning the application repository failed (network DNS resolution to github.com failed). The migration has not been applied and verified against a running Supabase database. Historical TypeScript checking is not a fresh check of the merged snapshot.
 
 \subsection*{CH03: Premium-content access control}
 \textbf{Requirement.} Allow an author to mark an article premium, show a public
