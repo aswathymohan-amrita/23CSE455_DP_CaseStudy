@@ -1,0 +1,22 @@
+@startuml
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+hide empty members
+title tRPC Request Context - extended in CH01 and CH02
+class "createTRPCContext({req, res})" as F {
+  session = getServerAuthSession(req, res)
+  region = regionFromHeaders(req.headers)  <<CH02>>
+}
+class "createInnerTRPCContext({session, region})" as I
+class "ctx" as C {
+  session
+  prisma
+  region  <<CH02>>
+}
+class "attachSubscription  <<CH01>>\nnext({ctx: {subscription, planTier, maxProfiles}})" as A #ddffdd
+class "catalogue.checkAccess\nreads ctx.planTier, ctx.region" as U
+F --> I
+I --> C
+A --> C : refined copy
+U --> C
+@enduml

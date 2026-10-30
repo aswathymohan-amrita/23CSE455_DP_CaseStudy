@@ -1,0 +1,15 @@
+@startuml
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+hide empty members
+title Error Boundary - Root Global Error Boundary
+class "ErrorBoundaryHandler (root)\n<<next@13.4.4 error-boundary.js:53-110>>" as B
+class "GlobalError renders own <html><body>\n<<global-error.tsx:10-18>>" as F
+class "ErrorScreen\n<<error-screen.tsx:9-31>>" as V
+class "RootLayout\nTRPCProvider, html, body, Toast, Analytics\n<<layout.tsx:78-98>>" as R
+class "(shows) segment boundary" as Inner
+B --> R : protects
+R --> Inner : contains
+B --> F : layout error -> fallback
+F --> V
+@enduml

@@ -1,0 +1,17 @@
+@startuml
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+hide empty members
+title Strategy - Wire Serialization Transformer
+interface "DataTransformer (Strategy)\nserialize(v) / deserialize(v)\n<<@trpc/server config-*.js:11-21>>" as S
+class "defaultTransformer (identity)\n<<config-*.js:22-30>>" as D #eeeeee
+class "superjson (selected)\n<<superjson@1.12.3>>" as SJ
+class "initTRPC...create({transformer: superjson})\nserver context <<trpc.ts:71-72>>" as Srv
+class "createTRPCNextBeta({transformer: superjson})\nclient context <<client.ts:22-23>>" as Cli
+class "createHydrateClient({transformer: superjson})\n<<client.ts:51-53>>" as H
+S <|.. D
+S <|.. SJ
+Srv o--> S
+Cli o--> S
+H o--> S
+@enduml

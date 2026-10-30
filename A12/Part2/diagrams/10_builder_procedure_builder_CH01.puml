@@ -1,0 +1,13 @@
+@startuml
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+hide empty members
+title tRPC Procedure Builder - extended in CH01
+object "publicProcedure = t.procedure" as Pub
+object "protectedProcedure = t.procedure.use(enforceUserIsAuthed)" as Pro
+object "subscribedProcedure = protectedProcedure.use(attachSubscription)\nNEW in CH01 <<trpc.ts:160>>" as Sub #ddffdd
+class "catalogue.checkAccess = subscribedProcedure.input(showAccessInput).query(...)\nprofile.create = subscribedProcedure.input(...).mutation(...)" as Dir
+Pub ..> Pro : .use() -> new builder
+Pro ..> Sub : .use() -> new builder\n(protectedProcedure unchanged)
+Dir --> Sub : starts from
+@enduml

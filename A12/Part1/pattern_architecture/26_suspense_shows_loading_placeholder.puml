@@ -1,0 +1,14 @@
+@startuml
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+hide empty members
+title Suspense Boundary - Shows Loading Placeholder
+class "LoadingBoundary -> React.Suspense\n<<next@13.4.4 layout-router.js:335-345>>" as B {
+  fallback = loading component
+}
+class "ShowsLoading skeleton\n<<(shows)/loading.tsx:3-9>>" as F
+class "Home (async server page)\nawait getShows('movie')\n<<(shows)/page.tsx:8-52>>" as P
+B --> F : while child suspends
+B --> P : renders when resolved
+note bottom of B : explicit <Suspense> around client forms\n(account/users, help-center) never suspend -> rejected
+@enduml

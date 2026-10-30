@@ -1,0 +1,13 @@
+@startuml
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+hide empty members
+title Read-Through Cache - Profile and Account Query Cache
+class "QueryClient (shared)\nstaleTime/cacheTime Infinity\n<<createTrpcNextBeta.tsx:55-63>>" as Q
+class "profile.getAll / getOthers / getOne\nuser.getCurrent / getCurrentWithProfile\n(loaders)" as L
+class "Readers: ProfilesScreen, ManageProfiles,\nSiteHeader, AccountForm, IconPicker" as R
+class "Invalidators: AddProfileForm, EditProfileForm,\nResetPinForm, AccountForm, EditUserForm\napiUtils.profile.getAll.invalidate()" as I
+R --> Q : useQuery(key)
+Q --> L : miss / after invalidate
+I --> Q : invalidate(key) after mutation
+@enduml

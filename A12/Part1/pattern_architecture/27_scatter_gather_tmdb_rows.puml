@@ -1,0 +1,21 @@
+@startuml
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+hide empty members
+title Scatter-Gather - TMDB Row Scatter-Gather
+class "getShows(mediaType)\n<<fetchers.ts:5-77>>" as G1 {
+  scatter: Promise.all(8 x fetch) <<6-40>>
+  gather: any !ok -> throw; json(); aggregate <<42-76>>
+}
+class "getNewAndPopularShows()\n<<fetchers.ts:82-122>>" as G2 {
+  scatter: Promise.all(4 x fetch) <<83-97>>
+  gather <<99-121>>
+}
+class "TMDB endpoints (Recipients)\ntrending, top_rated, discover x6, popular" as R
+class "Home / Movies / TV / New & Popular pages" as C
+C --> G1
+C --> G2
+G1 --> "8" R : concurrent
+G2 --> "4" R : concurrent
+note bottom of G1 : CH02: both replaced by generic fetchRows(rows, errorMessage)
+@enduml

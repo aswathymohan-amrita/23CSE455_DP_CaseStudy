@@ -1,0 +1,4 @@
+Java,"Sealed interface Node permits Procedure and Router (Java 17+), so the type system knows the only two node kinds; records for leaves; LinkedHashMap keeps child order."
+Python,"Two classes with the same methods (no common base needed at run time); dict keeps child order; recursion with generators would also fit paths()."
+JavaScript,"Nodes are plain objects with the same methods, like tRPC's router records (procedures and routers mixed in one record); Map keeps order."
+C++,"Abstract base Node; Router owns children via std::unique_ptr in a vector of pairs (ordered); recursion through virtual calls."

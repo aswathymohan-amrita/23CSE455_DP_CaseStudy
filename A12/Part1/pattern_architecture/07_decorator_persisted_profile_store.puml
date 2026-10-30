@@ -1,0 +1,24 @@
+@startuml
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+hide empty members
+title Decorator - Persisted Profile Store
+interface "StateCreator<ProfileState>\n<<zustand>>" as C {
+  +(set, get, api) : ProfileState
+}
+class "profile creator\n<<profile.ts:15-20>>" as CC
+class "persist(creator, {sessionStorage})\n<<zustand/middleware>>" as P {
+  wraps set: write to storage
+  +api.persist.clearStorage()
+}
+class "devtools(creator)\n<<zustand/middleware>>" as DV {
+  wraps set: report action
+}
+class "create<ProfileState>()\n<<profile.ts:12>>" as Client
+C <|.. CC
+C <|.. P
+C <|.. DV
+P o--> C : wraps
+DV o--> C : wraps
+Client --> DV : devtools(persist(creator))
+@enduml

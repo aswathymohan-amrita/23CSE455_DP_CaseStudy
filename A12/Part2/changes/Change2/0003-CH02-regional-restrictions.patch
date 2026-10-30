@@ -1,0 +1,1039 @@
+From e420dcf6c428e749aee681d158c69bfb8b7139aa Mon Sep 17 00:00:00 2001
+From: Team A12 <swaminadhanbs@gmail.com>
+Date: Sat, 10 Oct 2026 16:09:39 +0000
+Subject: [PATCH 3/4] CH02: regional restrictions
+
+- RegionRule added at the FRONT of the Content Access Rule Chain so
+  region-blocked titles are hidden before premium titles are locked.
+- Viewer region from geo headers (x-vercel-ip-country, cf-ipcountry)
+  in tRPC context and in server components; licences in config/regions.
+- Rows are filtered server-side with visibleShows; checkAccess denies
+  REGION_BLOCKED for deep links / My List items.
+- Refactor (Duplicate Code / Long Method): TMDB facade rows are data and
+  one fetchRows helper replaces 12 copy-pasted fetch/ok/json blocks.
+- Refactor (Duplicate Code): the row-title array copied into Home,
+  Movies and TV pages is now GENRE_ROWS + toCategories in lib/catalogue.
+- New characterization test for getNewAndPopularShows, verified on the
+  original code before the refactor.
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01KRtMiqqrPtTNbnvsdMTnUF
+---
+ src/app/(shows)/movies/page.tsx            |  36 +---
+ src/app/(shows)/new-and-popular/page.tsx   |  28 +--
+ src/app/(shows)/page.tsx                   |  40 +---
+ src/app/(shows)/tv-shows/page.tsx          |  36 +---
+ src/config/regions.ts                      |  28 +++
+ src/lib/access/policy.ts                   |  22 +-
+ src/lib/access/rules.ts                    |  29 +++
+ src/lib/access/types.ts                    |   4 +-
+ src/lib/catalogue.ts                       |  50 +++++
+ src/lib/fetchers.ts                        | 224 +++++++++++----------
+ src/lib/region.ts                          |  15 ++
+ src/lib/server-region.ts                   |   9 +
+ src/server/api/routers/catalogue.ts        |   8 +-
+ src/server/api/trpc.ts                     |   9 +
+ tests/ch01-premium-plan.test.ts            |   6 +-
+ tests/ch02-region.test.ts                  | 149 ++++++++++++++
+ tests/characterization-new-popular.test.ts |  37 ++++
+ 17 files changed, 499 insertions(+), 231 deletions(-)
+ create mode 100644 src/config/regions.ts
+ create mode 100644 src/lib/catalogue.ts
+ create mode 100644 src/lib/region.ts
+ create mode 100644 src/lib/server-region.ts
+ create mode 100644 tests/ch02-region.test.ts
+ create mode 100644 tests/characterization-new-popular.test.ts
+
+diff --git a/src/app/(shows)/movies/page.tsx b/src/app/(shows)/movies/page.tsx
+index cca15ec..9d16b2b 100644
+--- a/src/app/(shows)/movies/page.tsx
++++ b/src/app/(shows)/movies/page.tsx
+@@ -1,7 +1,8 @@
+ import type { Metadata } from "next"
+-import type { CategorizedShows } from "@/types"
+ 
++import { GENRE_ROWS, rowContext, toCategories } from "@/lib/catalogue"
+ import { getShows } from "@/lib/fetchers"
++import { getViewerRegion } from "@/lib/server-region"
+ import { getCurrentUser } from "@/lib/session"
+ import ShowsContainer from "@/components/shows-container"
+ 
+@@ -14,37 +15,10 @@ export default async function MoviesPage() {
+   const user = await getCurrentUser()
+ 
+   const allShows = await getShows("movie")
++  // CH02: hide titles not licensed in the viewer's region
++  const ctx = rowContext(getViewerRegion())
+ 
+-  const allShowsByCategory: CategorizedShows[] = [
+-    {
+-      title: "Trending Now",
+-      shows: allShows.trending,
+-    },
+-    {
+-      title: "Top Rated",
+-      shows: allShows.topRated,
+-    },
+-    {
+-      title: "Action Thrillers",
+-      shows: allShows.action,
+-    },
+-    {
+-      title: "Comedies",
+-      shows: allShows.comedy,
+-    },
+-    {
+-      title: "Scary Movies",
+-      shows: allShows.horror,
+-    },
+-    {
+-      title: "Romance Movies",
+-      shows: allShows.romance,
+-    },
+-    {
+-      title: "Documentaries",
+-      shows: allShows.docs,
+-    },
+-  ]
++  const allShowsByCategory = toCategories(allShows, GENRE_ROWS, ctx)
+ 
+   return (
+     <section className="pb-16 pt-10">
+diff --git a/src/app/(shows)/new-and-popular/page.tsx b/src/app/(shows)/new-and-popular/page.tsx
+index 455efbc..bba0bf3 100644
+--- a/src/app/(shows)/new-and-popular/page.tsx
++++ b/src/app/(shows)/new-and-popular/page.tsx
+@@ -1,7 +1,12 @@
+ import type { Metadata } from "next"
+-import type { CategorizedShows } from "@/types"
+ 
++import {
++  NEW_AND_POPULAR_LAYOUT,
++  rowContext,
++  toCategories,
++} from "@/lib/catalogue"
+ import { getNewAndPopularShows } from "@/lib/fetchers"
++import { getViewerRegion } from "@/lib/server-region"
+ import ShowsContainer from "@/components/shows-container"
+ 
+ export const metadata: Metadata = {
+@@ -11,25 +16,10 @@ export const metadata: Metadata = {
+ 
+ export default async function NewAndPopularPage() {
+   const allShows = await getNewAndPopularShows()
++  // CH02: hide titles not licensed in the viewer's region
++  const ctx = rowContext(getViewerRegion())
+ 
+-  const allShowsByCategory: CategorizedShows[] = [
+-    {
+-      title: "New TV Shows",
+-      shows: allShows.trendingTvs,
+-    },
+-    {
+-      title: "New Movies",
+-      shows: allShows.trendingMovies,
+-    },
+-    {
+-      title: "Popular TV Shows",
+-      shows: allShows.popularTvs,
+-    },
+-    {
+-      title: "Popular Movies",
+-      shows: allShows.popularMovies,
+-    },
+-  ]
++  const allShowsByCategory = toCategories(allShows, NEW_AND_POPULAR_LAYOUT, ctx)
+ 
+   return (
+     <section className="pb-16 pt-10">
+diff --git a/src/app/(shows)/page.tsx b/src/app/(shows)/page.tsx
+index 4e4beac..0f2364b 100644
+--- a/src/app/(shows)/page.tsx
++++ b/src/app/(shows)/page.tsx
+@@ -1,6 +1,7 @@
+-import type { CategorizedShows } from "@/types"
+-
++import { visibleShows } from "@/lib/access/policy"
++import { GENRE_ROWS, rowContext, toCategories } from "@/lib/catalogue"
+ import { getShows } from "@/lib/fetchers"
++import { getViewerRegion } from "@/lib/server-region"
+ import { getCurrentUser } from "@/lib/session"
+ import Hero from "@/components/hero"
+ import ShowsContainer from "@/components/shows-container"
+@@ -9,42 +10,15 @@ export default async function Home() {
+   const user = await getCurrentUser()
+ 
+   const allShows = await getShows("movie")
++  // CH02: hide titles not licensed in the viewer's region
++  const ctx = rowContext(getViewerRegion())
+ 
+-  const allShowsByCategory: CategorizedShows[] = [
+-    {
+-      title: "Trending Now",
+-      shows: allShows.trending,
+-    },
+-    {
+-      title: "Top Rated",
+-      shows: allShows.topRated,
+-    },
+-    {
+-      title: "Action Thrillers",
+-      shows: allShows.action,
+-    },
+-    {
+-      title: "Comedies",
+-      shows: allShows.comedy,
+-    },
+-    {
+-      title: "Scary Movies",
+-      shows: allShows.horror,
+-    },
+-    {
+-      title: "Romance Movies",
+-      shows: allShows.romance,
+-    },
+-    {
+-      title: "Documentaries",
+-      shows: allShows.docs,
+-    },
+-  ]
++  const allShowsByCategory = toCategories(allShows, GENRE_ROWS, ctx)
+ 
+   return (
+     <section>
+       <div className="pb-16 pt-10">
+-        <Hero shows={allShows.netflix ?? []} />
++        <Hero shows={visibleShows(allShows.netflix ?? [], ctx)} />
+         <ShowsContainer user={user} shows={allShowsByCategory} />
+       </div>
+     </section>
+diff --git a/src/app/(shows)/tv-shows/page.tsx b/src/app/(shows)/tv-shows/page.tsx
+index 3cbed73..2a5a106 100644
+--- a/src/app/(shows)/tv-shows/page.tsx
++++ b/src/app/(shows)/tv-shows/page.tsx
+@@ -1,7 +1,8 @@
+ import type { Metadata } from "next"
+-import type { CategorizedShows } from "@/types"
+ 
++import { GENRE_ROWS, rowContext, toCategories } from "@/lib/catalogue"
+ import { getShows } from "@/lib/fetchers"
++import { getViewerRegion } from "@/lib/server-region"
+ import ShowsContainer from "@/components/shows-container"
+ 
+ export const metadata: Metadata = {
+@@ -11,37 +12,10 @@ export const metadata: Metadata = {
+ 
+ export default async function TVShowsPage() {
+   const allShows = await getShows("tv")
++  // CH02: hide titles not licensed in the viewer's region
++  const ctx = rowContext(getViewerRegion())
+ 
+-  const allShowsByCategory: CategorizedShows[] = [
+-    {
+-      title: "Trending Now",
+-      shows: allShows.trending,
+-    },
+-    {
+-      title: "Top Rated",
+-      shows: allShows.topRated,
+-    },
+-    {
+-      title: "Action Thrillers",
+-      shows: allShows.action,
+-    },
+-    {
+-      title: "Comedies",
+-      shows: allShows.comedy,
+-    },
+-    {
+-      title: "Scary Movies",
+-      shows: allShows.horror,
+-    },
+-    {
+-      title: "Romance Movies",
+-      shows: allShows.romance,
+-    },
+-    {
+-      title: "Documentaries",
+-      shows: allShows.docs,
+-    },
+-  ]
++  const allShowsByCategory = toCategories(allShows, GENRE_ROWS, ctx)
+ 
+   return (
+     <section className="pb-16 pt-10">
+diff --git a/src/config/regions.ts b/src/config/regions.ts
+new file mode 100644
+index 0000000..c7f0b06
+--- /dev/null
++++ b/src/config/regions.ts
+@@ -0,0 +1,28 @@
++/**
++ * CH02: regional licensing.
++ *
++ * Titles are licensed per territory (ISO 3166-1 alpha-2). A licence either lists the
++ * only regions where a title may be shown (allowedRegions) or the regions where it
++ * may not (blockedRegions). Titles without an entry are available everywhere.
++ *
++ * This table is sample data keyed by TMDB id; in production it would be loaded from
++ * the rights-management system.
++ */
++export type RegionLicence = {
++  allowedRegions?: string[]
++  blockedRegions?: string[]
++}
++
++export const DEFAULT_REGION = "US"
++
++export const regionLicences: Record<number, RegionLicence> = {
++  550: { blockedRegions: ["CN"] }, // Fight Club (movie)
++  1399: { allowedRegions: ["US", "GB", "IN"] }, // Game of Thrones (tv)
++  66732: { blockedRegions: ["RU", "BY"] }, // Stranger Things (tv)
++}
++
++/** Upper-cases a 2-letter country code; anything else falls back to DEFAULT_REGION. */
++export function normaliseRegion(code?: string | null): string {
++  const value = code?.trim().toUpperCase()
++  return value && /^[A-Z]{2}$/.test(value) ? value : DEFAULT_REGION
++}
+diff --git a/src/lib/access/policy.ts b/src/lib/access/policy.ts
+index f6e85ce..c5ee991 100644
+--- a/src/lib/access/policy.ts
++++ b/src/lib/access/policy.ts
+@@ -1,4 +1,4 @@
+-import { AccessRule, PremiumContentRule } from "./rules"
++import { AccessRule, PremiumContentRule, RegionRule } from "./rules"
+ import {
+   ALLOW,
+   type AccessCheckedShow,
+@@ -14,9 +14,13 @@ export function buildAccessChain(rules: AccessRule[]): AccessRule | null {
+   return head
+ }
+ 
+-/** The rule order used by the application. */
++/**
++ * The rule order used by the application. Rules that hide a title run before rules
++ * that only lock it, so a region-blocked premium title is hidden, not offered for
++ * upgrade (CH02).
++ */
+ export function contentAccessChain(): AccessRule | null {
+-  return buildAccessChain([new PremiumContentRule()])
++  return buildAccessChain([new RegionRule(), new PremiumContentRule()])
+ }
+ 
+ export function checkAccess(
+@@ -26,3 +30,15 @@ export function checkAccess(
+ ): AccessDecision {
+   return chain ? chain.check(show, ctx) : ALLOW
+ }
++
++/** Shows that may appear in rows: allowed or merely locked (CH02). */
++export function visibleShows<T extends AccessCheckedShow>(
++  shows: T[],
++  ctx: AccessContext,
++  chain: AccessRule | null = contentAccessChain()
++): T[] {
++  return shows.filter((show) => {
++    const decision = checkAccess(show, ctx, chain)
++    return decision.allowed || decision.visibility === "locked"
++  })
++}
+diff --git a/src/lib/access/rules.ts b/src/lib/access/rules.ts
+index 64ba630..fbc4a4f 100644
+--- a/src/lib/access/rules.ts
++++ b/src/lib/access/rules.ts
+@@ -1,4 +1,5 @@
+ import { PREMIUM_CONTENT_MIN_TIER } from "@/config/plan-catalog"
++import { regionLicences, type RegionLicence } from "@/config/regions"
+ import {
+   ALLOW,
+   type AccessCheckedShow,
+@@ -51,3 +52,31 @@ export class PremiumContentRule extends AccessRule {
+     }
+   }
+ }
++
++/** CH02: titles not licensed in the viewer's region are hidden. */
++export class RegionRule extends AccessRule {
++  constructor(
++    private readonly licences: Record<number, RegionLicence> = regionLicences
++  ) {
++    super()
++  }
++
++  protected evaluate(
++    show: AccessCheckedShow,
++    ctx: AccessContext
++  ): AccessDecision | null {
++    const licence = this.licences[show.id]
++    if (!licence) return null
++    const notAllowed =
++      licence.allowedRegions !== undefined &&
++      !licence.allowedRegions.includes(ctx.region)
++    const blocked = licence.blockedRegions?.includes(ctx.region) ?? false
++    if (!notAllowed && !blocked) return null
++    return {
++      allowed: false,
++      reason: "REGION_BLOCKED",
++      message: "This title is not available in your region.",
++      visibility: "hidden",
++    }
++  }
++}
+diff --git a/src/lib/access/types.ts b/src/lib/access/types.ts
+index f218ff2..a3f19e4 100644
+--- a/src/lib/access/types.ts
++++ b/src/lib/access/types.ts
+@@ -4,13 +4,15 @@ import type { Show } from "@/types"
+ export interface AccessContext {
+   /** 0 = no active plan; otherwise PlanCatalogEntry.tier */
+   planTier: number
++  /** CH02: ISO 3166-1 alpha-2 country of the viewer */
++  region: string
+ }
+ 
+ /** The subset of a TMDB show the rules look at. */
+ export type AccessCheckedShow = Pick<Show, "id"> &
+   Partial<Pick<Show, "isPremium" | "adult" | "genre_ids" | "original_language">>
+ 
+-export type DenialReason = "PREMIUM_REQUIRED"
++export type DenialReason = "PREMIUM_REQUIRED" | "REGION_BLOCKED"
+ 
+ export type AccessDecision =
+   | { allowed: true }
+diff --git a/src/lib/catalogue.ts b/src/lib/catalogue.ts
+new file mode 100644
+index 0000000..1a4a5a8
+--- /dev/null
++++ b/src/lib/catalogue.ts
+@@ -0,0 +1,50 @@
++import type { CategorizedShows, Show } from "@/types"
++
++import { visibleShows } from "@/lib/access/policy"
++import type { AccessContext } from "@/lib/access/types"
++import type { NewAndPopularRowKey, ShowRowKey } from "@/lib/fetchers"
++
++/*
++ * CH02 refactoring (Duplicate Code): Home, Movies and TV pages each contained the same
++ * 7-entry title/row array (the TV page even kept "Scary Movies"). The layout is now
++ * declared once, and region filtering is applied in one place instead of three.
++ */
++
++export type RowLayout<K extends string> = { title: string; key: K }[]
++
++export const GENRE_ROWS: RowLayout<ShowRowKey> = [
++  { title: "Trending Now", key: "trending" },
++  { title: "Top Rated", key: "topRated" },
++  { title: "Action Thrillers", key: "action" },
++  { title: "Comedies", key: "comedy" },
++  { title: "Scary Movies", key: "horror" },
++  { title: "Romance Movies", key: "romance" },
++  { title: "Documentaries", key: "docs" },
++]
++
++export const NEW_AND_POPULAR_LAYOUT: RowLayout<NewAndPopularRowKey> = [
++  { title: "New TV Shows", key: "trendingTvs" },
++  { title: "New Movies", key: "trendingMovies" },
++  { title: "Popular TV Shows", key: "popularTvs" },
++  { title: "Popular Movies", key: "popularMovies" },
++]
++
++/**
++ * Context used when building rows on the server. Rows only need to know what to
++ * HIDE (region); premium titles stay visible and are locked per viewer by
++ * catalogue.checkAccess, so the plan tier is not needed here.
++ */
++export function rowContext(region: string): AccessContext {
++  return { planTier: 0, region }
++}
++
++export function toCategories<K extends string>(
++  rows: Record<K, Show[] | undefined>,
++  layout: RowLayout<K>,
++  ctx: AccessContext
++): CategorizedShows[] {
++  return layout.map(({ title, key }) => {
++    const shows = rows[key]
++    return { title, shows: shows ? visibleShows(shows, ctx) : shows }
++  })
++}
+diff --git a/src/lib/fetchers.ts b/src/lib/fetchers.ts
+index fcf61a8..9e6df2c 100644
+--- a/src/lib/fetchers.ts
++++ b/src/lib/fetchers.ts
+@@ -2,124 +2,132 @@ import { env } from "@/env.mjs"
+ import type { Show } from "@/types"
+ import type { MEDIA_TYPE } from "@prisma/client"
+ 
+-export async function getShows(mediaType: MEDIA_TYPE) {
+-  const [
+-    trendingRes,
+-    topRatedRes,
+-    netflixRes,
+-    actionRes,
+-    comedyRes,
+-    horrorRes,
+-    romanceRes,
+-    docRes,
+-  ] = await Promise.all([
+-    fetch(
+-      `https://api.themoviedb.org/3/trending/${mediaType}/week?api_key=${env.NEXT_PUBLIC_TMDB_API_KEY}&language=en-US`
+-    ),
+-    fetch(
+-      `https://api.themoviedb.org/3/${mediaType}/top_rated?api_key=${env.NEXT_PUBLIC_TMDB_API_KEY}&language=en-US`
+-    ),
+-    fetch(
+-      `https://api.themoviedb.org/3/discover/${mediaType}?api_key=${env.NEXT_PUBLIC_TMDB_API_KEY}&with_networks=213`
+-    ),
+-    fetch(
+-      `https://api.themoviedb.org/3/discover/${mediaType}?api_key=${env.NEXT_PUBLIC_TMDB_API_KEY}&with_genres=28`
+-    ),
+-    fetch(
+-      `https://api.themoviedb.org/3/discover/${mediaType}?api_key=${env.NEXT_PUBLIC_TMDB_API_KEY}&with_genres=35`
+-    ),
+-    fetch(
+-      `https://api.themoviedb.org/3/discover/${mediaType}?api_key=${env.NEXT_PUBLIC_TMDB_API_KEY}&with_genres=27`
+-    ),
+-    fetch(
+-      `https://api.themoviedb.org/3/discover/${mediaType}?api_key=${env.NEXT_PUBLIC_TMDB_API_KEY}&with_genres=10749`
+-    ),
+-    fetch(
+-      `https://api.themoviedb.org/3/discover/${mediaType}?api_key=${env.NEXT_PUBLIC_TMDB_API_KEY}&with_genres=99`
+-    ),
+-  ])
+-
+-  if (
+-    !trendingRes.ok ||
+-    !topRatedRes.ok ||
+-    !netflixRes.ok ||
+-    !actionRes.ok ||
+-    !comedyRes.ok ||
+-    !horrorRes.ok ||
+-    !romanceRes.ok ||
+-    !docRes.ok
+-  ) {
+-    throw new Error("Failed to fetch shows")
+-  }
++/*
++ * TMDB Catalogue Facade.
++ *
++ * CH02 refactoring (Duplicate Code / Long Method): getShows and
++ * getNewAndPopularShows each repeated one fetch call, one `!res.ok` term, one
++ * `.json()` and one return field per row (8 + 4 copies). Rows are now data
++ * (ROW_SPECS) and one helper fetches any list of rows. Public signatures, request
++ * URLs, their order, result keys and error messages are unchanged (pinned by
++ * tests/characterization.test.ts).
++ */
+ 
+-  const [trending, topRated, netflix, action, comedy, horror, romance, docs] =
+-    (await Promise.all([
+-      trendingRes.json(),
+-      topRatedRes.json(),
+-      netflixRes.json(),
+-      actionRes.json(),
+-      comedyRes.json(),
+-      horrorRes.json(),
+-      romanceRes.json(),
+-      docRes.json(),
+-    ])) as { results: Show[] }[]
++const TMDB_API = "https://api.themoviedb.org/3"
+ 
+-  return {
+-    trending: trending?.results,
+-    topRated: topRated?.results,
+-    // CH01: originals (TMDB network 213) are premium titles
+-    netflix: netflix?.results?.map((show) => ({ ...show, isPremium: true })),
+-    action: action?.results,
+-    comedy: comedy?.results,
+-    horror: horror?.results,
+-    romance: romance?.results,
+-    docs: docs?.results,
++type RowRequest<K extends string> = {
++  key: K
++  url: string
++  /** CH01: rows whose titles need a premium plan */
++  premium?: boolean
++}
++
++function tmdbUrl(path: string, query: string) {
++  return `${TMDB_API}/${path}?api_key=${env.NEXT_PUBLIC_TMDB_API_KEY}&${query}`
++}
++
++async function fetchRows<K extends string>(
++  rows: RowRequest<K>[],
++  errorMessage: string
++): Promise<Record<K, Show[] | undefined>> {
++  const responses = await Promise.all(rows.map((row) => fetch(row.url)))
++  if (responses.some((res) => !res.ok)) {
++    throw new Error(errorMessage)
+   }
++  const bodies = (await Promise.all(responses.map((res) => res.json()))) as {
++    results: Show[]
++  }[]
++  return Object.fromEntries(
++    rows.map((row, i) => {
++      const results = bodies[i]?.results
++      return [
++        row.key,
++        row.premium
++          ? results?.map((show) => ({ ...show, isPremium: true }))
++          : results,
++      ]
++    })
++  ) as Record<K, Show[] | undefined>
++}
++
++const SHOW_ROWS = [
++  {
++    key: "trending",
++    path: (m: MEDIA_TYPE) => `trending/${m}/week`,
++    query: "language=en-US",
++  },
++  {
++    key: "topRated",
++    path: (m: MEDIA_TYPE) => `${m}/top_rated`,
++    query: "language=en-US",
++  },
++  // originals (TMDB network 213) are premium titles (CH01)
++  {
++    key: "netflix",
++    path: (m: MEDIA_TYPE) => `discover/${m}`,
++    query: "with_networks=213",
++    premium: true,
++  },
++  {
++    key: "action",
++    path: (m: MEDIA_TYPE) => `discover/${m}`,
++    query: "with_genres=28",
++  },
++  {
++    key: "comedy",
++    path: (m: MEDIA_TYPE) => `discover/${m}`,
++    query: "with_genres=35",
++  },
++  {
++    key: "horror",
++    path: (m: MEDIA_TYPE) => `discover/${m}`,
++    query: "with_genres=27",
++  },
++  {
++    key: "romance",
++    path: (m: MEDIA_TYPE) => `discover/${m}`,
++    query: "with_genres=10749",
++  },
++  {
++    key: "docs",
++    path: (m: MEDIA_TYPE) => `discover/${m}`,
++    query: "with_genres=99",
++  },
++] as const
++
++export type ShowRowKey = (typeof SHOW_ROWS)[number]["key"]
++
++export async function getShows(mediaType: MEDIA_TYPE) {
++  return fetchRows<ShowRowKey>(
++    SHOW_ROWS.map((row) => ({
++      key: row.key,
++      url: tmdbUrl(row.path(mediaType), row.query),
++      premium: "premium" in row ? row.premium : undefined,
++    })),
++    "Failed to fetch shows"
++  )
+ }
+ 
+ // The latest endpiont doesn't seem to work.
+ // API endpoint url: https://api.themoviedb.org/3/movie/latest?api_key=<<api_key>>&language=en-US.
+ // So taking trending for the day as new shows.
+-export async function getNewAndPopularShows() {
+-  const [popularTvRes, popularMovieRes, trendingTvRes, trendingMovieRes] =
+-    await Promise.all([
+-      fetch(
+-        `https://api.themoviedb.org/3/tv/popular?api_key=${env.NEXT_PUBLIC_TMDB_API_KEY}&language=en-US`
+-      ),
+-      fetch(
+-        `https://api.themoviedb.org/3/movie/popular?api_key=${env.NEXT_PUBLIC_TMDB_API_KEY}&language=en-US`
+-      ),
+-      fetch(
+-        `https://api.themoviedb.org/3/trending/tv/day?api_key=${env.NEXT_PUBLIC_TMDB_API_KEY}&language=en-US`
+-      ),
+-      fetch(
+-        `https://api.themoviedb.org/3/trending/movie/day?api_key=${env.NEXT_PUBLIC_TMDB_API_KEY}&language=en-US`
+-      ),
+-    ])
+-
+-  if (
+-    !popularTvRes.ok ||
+-    !popularMovieRes.ok ||
+-    !trendingTvRes.ok ||
+-    !trendingMovieRes.ok
+-  ) {
+-    throw new Error("Failed to fetch shows")
+-  }
++const NEW_AND_POPULAR_ROWS = [
++  { key: "popularTvs", path: "tv/popular" },
++  { key: "popularMovies", path: "movie/popular" },
++  { key: "trendingTvs", path: "trending/tv/day" },
++  { key: "trendingMovies", path: "trending/movie/day" },
++] as const
+ 
+-  const [popularTvs, popularMovies, trendingTvs, trendingMovies] =
+-    (await Promise.all([
+-      popularTvRes.json(),
+-      popularMovieRes.json(),
+-      trendingTvRes.json(),
+-      trendingMovieRes.json(),
+-    ])) as { results: Show[] }[]
++export type NewAndPopularRowKey = (typeof NEW_AND_POPULAR_ROWS)[number]["key"]
+ 
+-  return {
+-    popularTvs: popularTvs?.results,
+-    popularMovies: popularMovies?.results,
+-    trendingTvs: trendingTvs?.results,
+-    trendingMovies: trendingMovies?.results,
+-  }
++export async function getNewAndPopularShows() {
++  return fetchRows<NewAndPopularRowKey>(
++    NEW_AND_POPULAR_ROWS.map((row) => ({
++      key: row.key,
++      url: tmdbUrl(row.path, "language=en-US"),
++    })),
++    "Failed to fetch shows"
++  )
+ }
+ 
+ export async function searchShows(query: string) {
+diff --git a/src/lib/region.ts b/src/lib/region.ts
+new file mode 100644
+index 0000000..eaa32c4
+--- /dev/null
++++ b/src/lib/region.ts
+@@ -0,0 +1,15 @@
++import { normaliseRegion } from "@/config/regions"
++
++/** Geo headers set by common hosts (Vercel, Cloudflare), in priority order. */
++export const REGION_HEADERS = ["x-vercel-ip-country", "cf-ipcountry"] as const
++
++/** Resolve the viewer's region from request headers (CH02). */
++export function regionFromHeaders(
++  get: (name: string) => string | null | undefined
++): string {
++  for (const name of REGION_HEADERS) {
++    const value = get(name)
++    if (value) return normaliseRegion(value)
++  }
++  return normaliseRegion(null)
++}
+diff --git a/src/lib/server-region.ts b/src/lib/server-region.ts
+new file mode 100644
+index 0000000..5544fca
+--- /dev/null
++++ b/src/lib/server-region.ts
+@@ -0,0 +1,9 @@
++import { headers } from "next/headers"
++
++import { regionFromHeaders } from "@/lib/region"
++
++/** Viewer's region inside a server component (reads the request's geo headers). */
++export function getViewerRegion(): string {
++  const h = headers()
++  return regionFromHeaders((name) => h.get(name))
++}
+diff --git a/src/server/api/routers/catalogue.ts b/src/server/api/routers/catalogue.ts
+index d1df7a0..19c6550 100644
+--- a/src/server/api/routers/catalogue.ts
++++ b/src/server/api/routers/catalogue.ts
+@@ -1,6 +1,7 @@
+ import { createTRPCRouter, subscribedProcedure } from "@/server/api/trpc"
+ import { z } from "zod"
+ 
++import { normaliseRegion } from "@/config/regions"
+ import { checkAccess } from "@/lib/access/policy"
+ import type { AccessContext } from "@/lib/access/types"
+ 
+@@ -10,11 +11,14 @@ export const showAccessInput = z.object({
+ })
+ 
+ export const catalogueRouter = createTRPCRouter({
+-  /** CH01: may the current viewer play this title? Returns the first denial, if any. */
++  /** May the current viewer play this title? First denial wins (CH01 premium, CH02 region). */
+   checkAccess: subscribedProcedure
+     .input(showAccessInput)
+     .query(({ ctx, input }) => {
+-      const accessCtx: AccessContext = { planTier: ctx.planTier }
++      const accessCtx: AccessContext = {
++        planTier: ctx.planTier,
++        region: normaliseRegion(ctx.region),
++      }
+       return checkAccess(input, accessCtx)
+     }),
+ })
+diff --git a/src/server/api/trpc.ts b/src/server/api/trpc.ts
+index 3b89b1d..62d9f9c 100644
+--- a/src/server/api/trpc.ts
++++ b/src/server/api/trpc.ts
+@@ -31,10 +31,14 @@ import superjson from "superjson"
+ import { ZodError } from "zod"
+ 
+ import { DEFAULT_MAX_PROFILES } from "@/config/plan-catalog"
++import { normaliseRegion } from "@/config/regions"
++import { regionFromHeaders } from "@/lib/region"
+ import { getUserSubscriptionPlan } from "@/lib/subscription"
+ 
+ type CreateContextOptions = {
+   session: Session | null
++  /** CH02: viewer's country, resolved from geo headers */
++  region?: string
+ }
+ 
+ /**
+@@ -51,6 +55,7 @@ const createInnerTRPCContext = (opts: CreateContextOptions) => {
+   return {
+     session: opts.session,
+     prisma,
++    region: normaliseRegion(opts.region),
+   }
+ }
+ 
+@@ -68,6 +73,10 @@ export const createTRPCContext = async (opts: CreateNextContextOptions) => {
+ 
+   return createInnerTRPCContext({
+     session,
++    region: regionFromHeaders((name) => {
++      const value = req.headers[name]
++      return Array.isArray(value) ? value[0] : value
++    }),
+   })
+ }
+ 
+diff --git a/tests/ch01-premium-plan.test.ts b/tests/ch01-premium-plan.test.ts
+index c29cc93..a9b6dd5 100644
+--- a/tests/ch01-premium-plan.test.ts
++++ b/tests/ch01-premium-plan.test.ts
+@@ -68,7 +68,7 @@ describe("Content Access Rule Chain - PremiumContentRule", () => {
+     [5, true],
+   ])("premium title with plan tier %i -> allowed %s", async (tier, allowed) => {
+     const { checkAccess } = await import("@/lib/access/policy")
+-    const d = checkAccess({ id: 1, isPremium: true }, { planTier: tier })
++    const d = checkAccess({ id: 1, isPremium: true }, { planTier: tier, region: "US" })
+     expect(d.allowed).toBe(allowed)
+     if (!d.allowed)
+       expect(d).toMatchObject({
+@@ -79,7 +79,7 @@ describe("Content Access Rule Chain - PremiumContentRule", () => {
+ 
+   it("regular titles are always allowed", async () => {
+     const { checkAccess } = await import("@/lib/access/policy")
+-    expect(checkAccess({ id: 1 }, { planTier: 0 }).allowed).toBe(true)
++    expect(checkAccess({ id: 1 }, { planTier: 0, region: "US" }).allowed).toBe(true)
+   })
+ 
+   it("an empty chain allows everything", async () => {
+@@ -89,7 +89,7 @@ describe("Content Access Rule Chain - PremiumContentRule", () => {
+     expect(
+       checkAccess(
+         { id: 1, isPremium: true },
+-        { planTier: 0 },
++        { planTier: 0, region: "US" },
+         buildAccessChain([])
+       )
+     ).toEqual({ allowed: true })
+diff --git a/tests/ch02-region.test.ts b/tests/ch02-region.test.ts
+new file mode 100644
+index 0000000..ed18189
+--- /dev/null
++++ b/tests/ch02-region.test.ts
+@@ -0,0 +1,149 @@
++/** CH02 acceptance tests: regional restrictions. */
++import { describe, expect, it, vi } from "vitest"
++
++import { fakePrisma, session } from "./helpers"
++
++vi.mock("@/server/db", () => ({ prisma: {} }))
++vi.mock("@/server/auth", () => ({
++  getServerAuthSession: vi.fn().mockResolvedValue(null),
++}))
++
++const FIGHT_CLUB = 550 // blocked in CN
++const GOT = 1399 // only US, GB, IN
++
++describe("region resolution", () => {
++  it("normalises codes and falls back to US", async () => {
++    const { normaliseRegion } = await import("@/config/regions")
++    expect(normaliseRegion(" in ")).toBe("IN")
++    expect(normaliseRegion("xx1")).toBe("US")
++    expect(normaliseRegion(undefined)).toBe("US")
++  })
++
++  it("prefers the Vercel header over Cloudflare", async () => {
++    const { regionFromHeaders } = await import("@/lib/region")
++    const h: Record<string, string> = {
++      "x-vercel-ip-country": "gb",
++      "cf-ipcountry": "DE",
++    }
++    expect(regionFromHeaders((n) => h[n])).toBe("GB")
++    expect(regionFromHeaders((n) => (n === "cf-ipcountry" ? "DE" : null))).toBe(
++      "DE"
++    )
++  })
++
++  it("tRPC context reads the viewer's country from the request", async () => {
++    const { createTRPCContext } = await import("@/server/api/trpc")
++    const ctx = await createTRPCContext({
++      req: { headers: { "x-vercel-ip-country": "in" } },
++      res: {},
++    } as never)
++    expect(ctx.region).toBe("IN")
++  })
++})
++
++describe("RegionRule in the Content Access Rule Chain", () => {
++  it.each([
++    [FIGHT_CLUB, "CN", false],
++    [FIGHT_CLUB, "US", true],
++    [GOT, "IN", true],
++    [GOT, "DE", false],
++    [12345, "CN", true],
++  ])("title %i in %s -> allowed %s", async (id, region, allowed) => {
++    const { checkAccess } = await import("@/lib/access/policy")
++    const d = checkAccess({ id }, { planTier: 5, region })
++    expect(d.allowed).toBe(allowed)
++    if (!d.allowed)
++      expect(d).toMatchObject({
++        reason: "REGION_BLOCKED",
++        visibility: "hidden",
++      })
++  })
++
++  it("region runs before premium: a blocked premium title is hidden, not upsold", async () => {
++    const { checkAccess } = await import("@/lib/access/policy")
++    const d = checkAccess(
++      { id: FIGHT_CLUB, isPremium: true },
++      { planTier: 0, region: "CN" }
++    )
++    expect(d).toMatchObject({ allowed: false, reason: "REGION_BLOCKED" })
++  })
++
++  it("visibleShows keeps locked titles but drops hidden ones", async () => {
++    const { visibleShows } = await import("@/lib/access/policy")
++    const shows = [{ id: FIGHT_CLUB }, { id: 2, isPremium: true }, { id: 3 }]
++    expect(
++      visibleShows(shows, { planTier: 0, region: "CN" }).map((s) => s.id)
++    ).toEqual([2, 3])
++    expect(
++      visibleShows(shows, { planTier: 0, region: "US" }).map((s) => s.id)
++    ).toEqual([FIGHT_CLUB, 2, 3])
++  })
++})
++
++describe("shared row layout", () => {
++  it("keeps the exact baseline titles and order", async () => {
++    const { GENRE_ROWS, NEW_AND_POPULAR_LAYOUT } = await import(
++      "@/lib/catalogue"
++    )
++    expect(GENRE_ROWS.map((r) => r.title)).toEqual([
++      "Trending Now",
++      "Top Rated",
++      "Action Thrillers",
++      "Comedies",
++      "Scary Movies",
++      "Romance Movies",
++      "Documentaries",
++    ])
++    expect(NEW_AND_POPULAR_LAYOUT.map((r) => r.title)).toEqual([
++      "New TV Shows",
++      "New Movies",
++      "Popular TV Shows",
++      "Popular Movies",
++    ])
++  })
++
++  it("filters every row for the viewer's region", async () => {
++    const { GENRE_ROWS, rowContext, toCategories } = await import(
++      "@/lib/catalogue"
++    )
++    const rows = {
++      trending: [{ id: FIGHT_CLUB }, { id: 1 }],
++      topRated: [{ id: GOT }],
++      action: undefined,
++      comedy: [],
++      horror: [],
++      romance: [],
++      docs: [],
++      netflix: [],
++    } as never
++    const cn = toCategories(rows, GENRE_ROWS, rowContext("CN"))
++    expect(cn[0]?.shows?.map((s) => s.id)).toEqual([1])
++    expect(cn[1]?.shows).toEqual([])
++    expect(cn[2]?.shows).toBeUndefined()
++  })
++})
++
++describe("catalogue.checkAccess uses the request region", () => {
++  it("denies a region-blocked title", async () => {
++    const { appRouter } = await import("@/server/api/root")
++    const caller = appRouter.createCaller({
++      session: session(),
++      prisma: fakePrisma(),
++      region: "CN",
++    } as never)
++    expect(
++      await caller.catalogue.checkAccess({ id: FIGHT_CLUB })
++    ).toMatchObject({ reason: "REGION_BLOCKED" })
++  })
++
++  it("defaults to US when no region is known", async () => {
++    const { appRouter } = await import("@/server/api/root")
++    const caller = appRouter.createCaller({
++      session: session(),
++      prisma: fakePrisma(),
++    } as never)
++    expect(await caller.catalogue.checkAccess({ id: FIGHT_CLUB })).toEqual({
++      allowed: true,
++    })
++  })
++})
+diff --git a/tests/characterization-new-popular.test.ts b/tests/characterization-new-popular.test.ts
+new file mode 100644
+index 0000000..ddeaecd
+--- /dev/null
++++ b/tests/characterization-new-popular.test.ts
+@@ -0,0 +1,37 @@
++/** Characterization of getNewAndPopularShows; verified against 676e5dd before CH02. */
++import { afterEach, describe, expect, it, vi } from "vitest"
++
++import { mockFetch } from "./helpers"
++
++afterEach(() => {
++  vi.unstubAllGlobals()
++})
++
++describe("getNewAndPopularShows", () => {
++  it("requests the four lists in the same order and keys", async () => {
++    const urls = mockFetch()
++    const { getNewAndPopularShows } = await import("@/lib/fetchers")
++    const rows = await getNewAndPopularShows()
++    expect(urls).toEqual([
++      "https://api.themoviedb.org/3/tv/popular?api_key=test-key&language=en-US",
++      "https://api.themoviedb.org/3/movie/popular?api_key=test-key&language=en-US",
++      "https://api.themoviedb.org/3/trending/tv/day?api_key=test-key&language=en-US",
++      "https://api.themoviedb.org/3/trending/movie/day?api_key=test-key&language=en-US",
++    ])
++    expect(Object.keys(rows)).toEqual([
++      "popularTvs",
++      "popularMovies",
++      "trendingTvs",
++      "trendingMovies",
++    ])
++    expect(rows.trendingMovies?.[0]?.id).toBe(4)
++  })
++
++  it("throws one error when any request fails", async () => {
++    mockFetch(true)
++    const { getNewAndPopularShows } = await import("@/lib/fetchers")
++    await expect(getNewAndPopularShows()).rejects.toThrow(
++      "Failed to fetch shows"
++    )
++  })
++})
+-- 
+2.43.0
+

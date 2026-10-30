@@ -1,0 +1,32 @@
+@startuml
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+hide empty members
+title Facade - TMDB Catalogue Facade
+package "lib/fetchers.ts (Facade, module)" {
+  class "getShows(mediaType)" as F1
+  class "getNewAndPopularShows()" as F2
+  class "searchShows(query)" as F3
+}
+package "Subsystem" {
+  class "TMDB /trending, /top_rated" as T1
+  class "TMDB /discover (genres, networks)" as T2
+  class "TMDB /popular, /search/multi" as T3
+  class "env.NEXT_PUBLIC_TMDB_API_KEY" as K
+  class "fetch + JSON parse + error check" as J
+}
+class "Home / MoviesPage / TVShowsPage" as P1
+class NewAndPopularPage
+class "SiteHeader.searchShowsByQuery" as SH
+P1 --> F1
+NewAndPopularPage --> F2
+SH --> F3
+F1 --> T1
+F1 --> T2
+F1 --> J
+F2 --> T3
+F3 --> T3
+F1 ..> K
+F2 ..> K
+F3 ..> K
+@enduml

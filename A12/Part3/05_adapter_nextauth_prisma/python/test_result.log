@@ -1,0 +1,5 @@
+# 05_adapter_nextauth_prisma / Python - 2026-10-29 23:59:06 - Windows 11 AMD64
+# runtime: Python 3.12.10
+$ python -B test_runner.py ../cases.tsv
+9/9 passed
+exit=0

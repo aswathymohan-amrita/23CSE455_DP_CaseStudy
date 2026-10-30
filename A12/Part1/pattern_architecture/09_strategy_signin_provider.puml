@@ -1,0 +1,18 @@
+@startuml
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+hide empty members
+title Strategy - Sign-in Provider Strategy
+interface "Provider\n<<next-auth providers/index.d.ts:14>>" as S {
+  id, type
+  authorization / token / profile()
+}
+class "GoogleProvider({clientId, clientSecret})\n<<auth.ts:50-53>>" as G
+class "(GitHub, Email, Credentials...)\nnot configured" as O #eeeeee
+class "NextAuth(authOptions)\nproviders: Provider[]" as Ctx {
+  +signIn(providerId)
+}
+S <|.. G
+S <|.. O
+Ctx o--> "1..*" S : selects by id
+@enduml

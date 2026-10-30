@@ -1,0 +1,49 @@
+@startuml
+skinparam shadowing false
+skinparam componentStyle rectangle
+title netflx-web @676e5dd - component view (Part 1 baseline, 16 pattern types / 28 instances)
+actor Viewer
+package "Browser (React client components)" {
+  [Pages: (shows) / (dashboard) / (auth)] as UI
+  [Zustand stores\nmodal / profile / search] as Stores
+  [tRPC client proxies + link chain\nlib/api/api.ts, lib/api/client.ts] as Client
+  [React Query cache\n(QueryClient)] as RQ
+  [Error / loading boundaries\nerror.tsx, global-error.tsx, loading.tsx] as EB
+}
+package "Next.js 13 server (Vercel/Node)" {
+  [App Router server components\n(shows pages, plans, account)] as RSC
+  [lib/fetchers.ts\nTMDB facade + scatter-gather] as Fetchers
+  [lib/subscription.ts\nplan resolution] as Sub
+  [/api/trpc/(trpc)  front controller\n(createNextApiHandler adapter)\nappRouter: user, profile, icon, myList] as TRPC
+  [tRPC middleware + ctx\nenforceUserIsAuthed, createTRPCContext] as MW
+  [/api/auth/(...nextauth)  front controller\nGoogleProvider + PrismaAdapter] as Auth
+  [/api/users/stripe  checkout] as Checkout
+  [/api/webhooks/stripe] as Hook
+  [Prisma client (singleton)] as Prisma
+}
+database "MySQL (relationMode = prisma)" as DB
+cloud "TMDB API" as TMDB
+cloud "Stripe" as Stripe
+cloud "Google OAuth" as Google
+Viewer --> UI
+UI --> Stores : setState / subscribe
+EB --> UI : wraps segments
+UI --> Client : api.x.y.useQuery()
+Client --> RQ
+RQ --> TRPC : HTTP batch
+TRPC --> MW
+MW --> Prisma
+UI ..> RSC : navigation
+RSC --> Fetchers
+Fetchers --> TMDB
+RSC --> Sub
+Sub --> Prisma
+RSC --> Auth : getServerSession
+Auth --> Google
+Auth --> Prisma
+UI --> Checkout : fetch POST
+Checkout --> Stripe
+Stripe --> Hook : checkout.session.completed\ninvoice.payment_succeeded
+Hook --> Prisma
+Prisma --> DB
+@enduml

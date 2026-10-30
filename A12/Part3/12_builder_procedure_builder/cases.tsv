@@ -1,0 +1,14 @@
+b01	public,query:echo;-;hi	query:hi;trace=none
+b02	protected,query:whoami;u1;-	query:u1;trace=auth
+b03	protected,query:whoami;-;-	ERROR:UNAUTHORIZED;trace=auth
+b04	protected,input:string,query:echo;u1;abc	query:abc;trace=auth>input
+b05	protected,input:string,query:echo;u1;-	ERROR:BAD_REQUEST;trace=auth>input
+b06	public,input:number,mutation:echo;-;42	mutation:42;trace=input
+b07	public,input:number,mutation:echo;-;4x	ERROR:BAD_REQUEST;trace=input
+b08	public,use:log,input:string,use:timing,query:echo;-;x	query:x;trace=log>input>timing
+b09	protected,use:log;u1;-	ERROR:NOT_BUILT
+b10	public,query:echo,use:log;-;x	ERROR:ALREADY_BUILT
+b11	immutable;-;-	base=0;protected=1;subscribed=2
+b12	public,query:whoami;-;-	query:anonymous;trace=none
+b13	public,query:echo;-;-	query:none;trace=none
+b14	protected,use:log,query:echo;-;z	ERROR:UNAUTHORIZED;trace=auth

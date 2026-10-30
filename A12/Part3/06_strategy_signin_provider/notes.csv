@@ -1,0 +1,4 @@
+Java,"Strategy interface with three final classes; a Map<String, Supplier<Provider>> acts as the provider registry; Optional<String> separates 'no profile' from errors."
+Python,"Strategies are small classes with the same method; could equally be plain functions in a dict; regex via re.fullmatch for the e-mail rule."
+JavaScript,"Like next-auth: each provider is a factory returning a config object {id, authorize}; the context only needs the shape (duck typing)."
+C++,"Abstract base + std::unique_ptr strategies in a std::map keyed by id; std::optional<std::string> for authorize(); std::regex for e-mail."

@@ -1,0 +1,50 @@
+@startuml
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+hide empty members
+title Content Access Rule Chain (CoR, student-added CH01, extended CH02 + CH03)
+abstract class AccessRule <<lib/access/rules.ts>> {
+  -next : AccessRule | null
+  +setNext(rule) : AccessRule
+  +check(show, ctx) : AccessDecision
+  #{abstract} evaluate(show, ctx) : AccessDecision | null
+}
+class RegionRule <<CH02>> {
+  -licences : Record<id, RegionLicence>
+  #evaluate() : REGION_BLOCKED / hidden
+}
+class MaturityRule <<CH03>> {
+  -policies : Record<Maturity, MaturityPolicy>
+  #evaluate() : MATURITY_BLOCKED / hidden
+}
+class PremiumContentRule <<CH01>> {
+  -minTier = 3
+  #evaluate() : PREMIUM_REQUIRED / locked
+}
+class "policy.ts" as Policy <<module>> {
+  +buildAccessChain(rules)
+  +contentAccessChain() : Region -> Maturity -> Premium
+  +checkAccess(show, ctx, chain)
+  +visibleShows(shows, ctx)
+  +profileVisibleShows(shows, maturity)
+}
+class "AccessContext" as Ctx {
+  planTier : number
+  region : string
+  maturity? : Maturity
+}
+AccessRule <|-- RegionRule
+AccessRule <|-- MaturityRule
+AccessRule <|-- PremiumContentRule
+AccessRule o--> "0..1" AccessRule : next
+Policy ..> AccessRule : links
+Policy ..> Ctx
+class "catalogue.checkAccess" as CA <<tRPC>>
+class "toCategories (server rows)" as TC
+class "myList.create" as ML
+class "ShowsContainer / Hero" as UI <<client>>
+CA --> Policy
+TC --> Policy
+ML --> Policy
+UI --> Policy
+@enduml

@@ -1,0 +1,8 @@
+g01	trending:30:ok:3,topRated:50:ok:2	trending=3,topRated=2;elapsed=50;sequential=80
+g02	a:10:fail:0,b:20:ok:1	ERROR:Failed to fetch shows;elapsed=20;sequential=30
+g03	-	none;elapsed=0;sequential=0
+g04	trending:40:ok:20,topRated:35:ok:20,netflix:60:ok:20,action:20:ok:20,comedy:25:ok:20,horror:30:ok:19,romance:45:ok:20,docs:50:ok:18	trending=20,topRated=20,netflix=20,action=20,comedy=20,horror=19,romance=20,docs=18;elapsed=60;sequential=305
+g05	x:5:ok:0	x=0;elapsed=5;sequential=5
+g06	slow:90:ok:1,fast:10:ok:2	slow=1,fast=2;elapsed=90;sequential=100
+g07	a:10:ok:1,b:20:fail:0,c:30:fail:0	ERROR:Failed to fetch shows;elapsed=30;sequential=60
+g08	popularTvs:12:ok:20,popularMovies:18:ok:20,trendingTvs:9:ok:20,trendingMovies:15:ok:20	popularTvs=20,popularMovies=20,trendingTvs=20,trendingMovies=20;elapsed=18;sequential=54

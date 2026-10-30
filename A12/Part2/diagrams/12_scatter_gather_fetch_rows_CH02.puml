@@ -1,0 +1,17 @@
+@startuml
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+hide empty members
+title TMDB Row Scatter-Gather - modified in CH02 (Extract Function + table-driven rows)
+class "fetchRows(rows, errorMessage)\n<<lib/fetchers.ts:29-51>>" as G {
+  scatter: Promise.all(rows.map(fetch))
+  gather: some(!ok) -> throw
+  aggregate: Object.fromEntries(key -> results)
+}
+class "SHOW_ROWS (8)\nNEW_AND_POPULAR_ROWS (4)" as Rows
+class "getShows / getNewAndPopularShows\n(thin callers)" as C
+class "TMDB endpoints" as R
+C --> Rows
+C --> G
+G --> "*" R : concurrent
+@enduml

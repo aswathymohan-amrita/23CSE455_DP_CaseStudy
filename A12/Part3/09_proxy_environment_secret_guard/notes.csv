@@ -1,0 +1,4 @@
+Java,"Real dynamic proxy: java.lang.reflect.Proxy.newProxyInstance + InvocationHandler intercepts every call on the Env interface; works only for interfaces; reflection adds run-time cost."
+Python,"__getattr__ on a wrapper class intercepts attribute reads (env.STRIPE_API_KEY), the closest analogue of a property trap; object.__getattribute__ reaches the real data."
+JavaScript,"Identical mechanism to the source: new Proxy(target, {get}) traps property access on the plain object, so clients write env.NAME unchanged."
+C++,"No run-time interception: the proxy is a class implementing the same abstract Env interface and forwarding to the real one; checks are compiled in."

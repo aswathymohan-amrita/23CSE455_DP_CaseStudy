@@ -1,0 +1,5 @@
+machine: Windows 11 AMD64
+Java: javac 21.0.12.1 / openjdk version "21.0.12.1" 2026-08-18 LTS
+Python: Python 3.12.10
+JavaScript: Node.js v26.13.0
+C++: g++ (MinGW-W64 x86_64-ucrt-posix-seh, built by Brecht Sanders, r3) 16.2.0 -std=c++17 -O2

@@ -1,0 +1,4 @@
+Java,"Context is a record wrapping an unmodifiable TreeMap; with() returns a refined copy; values are Object so resolvers cast (the price of a heterogeneous map without generics per key)."
+Python,"A dict is the natural context object; {**ctx, ...} builds the refined copy; sorted(ctx) lists keys."
+JavaScript,"Plain object spread {...ctx, planTier} mirrors tRPC next({ctx}); reduce chains the middlewares; Object.keys().sort() lists keys."
+C++,"std::map<string,string> (sorted keys for free); middlewares take the map by value so refinement never mutates the caller; an empty string stands for a missing session."

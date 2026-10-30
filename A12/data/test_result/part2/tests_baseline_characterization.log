@@ -1,0 +1,28 @@
+
+ RUN  v1.6.0 /tmp/a12-baseline
+
+ ✓ tests/characterization.test.ts > TMDB Catalogue Facade (lib/fetchers.ts) > getShows requests the same eight TMDB lists in the same order
+ ✓ tests/characterization.test.ts > TMDB Catalogue Facade (lib/fetchers.ts) > getShows throws one error when any request fails
+ ✓ tests/characterization.test.ts > TMDB Catalogue Facade (lib/fetchers.ts) > searchShows encodes the query and sorts by popularity
+ ✓ tests/characterization.test.ts > Authenticated Procedure Pipeline (trpc.ts) > rejects anonymous callers with UNAUTHORIZED
+ ✓ tests/characterization.test.ts > Authenticated Procedure Pipeline (trpc.ts) > passes signed-in callers to the resolver with their user id
+ ✓ tests/characterization.test.ts > Authenticated Procedure Pipeline (trpc.ts) > leaves public procedures open
+ ✓ tests/characterization.test.ts > Authenticated Procedure Pipeline (trpc.ts) > limits an account to 5 profiles
+ ✓ tests/characterization.test.ts > My List procedures (routers/my-list.ts) > adds a show that is not yet in the list
+ ✓ tests/characterization.test.ts > My List procedures (routers/my-list.ts) > refuses duplicates
+ ✓ tests/characterization-mylist.test.ts > myList update/delete > update: unknown profile -> NOT_FOUND 'Profile not found'
+ ✓ tests/characterization-mylist.test.ts > myList update/delete > update: show not in list -> NOT_FOUND 'Show not found'
+ ✓ tests/characterization-mylist.test.ts > myList update/delete > update writes every field by showId
+ ✓ tests/characterization-mylist.test.ts > myList update/delete > delete removes by showId and reports a missing show
+ ✓ tests/subscription.test.ts > getUserSubscriptionPlan > returns null without a subscription
+ ✓ tests/subscription.test.ts > getUserSubscriptionPlan > returns null when the period ended more than a day ago
+ ✓ tests/subscription.test.ts > getUserSubscriptionPlan > maps an active price id to its plan
+ ✓ tests/subscription.test.ts > getUserSubscriptionPlan > throws for an unknown user
+ ✓ tests/characterization-new-popular.test.ts > getNewAndPopularShows > requests the four lists in the same order and keys
+ ✓ tests/characterization-new-popular.test.ts > getNewAndPopularShows > throws one error when any request fails
+
+ Test Files  4 passed (4)
+      Tests  19 passed (19)
+   Start at  21:46:51
+   Duration  1.46s (transform 212ms, setup 0ms, collect 151ms, tests 276ms, environment 1ms, prepare 335ms)
+

@@ -1,0 +1,14 @@
+c01	session=u1|whoami	u1;keys=db,region,session
+c02	-|whoami	ERROR:UNAUTHORIZED
+c03	-|region	US;keys=db,region,session
+c04	x-vercel-ip-country=in|region	IN;keys=db,region,session
+c05	cf-ipcountry=gb|region	GB;keys=db,region,session
+c06	x-vercel-ip-country=de,cf-ipcountry=fr|region	DE;keys=db,region,session
+c07	x-vercel-ip-country=usa,cf-ipcountry=fr|region	US;keys=db,region,session
+c08	session=u1|plan	tier=3,max=5;keys=db,maxProfiles,planTier,region,session,subscription
+c09	session=u2|plan	tier=1,max=2;keys=db,maxProfiles,planTier,region,session,subscription
+c10	session=u9|plan	tier=0,max=5;keys=db,maxProfiles,planTier,region,session,subscription
+c11	-|plan	ERROR:UNAUTHORIZED
+c12	inner:u2:br|whoami	u2;keys=db,region,session
+c13	inner:-:xx1|region	US;keys=db,region,session
+c14	cf-ipcountry= jp |region	JP;keys=db,region,session

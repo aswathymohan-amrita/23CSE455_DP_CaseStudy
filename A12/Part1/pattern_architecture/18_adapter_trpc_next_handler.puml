@@ -1,0 +1,17 @@
+@startuml
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+hide empty members
+title Adapter - tRPC Next.js API Handler Adapter
+interface "NextApiHandler (Target)\n(req: NextApiRequest, res: NextApiResponse)\n<<next@13.4.4>>" as T
+class "createNextApiHandler(opts) (Adapter)\n<<@trpc/server adapters/next.js:16-56>>" as A {
+  +(req, res): path = req.query.trpc
+}
+class "nodeHTTPRequestHandler (Adaptee)\nframework-neutral tRPC resolution" as Ad
+class "Next.js pages router\n(Client)" as C
+class "createTRPCContext(opts: CreateNextContextOptions)\n<<trpc.ts:60-69>>" as Ctx
+T <|.. A
+A --> Ad : nodeHTTPRequestHandler({...opts, req, res, path})
+C --> T : calls default export
+Ad ..> Ctx : createContext({req, res})
+@enduml

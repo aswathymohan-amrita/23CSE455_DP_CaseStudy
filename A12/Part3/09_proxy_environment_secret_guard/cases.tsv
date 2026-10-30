@@ -1,0 +1,10 @@
+e01	server;STRIPE_API_KEY	sk_test_123
+e02	client;NEXT_PUBLIC_TMDB_API_KEY	tmdb_abc
+e03	client;STRIPE_API_KEY	ERROR:Attempted to access server-side environment variable 'STRIPE_API_KEY' on the client
+e04	client-prod;DATABASE_URL	ERROR:Attempted to access a server-side environment variable on the client
+e05	server;MISSING	undefined
+e06	client;NEXT_PUBLIC_MISSING	undefined
+e07	client;MISSING	ERROR:Attempted to access server-side environment variable 'MISSING' on the client
+e08	server;NEXT_PUBLIC_APP_URL	http://localhost:3000
+e09	client-prod;NEXT_PUBLIC_APP_URL	http://localhost:3000
+e10	client;DATABASE_URL	ERROR:Attempted to access server-side environment variable 'DATABASE_URL' on the client

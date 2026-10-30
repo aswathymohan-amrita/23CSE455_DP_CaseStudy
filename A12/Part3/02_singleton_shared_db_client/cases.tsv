@@ -1,0 +1,9 @@
+s01	development;get,get,get	constructed=1;distinct=1
+s02	development;get,reload,get,reload,get	constructed=1;distinct=1
+s03	test;get,reload,get	constructed=1;distinct=1
+s04	production;get,get	constructed=1;distinct=1
+s05	production;get,reload,get	constructed=2;distinct=2
+s06	production;reload,reload,get	constructed=3;distinct=1
+s07	development;reload,reload	constructed=1;distinct=0
+s08	development;-	constructed=1;distinct=0
+s09	staging;get	ERROR:invalid NODE_ENV

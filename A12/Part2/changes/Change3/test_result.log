@@ -1,0 +1,74 @@
+
+ RUN  v1.6.0 /tmp/a12-CH03
+
+ ✓ tests/ch01-premium-plan.test.ts > plan catalogue (single source of truth) > offers five plans including Ultra with 7 profiles
+ ✓ tests/ch01-premium-plan.test.ts > plan catalogue (single source of truth) > UI and server plan lists cannot drift apart
+ ✓ tests/ch01-premium-plan.test.ts > Content Access Rule Chain - PremiumContentRule > premium title with plan tier 0 -> allowed false
+ ✓ tests/ch01-premium-plan.test.ts > Content Access Rule Chain - PremiumContentRule > premium title with plan tier 1 -> allowed false
+ ✓ tests/ch01-premium-plan.test.ts > Content Access Rule Chain - PremiumContentRule > premium title with plan tier 2 -> allowed false
+ ✓ tests/ch01-premium-plan.test.ts > Content Access Rule Chain - PremiumContentRule > premium title with plan tier 3 -> allowed true
+ ✓ tests/ch01-premium-plan.test.ts > Content Access Rule Chain - PremiumContentRule > premium title with plan tier 4 -> allowed true
+ ✓ tests/ch01-premium-plan.test.ts > Content Access Rule Chain - PremiumContentRule > premium title with plan tier 5 -> allowed true
+ ✓ tests/ch01-premium-plan.test.ts > Content Access Rule Chain - PremiumContentRule > regular titles are always allowed
+ ✓ tests/ch01-premium-plan.test.ts > Content Access Rule Chain - PremiumContentRule > an empty chain allows everything
+ ✓ tests/ch01-premium-plan.test.ts > tRPC: subscribedProcedure + catalogue.checkAccess > locks a premium title for a Basic subscriber
+ ✓ tests/ch01-premium-plan.test.ts > tRPC: subscribedProcedure + catalogue.checkAccess > allows a premium title for a Standard subscriber
+ ✓ tests/ch01-premium-plan.test.ts > tRPC: subscribedProcedure + catalogue.checkAccess > still rejects anonymous callers first
+ ✓ tests/ch01-premium-plan.test.ts > profile limit follows the plan > Ultra accounts can create a 6th and 7th profile
+ ✓ tests/ch01-premium-plan.test.ts > profile limit follows the plan > Standard accounts keep the limit of 5
+ ✓ tests/ch01-premium-plan.test.ts > TMDB facade tags premium titles > marks only the originals row as premium
+ ✓ tests/ch03-parental.test.ts > MaturityRule > KIDS profile, {"genre_ids":[16,10751]} -> allowed true
+ ✓ tests/ch03-parental.test.ts > MaturityRule > KIDS profile, {"genre_ids":[27]} -> allowed false
+ ✓ tests/ch03-parental.test.ts > MaturityRule > KIDS profile, {"genre_ids":[53]} -> allowed false
+ ✓ tests/ch03-parental.test.ts > MaturityRule > KIDS profile, {"adult":true} -> allowed false
+ ✓ tests/ch03-parental.test.ts > MaturityRule > TEEN profile, {"genre_ids":[53]} -> allowed true
+ ✓ tests/ch03-parental.test.ts > MaturityRule > TEEN profile, {"genre_ids":[27]} -> allowed false
+ ✓ tests/ch03-parental.test.ts > MaturityRule > TEEN profile, {"adult":true} -> allowed false
+ ✓ tests/ch03-parental.test.ts > MaturityRule > ADULT profile, {"genre_ids":[27],"adult":true} -> allowed true
+ ✓ tests/ch03-parental.test.ts > MaturityRule > undefined profile, {"genre_ids":[27]} -> allowed true
+ ✓ tests/ch03-parental.test.ts > MaturityRule > chain order is region -> maturity -> premium
+ ✓ tests/ch03-parental.test.ts > MaturityRule > profileVisibleShows filters rows for restricted profiles only
+ ✓ tests/ch03-parental.test.ts > catalogue.checkAccess with a profile > applies the profile's maturity rating
+ ✓ tests/ch03-parental.test.ts > catalogue.checkAccess with a profile > refuses another account's profile
+ ✓ tests/ch03-parental.test.ts > My List respects parental control > a Kids profile cannot save a horror title
+ ✓ tests/ch03-parental.test.ts > My List respects parental control > allowed titles are saved without the genre list
+ ✓ tests/ch03-parental.test.ts > profile.update stores the maturity level > passes maturityLevel to the database
+ ✓ tests/characterization.test.ts > TMDB Catalogue Facade (lib/fetchers.ts) > getShows requests the same eight TMDB lists in the same order
+ ✓ tests/characterization.test.ts > TMDB Catalogue Facade (lib/fetchers.ts) > getShows throws one error when any request fails
+ ✓ tests/characterization.test.ts > TMDB Catalogue Facade (lib/fetchers.ts) > searchShows encodes the query and sorts by popularity
+ ✓ tests/characterization.test.ts > Authenticated Procedure Pipeline (trpc.ts) > rejects anonymous callers with UNAUTHORIZED
+ ✓ tests/characterization.test.ts > Authenticated Procedure Pipeline (trpc.ts) > passes signed-in callers to the resolver with their user id
+ ✓ tests/characterization.test.ts > Authenticated Procedure Pipeline (trpc.ts) > leaves public procedures open
+ ✓ tests/characterization.test.ts > Authenticated Procedure Pipeline (trpc.ts) > limits an account to 5 profiles
+ ✓ tests/characterization.test.ts > My List procedures (routers/my-list.ts) > adds a show that is not yet in the list
+ ✓ tests/characterization.test.ts > My List procedures (routers/my-list.ts) > refuses duplicates
+ ✓ tests/ch02-region.test.ts > region resolution > normalises codes and falls back to US
+ ✓ tests/ch02-region.test.ts > region resolution > prefers the Vercel header over Cloudflare
+ ✓ tests/ch02-region.test.ts > region resolution > tRPC context reads the viewer's country from the request
+ ✓ tests/ch02-region.test.ts > RegionRule in the Content Access Rule Chain > title 550 in CN -> allowed false
+ ✓ tests/ch02-region.test.ts > RegionRule in the Content Access Rule Chain > title 550 in US -> allowed true
+ ✓ tests/ch02-region.test.ts > RegionRule in the Content Access Rule Chain > title 1399 in IN -> allowed true
+ ✓ tests/ch02-region.test.ts > RegionRule in the Content Access Rule Chain > title 1399 in DE -> allowed false
+ ✓ tests/ch02-region.test.ts > RegionRule in the Content Access Rule Chain > title 12345 in CN -> allowed true
+ ✓ tests/ch02-region.test.ts > RegionRule in the Content Access Rule Chain > region runs before premium: a blocked premium title is hidden, not upsold
+ ✓ tests/ch02-region.test.ts > RegionRule in the Content Access Rule Chain > visibleShows keeps locked titles but drops hidden ones
+ ✓ tests/ch02-region.test.ts > shared row layout > keeps the exact baseline titles and order
+ ✓ tests/ch02-region.test.ts > shared row layout > filters every row for the viewer's region
+ ✓ tests/ch02-region.test.ts > catalogue.checkAccess uses the request region > denies a region-blocked title
+ ✓ tests/ch02-region.test.ts > catalogue.checkAccess uses the request region > defaults to US when no region is known
+ ✓ tests/characterization-mylist.test.ts > myList update/delete > update: unknown profile -> NOT_FOUND 'Profile not found'
+ ✓ tests/characterization-mylist.test.ts > myList update/delete > update: show not in list -> NOT_FOUND 'Show not found'
+ ✓ tests/characterization-mylist.test.ts > myList update/delete > update writes every field by showId
+ ✓ tests/characterization-mylist.test.ts > myList update/delete > delete removes by showId and reports a missing show
+ ✓ tests/subscription.test.ts > getUserSubscriptionPlan > returns null without a subscription
+ ✓ tests/subscription.test.ts > getUserSubscriptionPlan > returns null when the period ended more than a day ago
+ ✓ tests/subscription.test.ts > getUserSubscriptionPlan > maps an active price id to its plan
+ ✓ tests/subscription.test.ts > getUserSubscriptionPlan > throws for an unknown user
+ ✓ tests/characterization-new-popular.test.ts > getNewAndPopularShows > requests the four lists in the same order and keys
+ ✓ tests/characterization-new-popular.test.ts > getNewAndPopularShows > throws one error when any request fails
+
+ Test Files  7 passed (7)
+      Tests  65 passed (65)
+   Start at  21:46:48
+   Duration  2.61s (transform 242ms, setup 0ms, collect 248ms, tests 563ms, environment 1ms, prepare 585ms)
+

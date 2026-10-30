@@ -1,0 +1,4 @@
+Java,"Classic GoF form: interface + abstract forwarding decorator holding the wrapped component; storage/log injected as Map/List."
+Python,"Forwarding base class; decorators override only what they add; could also use __getattr__ delegation, kept explicit for parity."
+JavaScript,"Zustand-style functional decorators: each is a function store -> store that spreads the inner object and overrides set/clearStorage; no classes needed."
+C++,"Decorators own the inner component via std::unique_ptr (composition chain built at run time); storage and log passed by reference."

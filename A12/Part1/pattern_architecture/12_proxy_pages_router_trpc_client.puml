@@ -1,0 +1,20 @@
+@startuml
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+hide empty members
+title Proxy - Pages-Router tRPC Client Proxy
+class "AppRouter (type)\n<<root.ts:20>>" as S
+class "appRouter via createNextApiHandler\n<<[trpc].ts:8-19>>" as RS
+class "api = createTRPCNext<AppRouter>\n<<lib/api/api.ts:21-54>>\n(JS Proxy)" as P {
+  +[router].[proc].useQuery()
+  +[router].[proc].useMutation()
+  +useContext()
+}
+class "httpBatchLink(/api/trpc)" as L
+class "ShowsContainer, ShowModal,\nProfilesScreen, ..." as Cl
+S <|.. RS
+S <|.. P : typed as
+P --> L
+L --> RS : HTTP
+Cl --> P
+@enduml

@@ -1,0 +1,6 @@
+# 04_decorator_persisted_profile_store / Java - 2026-10-29 23:59:01 - Windows 11 AMD64
+# runtime: javac 21.0.12.1 / openjdk version "21.0.12.1" 2026-08-18 LTS
+$ javac -d build *.java
+$ java -cp build Runner ../cases.tsv
+11/11 passed
+exit=0

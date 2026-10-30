@@ -1,0 +1,11 @@
+o01	sub Hero;select Kids:KIDS	Hero:KIDS
+o02	sub Hero;sub ShowsContainer;select Kids:KIDS	Hero:KIDS|Rows:Kids/KIDS
+o03	sub ShowsContainer;sub PinForm;select Mum:ADULT:pin	Rows:Mum/ADULT|Pin:Mum
+o04	sub ShowsContainer;sub PinForm;select Mum:ADULT	Rows:Mum/ADULT
+o05	sub Hero;select A:TEEN;unsub Hero;select B:ADULT	Hero:TEEN
+o06	select A:TEEN	-
+o07	sub Hero;sub Hero;select A:KIDS	Hero:KIDS
+o08	sub ShowsContainer;select A:KIDS;signout	Rows:A/KIDS|Rows:-/NONE
+o09	sub Ghost	ERROR:unknown observer
+o10	sub PinForm;sub Hero;select K:KIDS:pin;unsub PinForm;select K:KIDS:pin	Pin:K|Hero:KIDS|Hero:KIDS
+o11	unsub Hero;sub ShowsContainer;select X:TEEN	Rows:X/TEEN

@@ -1,0 +1,4 @@
+Java,"Facade class over an HttpClient interface; row specs are records in a List; LinkedHashMap keeps row order; synchronous (real code would use HttpClient.sendAsync + CompletableFuture.allOf)."
+Python,"Row specs as tuples; dict keeps insertion order; synchronous here (asyncio.gather would mirror Promise.all)."
+JavaScript,"Only async version: Promise.all over injected fetch-like client, exactly like the refactored source; template literals build URLs."
+C++,"Row specs as a static vector of structs; std::vector<std::pair> for ordered output; HttpClient is an abstract base passed by reference; synchronous."

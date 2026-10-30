@@ -1,0 +1,26 @@
+@startuml
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+hide empty members
+title TMDB Catalogue Facade - after CH02 refactoring
+package "lib/fetchers.ts (Facade)" {
+  class "getShows(mediaType)" as G
+  class "getNewAndPopularShows()" as N
+  class "searchShows(query)" as S
+  class "fetchRows(rows, errorMessage)" as FR <<private helper>>
+  class "SHOW_ROWS (8) / NEW_AND_POPULAR_ROWS (4)" as Rows <<data>>
+  class "tmdbUrl(path, query)" as U
+}
+G --> FR
+N --> FR
+G ..> Rows
+N ..> Rows
+FR --> U
+FR --> "TMDB API" : Promise.all(fetch)
+S --> "TMDB API"
+class "Home / Movies / TV / New & Popular" as P
+class "lib/catalogue.ts\nGENRE_ROWS + toCategories" as C <<CH02>>
+P --> G
+P --> N
+P --> C
+@enduml

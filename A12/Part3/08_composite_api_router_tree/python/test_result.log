@@ -1,0 +1,5 @@
+# 08_composite_api_router_tree / Python - 2026-10-29 23:59:20 - Windows 11 AMD64
+# runtime: Python 3.12.10
+$ python -B test_runner.py ../cases.tsv
+12/12 passed
+exit=0

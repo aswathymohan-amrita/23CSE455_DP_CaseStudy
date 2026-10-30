@@ -1,0 +1,4 @@
+Java,"Component interface with lambdas as fallbacks (e -> () -> ...); unchecked RenderError; boundary state is a nullable field reset by the retry button."
+Python,"Boundary catches RenderError only, so errors from its own fallback propagate naturally; components are small classes with a render() method."
+JavaScript,"Classes mirror React class components (getDerivedStateFromError stores the error, reset clears it); instanceof RenderError filters what is caught."
+C++,"Abstract Component with virtual render(); boundaries hold a reference to their child and std::optional<std::string> error; member order matters because members are constructed in declaration order."

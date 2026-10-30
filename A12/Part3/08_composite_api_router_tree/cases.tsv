@@ -1,0 +1,12 @@
+t01	count	20
+t02	count profile	7
+t03	resolve profile.create	mutation
+t04	resolve catalogue.checkAccess	query
+t05	resolve profile	router(7)
+t06	resolve profile.nope	NOT_FOUND
+t07	resolve nope.x	NOT_FOUND
+t08	paths icon	icon.getAll,icon.getAllUsed,icon.getAllUnused,icon.getCurrent
+t09	paths catalogue	catalogue.checkAccess
+t10	depth	2
+t11	resolve profile.getAll.x	NOT_FOUND
+t12	count nope	NOT_FOUND

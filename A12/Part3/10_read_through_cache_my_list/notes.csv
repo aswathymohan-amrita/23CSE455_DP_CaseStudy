@@ -1,0 +1,4 @@
+Java,"Generic QueryCache<K,V> with Supplier<V> loader; HashMap.computeIfAbsent is a built-in read-through primitive; lists copied with List.copyOf to keep cached values immutable."
+Python,"dict + callable loader; 'if key not in cache' miss test; functools.lru_cache would give read-through for pure functions but has no per-key invalidation."
+JavaScript,"Map-based cache with loader closures, the same shape as React Query's fetchQuery(key, fn); arrays copied with spread so the backend cannot mutate cached data."
+C++,"Class template QueryCache<V> with std::function loader; std::map::try_emplace/find; values copied into the cache (value semantics give isolation for free)."

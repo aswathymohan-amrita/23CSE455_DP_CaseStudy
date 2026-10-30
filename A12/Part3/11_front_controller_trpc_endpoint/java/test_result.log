@@ -1,0 +1,6 @@
+# 11_front_controller_trpc_endpoint / Java - 2026-10-29 23:59:28 - Windows 11 AMD64
+# runtime: javac 21.0.12.1 / openjdk version "21.0.12.1" 2026-08-18 LTS
+$ javac -d build *.java
+$ java -cp build Runner ../cases.tsv
+14/14 passed
+exit=0

@@ -1,0 +1,17 @@
+@startuml
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+hide empty members
+title Front Controller - NextAuth Auth Route Front Controller
+class "LoginButton signIn('google')\nSiteHeader signOut()" as Cl
+class "NextAuth(authOptions)\n<<pages/api/auth/[...nextauth].ts:4>>" as FC
+class "NextAuthApiHandler\nreq.query.nextauth -> {action, providerId}\n<<next-auth next/index.js:18-31>>" as Parse
+class "AuthHandler switch(action)\n<<next-auth core/index.js:159-206,257-340>>" as D
+class "routes: providers / session / csrf /\nsignin / callback / signout" as R
+class "authOptions\n(adapter, providers, callbacks)\n<<auth.ts:38-64>>" as Opt
+Cl --> FC : /api/auth/*
+FC --> Parse
+Parse --> D
+D --> R : dispatch by action
+D --> Opt : shared config
+@enduml

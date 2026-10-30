@@ -1,0 +1,4 @@
+Java,"Pending is an unchecked exception used as the suspend signal (like React throwing a promise); records for page and boundary; TreeSet orders event times."
+Python,"Exceptions as control flow are idiomatic; a set + sorted gives the event times; the boundary only catches Pending."
+JavaScript,"Throwing a sentinel (Pending) mirrors how React Suspense really works (thrown thenable); Set + sort for event times."
+C++,"Pending is a plain struct thrown by value (no std::exception base needed); shared_ptr<Node> composes page and boundary polymorphically; std::set orders times."

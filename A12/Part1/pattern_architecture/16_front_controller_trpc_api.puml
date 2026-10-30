@@ -1,0 +1,25 @@
+@startuml
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+hide empty members
+title Front Controller - tRPC API Front Controller
+class "Browser httpBatchLink\nPOST /api/trpc/a,b,c" as Cl
+class "createNextApiHandler({router, createContext, onError})\n<<pages/api/trpc/[trpc].ts:8-19>>" as FC {
+  +handler(req, res)
+  -getPath(): req.query.trpc
+}
+class "createTRPCContext\n<<trpc.ts:60-69>>" as Ctx
+class "onError (dev logger)\n<<[trpc].ts:11-18>>" as Err
+class "nodeHTTPRequestHandler / resolveHTTPResponse\n<<@trpc/server@10.28.0>>" as D {
+  +callProcedure(path, input, ctx)
+}
+class "appRouter (command registry)\n<<root.ts:12-17>>" as Reg
+class "procedure e.g. profile.getAll\n<<profile.ts:7-15>>" as P
+Cl --> FC : every tRPC call
+FC --> Ctx : once per request
+FC --> D : delegates
+D --> Reg : lookup(path)
+Reg o--> "19" P
+D --> P : invoke
+D ..> Err : TRPCError
+@enduml

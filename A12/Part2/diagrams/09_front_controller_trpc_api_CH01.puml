@@ -1,0 +1,15 @@
+@startuml
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+hide empty members
+title tRPC API Front Controller - extended in CH01
+class "createNextApiHandler\n<<pages/api/trpc/[trpc].ts>>" as FC
+class "createTRPCContext\n(CH02: + region from headers)" as Ctx
+class "appRouter (registry)\nuser, profile, icon, myList, catalogue" as Reg
+class "catalogue.checkAccess\nNEW in CH01 <<routers/catalogue.ts>>" as New #ddffdd
+class "existing 19 procedures" as Old
+FC --> Ctx : once per request
+FC --> Reg : dispatch(path)
+Reg o--> Old
+Reg o--> New
+@enduml

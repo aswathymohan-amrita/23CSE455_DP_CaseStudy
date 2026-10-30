@@ -1,0 +1,6 @@
+# 13_context_object_request_context / C++ - 2026-10-29 23:59:42 - Windows 11 AMD64
+# runtime: g++ (MinGW-W64 x86_64-ucrt-posix-seh, built by Brecht Sanders, r3) 16.2.0 -std=c++17 -O2
+$ g++ -std=c++17 -O2 -Wall -o build/test_runner test_runner.cpp
+$ ./build/test_runner ../cases.tsv
+14/14 passed
+exit=0

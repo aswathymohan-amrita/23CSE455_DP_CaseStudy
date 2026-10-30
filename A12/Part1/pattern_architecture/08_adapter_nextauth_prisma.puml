@@ -1,0 +1,26 @@
+@startuml
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+hide empty members
+title Adapter - NextAuth Prisma Persistence Adapter
+interface "Adapter\n<<next-auth adapters.d.ts:57>>" as T {
+  +createUser(user)
+  +getUserByEmail(email)
+  +linkAccount(account)
+  +createSession(session)
+  ...()
+}
+class "PrismaAdapter(p)\n<<@next-auth/prisma-adapter index.js:206-264>>" as A {
+  createUser: p.user.create({data})
+  getUserByEmail: p.user.findUnique({where:{email}})
+}
+class "PrismaClient (prisma)\n<<db.ts:9-14>>" as Ad {
+  +user.create()
+  +user.findUnique()
+  +account.create()
+}
+class "NextAuth(authOptions)\n<<auth.ts:38-64>>" as Cl
+T <|.. A
+A --> Ad : translates calls
+Cl --> T : adapter
+@enduml
