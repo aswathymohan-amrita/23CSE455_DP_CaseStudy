@@ -1,0 +1,13 @@
+source_version,summary,pattern_name,count
+Evolution v2,per_pattern,Adapter,1
+Evolution v2,per_pattern,Strategy,1
+Evolution v2,per_pattern,Observer,1
+Evolution v2,per_pattern,Singleton,1
+Evolution v2,per_pattern,Factory Method,1
+Evolution v2,per_pattern,State,1
+Evolution v2,per_pattern,Command,1
+Evolution v2,total_pattern_types,,7
+Evolution v2,total_pattern_instances,,7
+Evolution v2,total_implemented_patterns,,3
+Evolution v2,total_pattern_like,,2
+Evolution v2,total_refactoring_opportunities,,2
