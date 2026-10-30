@@ -1,0 +1,38 @@
+@startuml
+skinparam shadowing false
+title catalogue.checkAccess - request through both chains (CH03)
+actor Viewer
+participant ShowModal
+participant "api (tRPC proxy)" as Api
+participant enforceUserIsAuthed as A
+participant attachSubscription as S
+participant "checkAccess resolver" as R
+participant RegionRule as RR
+participant MaturityRule as MR
+participant PremiumContentRule as PR
+Viewer -> ShowModal : open title
+ShowModal -> Api : catalogue.checkAccess({id, isPremium, genre_ids, profileId})
+Api -> A : HTTP batch
+alt no session
+  A --> Api : UNAUTHORIZED
+else signed in
+  A -> S : next({session})
+  S -> S : getUserSubscriptionPlan(userId, ctx.prisma)
+  S -> R : next({planTier, maxProfiles})
+  R -> R : load profile.maturityLevel (owner check)
+  R -> RR : check(show, {planTier, region, maturity})
+  alt licensed in region
+    RR -> MR : next.check()
+    alt suitable for profile
+      MR -> PR : next.check()
+      PR --> R : allowed | PREMIUM_REQUIRED (locked)
+    else
+      MR --> R : MATURITY_BLOCKED (hidden)
+    end
+  else
+    RR --> R : REGION_BLOCKED (hidden)
+  end
+  R --> ShowModal : AccessDecision
+end
+ShowModal -> Viewer : Play | "Upgrade to watch"
+@enduml

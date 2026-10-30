@@ -1,0 +1,5 @@
+# 03_observer_active_profile_selection / Python - 2026-10-29 23:58:59 - Windows 11 AMD64
+# runtime: Python 3.12.10
+$ python -B test_runner.py ../cases.tsv
+11/11 passed
+exit=0

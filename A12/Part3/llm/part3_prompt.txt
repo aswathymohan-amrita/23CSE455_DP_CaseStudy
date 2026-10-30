@@ -1,0 +1,47 @@
+Team A12 - Part 3 (cross-language comparison) - prompts given to the LLM
+Model and dates: see Part3/llm/llm.csv. Each prompt below is self-contained.
+
+==================================================================================================
+PROMPT 1 - four-language implementations of the confirmed pattern types
+==================================================================================================
+Input: Part1/patterns.csv and Part2/pattern_evalution.csv (confirmed instances of netflx-web),
+the source in data/code/ and Part2/code/, and the assignment files (DP_Csestudy1.pdf section 4).
+
+For EACH confirmed pattern type choose one representative verified instance (prefer the one with
+the most participants or the one changed in Part 2) and:
+1. Write a small, self-contained specification of the problem that instance solves (inputs,
+   outputs, rules, error cases) that keeps the same pattern roles and behaviour as the source.
+2. Write ONE shared fixture file of test cases (tab-separated: id, input, expected output) with
+   normal, boundary and error cases; derive the expected outputs from the specification, not
+   from an implementation.
+3. Implement the snippet in Java (17+), Python (3.12+), JavaScript (Node.js) and C++17, keeping
+   production code and the test runner in separate files. Use each language's own idioms
+   (records/sealed interfaces, dataclasses/ABC, closures/objects, templates/RAII) but keep the
+   same participants. Each runner prints FAIL lines and "<passed>/<total> passed" and exits 0
+   only when all pass.
+4. Write one README per language folder with the exact build/run commands and working folder.
+5. Write a measurement script that, for every implementation: compiles first, runs one warm-up
+   and five measured runs of the test command, records the median wall-clock time of the whole
+   process and the raw times, measures source LOC (lizard NLOC of production files only) and the
+   maximum function cyclomatic complexity (lizard), and writes pattern_crosslanguage.csv with the
+   columns of DP_Csestudy1.pdf section 4. Never estimate a time that was not measured; mark
+   not_run with a reason.
+6. Compare the four languages per pattern: participant structure, abstraction mechanism,
+   inheritance vs. composition, static vs. dynamic checks, and what the measurements show.
+Folder layout: Part3/<NN_pattern_problem>/{java,python,javascript,cpp}/ with the shared
+cases.tsv and spec.md in the problem folder.
+
+==================================================================================================
+PROMPT 2 - cover the pattern types added by the Part 1 second pass and re-measure everything
+==================================================================================================
+Input: Part1/patterns.csv after the second pass (16 types) and the ten existing Part 3 problems.
+1. Add one problem in the same layout for each new pattern type: Front Controller (tRPC API
+   Front Controller), Builder (tRPC Procedure Builder), Context Object (tRPC Request Context),
+   Error Boundary (Shows Segment / Root Global Error Boundary), Suspense Boundary (Shows Loading
+   Placeholder) and Scatter-Gather (TMDB Row Scatter-Gather) - specification, shared cases and
+   four implementations as in prompt 1.
+2. Run all 16 problems x 4 languages on this machine (Windows 11, JDK 21, Python 3.12,
+   Node.js, g++ -std=c++17 -O2) with the measurement script; write the logs into each language
+   folder, raw timings into data/test_result/part3/timings.csv, and regenerate
+   Part3/llm/pattern_crosslanguage.csv and the language READMEs from the actual results.
+3. Update the slide deck (Part3/llm/A12_slide.tex/pdf) with the new totals.

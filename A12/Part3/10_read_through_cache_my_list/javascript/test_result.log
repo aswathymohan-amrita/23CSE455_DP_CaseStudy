@@ -1,0 +1,5 @@
+# 10_read_through_cache_my_list / JavaScript - 2026-10-29 23:59:26 - Windows 11 AMD64
+# runtime: Node.js v26.13.0
+$ node testRunner.js ../cases.tsv
+9/9 passed
+exit=0

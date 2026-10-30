@@ -1,0 +1,25 @@
+@startuml
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+hide empty members
+title Authenticated Procedure Pipeline - extended in CH01
+interface "MiddlewareFunction <<@trpc/server>>" as H
+class enforceUserIsAuthed <<trpc.ts>>
+class "attachSubscription" as AS <<CH01>> {
+  ctx.subscription, ctx.planTier, ctx.maxProfiles
+}
+class protectedProcedure
+class "subscribedProcedure" as SP <<CH01>>
+class "profile.create" as PC
+class "catalogue.checkAccess" as CC <<CH01>>
+class "other protected resolvers" as O
+H <|.. enforceUserIsAuthed
+H <|.. AS
+protectedProcedure o--> enforceUserIsAuthed
+SP o--> protectedProcedure : .use()
+SP o--> AS
+enforceUserIsAuthed --> AS : next()
+AS --> PC : next()
+AS --> CC : next()
+enforceUserIsAuthed --> O : next()
+@enduml

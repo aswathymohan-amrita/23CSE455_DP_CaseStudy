@@ -1,0 +1,21 @@
+@startuml
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+hide empty members
+title Plan data after CH01 refactoring (single source of truth)
+class "config/plan-catalog.ts\n(client-safe)" as PC {
+  planCatalog : PlanCatalogEntry[5]
+  PREMIUM_CONTENT_MIN_TIER = 3
+  DEFAULT_MAX_PROFILES = 5
+}
+class "config/plans.ts (UI)\nplansConfig" as UI
+class "config/subscriptions.ts (server)\nsubscriptionPlans" as SV
+class "env (Protection Proxy)" as ENV
+class BillingForm <<client>>
+class "getUserSubscriptionPlan / checkout" as SRV <<server>>
+UI --> PC : derive + icons
+SV --> PC : derive + price ids
+SV --> ENV : STRIPE_*_PRICE_ID
+BillingForm --> UI
+SRV --> SV
+@enduml

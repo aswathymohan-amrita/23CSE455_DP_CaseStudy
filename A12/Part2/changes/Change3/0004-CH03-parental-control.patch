@@ -1,0 +1,1080 @@
+From f393031c60f8dc7ba7b3d377dbd43b05b1c0cf32 Mon Sep 17 00:00:00 2001
+From: Team A12 <swaminadhanbs@gmail.com>
+Date: Sat, 10 Oct 2026 16:13:27 +0000
+Subject: [PATCH 4/4] CH03: parental control
+
+- Profile.maturityLevel (KIDS / TEEN / ADULT, default ADULT so existing
+  profiles keep their behaviour); selectable on the edit-profile form.
+- MaturityRule inserted between RegionRule and PremiumContentRule in the
+  Content Access Rule Chain (hidden-before-locked ordering).
+- catalogue.checkAccess applies the selected profile's rating and
+  refuses profiles of other accounts; myList.create refuses restricted
+  titles for the profile.
+- Client: ShowsContainer, Hero and search results filter for the active
+  profile (Active Profile Selection observers react to maturityLevel).
+- Refactor (Duplicate Code) in routers/my-list.ts: one showInput schema
+  instead of two identical 17-field objects, findProfileWithList /
+  findShowOrThrow / showData helpers replace 3 copied blocks.
+- New characterization test for myList update/delete, verified on the
+  original code before the refactor.
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01KRtMiqqrPtTNbnvsdMTnUF
+---
+ prisma/schema.prisma                          |   8 +
+ .../account/reset-pin/[profileId]/page.tsx    |   1 +
+ .../(dashboard)/profiles/[profileId]/page.tsx |   1 +
+ src/app/(dashboard)/profiles/add/page.tsx     |   1 +
+ src/app/(dashboard)/profiles/page.tsx         |   1 +
+ src/components/forms/edit-profile-form.tsx    |  18 +-
+ src/components/hero.tsx                       |  13 +-
+ src/components/show-modal.tsx                 |  10 +-
+ src/components/shows-container.tsx            |  17 +-
+ src/config/maturity.ts                        |  21 ++
+ src/lib/access/policy.ts                      |  32 ++-
+ src/lib/access/rules.ts                       |  29 +++
+ src/lib/access/types.ts                       |   9 +-
+ src/server/api/routers/catalogue.ts           |  28 ++-
+ src/server/api/routers/my-list.ts             | 219 +++++++-----------
+ src/server/api/routers/profile.ts             |   5 +-
+ src/types/index.ts                            |   2 +-
+ tests/ch03-parental.test.ts                   | 183 +++++++++++++++
+ tests/characterization-mylist.test.ts         |  85 +++++++
+ 19 files changed, 536 insertions(+), 147 deletions(-)
+ create mode 100644 src/config/maturity.ts
+ create mode 100644 tests/ch03-parental.test.ts
+ create mode 100644 tests/characterization-mylist.test.ts
+
+diff --git a/prisma/schema.prisma b/prisma/schema.prisma
+index 7cb8dcc..8d5c9b3 100644
+--- a/prisma/schema.prisma
++++ b/prisma/schema.prisma
+@@ -74,6 +74,8 @@ model Profile {
+     pin        Int?
+     icon       Icon     @relation(fields: [iconId], references: [id], onDelete: Cascade)
+     language   LANGUAGE @default(ENGLISH)
++    // CH03: parental control; existing profiles stay unrestricted
++    maturityLevel MATURITY @default(ADULT)
+     gameHandle String?
+     user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+     createdAt  DateTime @default(now())
+@@ -128,6 +130,12 @@ model MyShow {
+     @@index([profileId])
+ }
+ 
++enum MATURITY {
++    KIDS
++    TEEN
++    ADULT
++}
++
+ enum MEDIA_TYPE {
+     movie
+     tv
+diff --git a/src/app/(dashboard)/account/reset-pin/[profileId]/page.tsx b/src/app/(dashboard)/account/reset-pin/[profileId]/page.tsx
+index afad4b6..7d395bc 100644
+--- a/src/app/(dashboard)/account/reset-pin/[profileId]/page.tsx
++++ b/src/app/(dashboard)/account/reset-pin/[profileId]/page.tsx
+@@ -38,6 +38,7 @@ export default async function ResetPinPage({ params }: ResetPinPageProps) {
+       gameHandle: true,
+       email: true,
+       pin: true,
++      maturityLevel: true,
+       icon: {
+         select: {
+           id: true,
+diff --git a/src/app/(dashboard)/profiles/[profileId]/page.tsx b/src/app/(dashboard)/profiles/[profileId]/page.tsx
+index 7a31da8..6a5e25a 100644
+--- a/src/app/(dashboard)/profiles/[profileId]/page.tsx
++++ b/src/app/(dashboard)/profiles/[profileId]/page.tsx
+@@ -39,6 +39,7 @@ export default async function EditProfilePage({
+       gameHandle: true,
+       email: true,
+       pin: true,
++      maturityLevel: true,
+       icon: {
+         select: {
+           id: true,
+diff --git a/src/app/(dashboard)/profiles/add/page.tsx b/src/app/(dashboard)/profiles/add/page.tsx
+index 7373119..7d2b5ac 100644
+--- a/src/app/(dashboard)/profiles/add/page.tsx
++++ b/src/app/(dashboard)/profiles/add/page.tsx
+@@ -28,6 +28,7 @@ export default async function AddProfilePage() {
+       language: true,
+       gameHandle: true,
+       pin: true,
++      maturityLevel: true,
+       email: true,
+       icon: true,
+     },
+diff --git a/src/app/(dashboard)/profiles/page.tsx b/src/app/(dashboard)/profiles/page.tsx
+index 381294a..fef02e4 100644
+--- a/src/app/(dashboard)/profiles/page.tsx
++++ b/src/app/(dashboard)/profiles/page.tsx
+@@ -29,6 +29,7 @@ export default async function ManageProfilesPage() {
+       gameHandle: true,
+       email: true,
+       pin: true,
++      maturityLevel: true,
+       icon: {
+         select: {
+           id: true,
+diff --git a/src/components/forms/edit-profile-form.tsx b/src/components/forms/edit-profile-form.tsx
+index fd1873e..b774228 100644
+--- a/src/components/forms/edit-profile-form.tsx
++++ b/src/components/forms/edit-profile-form.tsx
+@@ -5,7 +5,7 @@ import Image from "next/image"
+ import { useRouter } from "next/navigation"
+ import type { PickedProfile } from "@/types"
+ import { zodResolver } from "@hookform/resolvers/zod"
+-import { LANGUAGE } from "@prisma/client"
++import { LANGUAGE, MATURITY } from "@prisma/client"
+ import { useIsMutating } from "@tanstack/react-query"
+ import { AnimatePresence, motion } from "framer-motion"
+ import { useForm, type SubmitHandler } from "react-hook-form"
+@@ -27,6 +27,7 @@ const schema = z.object({
+   }),
+   language: z.nativeEnum(LANGUAGE),
+   gameHandle: z.string().optional().nullable(),
++  maturityLevel: z.nativeEnum(MATURITY),
+ })
+ type Inputs = z.infer<typeof schema>
+ 
+@@ -69,6 +70,7 @@ const EditProfileForm = ({ profile }: EditProfileFormProps) => {
+       language: data.language,
+       gameHandle: data.gameHandle,
+       email: profile?.email ?? null,
++      maturityLevel: data.maturityLevel,
+     })
+   }
+ 
+@@ -167,6 +169,20 @@ const EditProfileForm = ({ profile }: EditProfileFormProps) => {
+                     </p>
+                   )}
+                 </fieldset>
++                <fieldset className="grid w-full items-start gap-2">
++                  <label
++                    htmlFor="maturityLevel"
++                    className="text-base text-neutral-400 sm:text-lg"
++                  >
++                    Maturity rating (parental control):
++                  </label>
++                  <SelectInput
++                    control={control}
++                    name="maturityLevel"
++                    options={Object.values(MATURITY)}
++                    defaultValue={profile?.maturityLevel}
++                  />
++                </fieldset>
+                 <fieldset className="grid w-full items-start gap-3.5">
+                   <label htmlFor="gameHandle" className="flex flex-col gap-2">
+                     <span className="text-base text-neutral-400 sm:text-lg">
+diff --git a/src/components/hero.tsx b/src/components/hero.tsx
+index 3945dce..7ca3658 100644
+--- a/src/components/hero.tsx
++++ b/src/components/hero.tsx
+@@ -1,11 +1,13 @@
+ "use client"
+ 
+-import { useEffect, useState } from "react"
++import { useEffect, useMemo, useState } from "react"
+ import Image from "next/image"
+ import { useModalStore } from "@/stores/modal"
++import { useProfileStore } from "@/stores/profile"
+ import { useSearchStore } from "@/stores/search"
+ import type { Show } from "@/types"
+ 
++import { profileVisibleShows } from "@/lib/access/policy"
+ import { cn } from "@/lib/utils"
+ import { Icons } from "@/components/icons"
+ import { Button } from "@/components/ui/button"
+@@ -14,7 +16,14 @@ interface HeroProps {
+   shows: Show[]
+ }
+ 
+-const Hero = ({ shows }: HeroProps) => {
++const Hero = ({ shows: allShows }: HeroProps) => {
++  // CH03: the hero only features titles the selected profile may see
++  const maturity = useProfileStore((state) => state.profile?.maturityLevel)
++  const shows = useMemo(
++    () => profileVisibleShows(allShows, maturity),
++    [allShows, maturity]
++  )
++
+   // randomize show on page render
+   const [randomShow, setRandomShow] = useState<Show | null>(null)
+   useEffect(() => {
+diff --git a/src/components/show-modal.tsx b/src/components/show-modal.tsx
+index d7781db..409cab2 100644
+--- a/src/components/show-modal.tsx
++++ b/src/components/show-modal.tsx
+@@ -96,7 +96,14 @@ const ShowModal = ({ open, setOpen }: ShowModalProps) => {
+ 
+   // CH01: content access decision for the selected title
+   const accessQuery = api.catalogue.checkAccess.useQuery(
+-    { id: modalStore.show?.id ?? 0, isPremium: modalStore.show?.isPremium },
++    {
++      id: modalStore.show?.id ?? 0,
++      isPremium: modalStore.show?.isPremium,
++      // CH03: maturity signals + the profile whose rating applies
++      adult: modalStore.show?.adult,
++      genre_ids: modalStore.show?.genre_ids,
++      profileId: profileStore.profile?.id,
++    },
+     { enabled: !!userQuery.data && !!modalStore.show }
+   )
+   const denial =
+@@ -246,6 +253,7 @@ const ShowModal = ({ open, setOpen }: ShowModalProps) => {
+                           first_air_date: modalStore.show.first_air_date ?? "",
+                           adult: modalStore.show.adult,
+                           video: modalStore.show.video,
++                          genre_ids: modalStore.show.genre_ids,
+                         })
+                   }}
+                   disabled={
+diff --git a/src/components/shows-container.tsx b/src/components/shows-container.tsx
+index c8380d2..a7de082 100644
+--- a/src/components/shows-container.tsx
++++ b/src/components/shows-container.tsx
+@@ -5,8 +5,9 @@ import { useMounted } from "@/hooks/use-mounted"
+ import { useModalStore } from "@/stores/modal"
+ import { useProfileStore } from "@/stores/profile"
+ import { useSearchStore } from "@/stores/search"
+-import type { CategorizedShows, SessionUser } from "@/types"
++import type { CategorizedShows, SessionUser, Show } from "@/types"
+ 
++import { profileVisibleShows } from "@/lib/access/policy"
+ import { api } from "@/lib/api/api"
+ import { cn } from "@/lib/utils"
+ import ShowModal from "@/components/show-modal"
+@@ -35,10 +36,15 @@ const ShowsContainer = ({ user, shows }: ShowsContainerProps) => {
+       })
+     : null
+ 
++  // CH03: hide titles the selected profile may not see
++  const maturity = profileStore.profile?.maturityLevel
++  const forProfile = <T extends Show>(list: T[]) =>
++    profileVisibleShows(list, maturity)
++
+   if (!mounted) return <ShowsSkeleton />
+ 
+   if (searchStore.query.length > 0) {
+-    return <ShowsGrid shows={searchStore.shows} />
++    return <ShowsGrid shows={forProfile(searchStore.shows)} />
+   }
+ 
+   return (
+@@ -51,13 +57,16 @@ const ShowsContainer = ({ user, shows }: ShowsContainerProps) => {
+       {path === "/" &&
+       myShowsQuery?.isSuccess &&
+       myShowsQuery.data.length > 0 ? (
+-        <ShowsCarousel title="My List" shows={user ? myShowsQuery?.data : []} />
++        <ShowsCarousel
++          title="My List"
++          shows={user ? forProfile(myShowsQuery.data as Show[]) : []}
++        />
+       ) : null}
+       {shows.map((item) => (
+         <ShowsCarousel
+           key={item.title}
+           title={item.title}
+-          shows={item.shows ?? []}
++          shows={forProfile(item.shows ?? [])}
+         />
+       ))}
+     </div>
+diff --git a/src/config/maturity.ts b/src/config/maturity.ts
+new file mode 100644
+index 0000000..69c6e3f
+--- /dev/null
++++ b/src/config/maturity.ts
+@@ -0,0 +1,21 @@
++/**
++ * CH03: parental control.
++ *
++ * A profile's maturity level limits what it may see. TMDB list results give the
++ * `adult` flag and `genre_ids`; these are the signals the rule uses.
++ * Genre ids: 27 Horror, 53 Thriller, 80 Crime, 10752 War.
++ */
++export type Maturity = "KIDS" | "TEEN" | "ADULT"
++
++export const MATURITY_LEVELS: Maturity[] = ["KIDS", "TEEN", "ADULT"]
++
++export type MaturityPolicy = {
++  allowAdult: boolean
++  blockedGenres: number[]
++}
++
++export const maturityPolicies: Record<Maturity, MaturityPolicy> = {
++  KIDS: { allowAdult: false, blockedGenres: [27, 53, 80, 10752] },
++  TEEN: { allowAdult: false, blockedGenres: [27] },
++  ADULT: { allowAdult: true, blockedGenres: [] },
++}
+diff --git a/src/lib/access/policy.ts b/src/lib/access/policy.ts
+index c5ee991..8661d7f 100644
+--- a/src/lib/access/policy.ts
++++ b/src/lib/access/policy.ts
+@@ -1,4 +1,10 @@
+-import { AccessRule, PremiumContentRule, RegionRule } from "./rules"
++import type { Maturity } from "@/config/maturity"
++import {
++  AccessRule,
++  MaturityRule,
++  PremiumContentRule,
++  RegionRule,
++} from "./rules"
+ import {
+   ALLOW,
+   type AccessCheckedShow,
+@@ -17,10 +23,14 @@ export function buildAccessChain(rules: AccessRule[]): AccessRule | null {
+ /**
+  * The rule order used by the application. Rules that hide a title run before rules
+  * that only lock it, so a region-blocked premium title is hidden, not offered for
+- * upgrade (CH02).
++ * upgrade (CH02), and a horror title on a Kids profile is hidden (CH03).
+  */
+ export function contentAccessChain(): AccessRule | null {
+-  return buildAccessChain([new RegionRule(), new PremiumContentRule()])
++  return buildAccessChain([
++    new RegionRule(),
++    new MaturityRule(),
++    new PremiumContentRule(),
++  ])
+ }
+ 
+ export function checkAccess(
+@@ -42,3 +52,19 @@ export function visibleShows<T extends AccessCheckedShow>(
+     return decision.allowed || decision.visibility === "locked"
+   })
+ }
++
++/**
++ * CH03: client-side filter for the selected profile. Region was already applied on
++ * the server and premium only locks, so the browser only needs the maturity link.
++ */
++export function profileVisibleShows<T extends AccessCheckedShow>(
++  shows: T[],
++  maturity: Maturity | undefined
++): T[] {
++  if (!maturity || maturity === "ADULT") return shows
++  return visibleShows(
++    shows,
++    { planTier: 0, region: "", maturity },
++    buildAccessChain([new MaturityRule()])
++  )
++}
+diff --git a/src/lib/access/rules.ts b/src/lib/access/rules.ts
+index fbc4a4f..e02067a 100644
+--- a/src/lib/access/rules.ts
++++ b/src/lib/access/rules.ts
+@@ -1,3 +1,4 @@
++import { maturityPolicies, type MaturityPolicy } from "@/config/maturity"
+ import { PREMIUM_CONTENT_MIN_TIER } from "@/config/plan-catalog"
+ import { regionLicences, type RegionLicence } from "@/config/regions"
+ import {
+@@ -80,3 +81,31 @@ export class RegionRule extends AccessRule {
+     }
+   }
+ }
++
++/** CH03: titles unsuitable for the active profile's maturity level are hidden. */
++export class MaturityRule extends AccessRule {
++  constructor(
++    private readonly policies: Record<string, MaturityPolicy> = maturityPolicies
++  ) {
++    super()
++  }
++
++  protected evaluate(
++    show: AccessCheckedShow,
++    ctx: AccessContext
++  ): AccessDecision | null {
++    const policy = this.policies[ctx.maturity ?? "ADULT"]
++    if (!policy) return null
++    const adultBlocked = !!show.adult && !policy.allowAdult
++    const genreBlocked = (show.genre_ids ?? []).some((id) =>
++      policy.blockedGenres.includes(id)
++    )
++    if (!adultBlocked && !genreBlocked) return null
++    return {
++      allowed: false,
++      reason: "MATURITY_BLOCKED",
++      message: "This title is not available on this profile.",
++      visibility: "hidden",
++    }
++  }
++}
+diff --git a/src/lib/access/types.ts b/src/lib/access/types.ts
+index a3f19e4..a29be8b 100644
+--- a/src/lib/access/types.ts
++++ b/src/lib/access/types.ts
+@@ -1,18 +1,25 @@
+ import type { Show } from "@/types"
+ 
++import type { Maturity } from "@/config/maturity"
++
+ /** What the access chain needs to know about the viewer. Built once per request. */
+ export interface AccessContext {
+   /** 0 = no active plan; otherwise PlanCatalogEntry.tier */
+   planTier: number
+   /** CH02: ISO 3166-1 alpha-2 country of the viewer */
+   region: string
++  /** CH03: maturity of the active profile; absent = no profile chosen (ADULT) */
++  maturity?: Maturity
+ }
+ 
+ /** The subset of a TMDB show the rules look at. */
+ export type AccessCheckedShow = Pick<Show, "id"> &
+   Partial<Pick<Show, "isPremium" | "adult" | "genre_ids" | "original_language">>
+ 
+-export type DenialReason = "PREMIUM_REQUIRED" | "REGION_BLOCKED"
++export type DenialReason =
++  | "PREMIUM_REQUIRED"
++  | "REGION_BLOCKED"
++  | "MATURITY_BLOCKED"
+ 
+ export type AccessDecision =
+   | { allowed: true }
+diff --git a/src/server/api/routers/catalogue.ts b/src/server/api/routers/catalogue.ts
+index 19c6550..9e88b3a 100644
+--- a/src/server/api/routers/catalogue.ts
++++ b/src/server/api/routers/catalogue.ts
+@@ -1,6 +1,8 @@
+ import { createTRPCRouter, subscribedProcedure } from "@/server/api/trpc"
++import { TRPCError } from "@trpc/server"
+ import { z } from "zod"
+ 
++import type { Maturity } from "@/config/maturity"
+ import { normaliseRegion } from "@/config/regions"
+ import { checkAccess } from "@/lib/access/policy"
+ import type { AccessContext } from "@/lib/access/types"
+@@ -8,16 +10,38 @@ import type { AccessContext } from "@/lib/access/types"
+ export const showAccessInput = z.object({
+   id: z.number(),
+   isPremium: z.boolean().optional(),
++  // CH03: signals for parental control
++  adult: z.boolean().optional(),
++  genre_ids: z.array(z.number()).optional(),
++  profileId: z.string().optional(),
+ })
+ 
+ export const catalogueRouter = createTRPCRouter({
+-  /** May the current viewer play this title? First denial wins (CH01 premium, CH02 region). */
++  /**
++   * May the current viewer play this title? First denial wins:
++   * region (CH02) -> maturity of the profile (CH03) -> premium plan (CH01).
++   */
+   checkAccess: subscribedProcedure
+     .input(showAccessInput)
+-    .query(({ ctx, input }) => {
++    .query(async ({ ctx, input }) => {
++      let maturity: Maturity | undefined
++      if (input.profileId) {
++        const profile = await ctx.prisma.profile.findUnique({
++          where: { id: input.profileId },
++          select: { userId: true, maturityLevel: true },
++        })
++        if (!profile || profile.userId !== ctx.session.user.id) {
++          throw new TRPCError({
++            code: "FORBIDDEN",
++            message: "Not your profile",
++          })
++        }
++        maturity = profile.maturityLevel
++      }
+       const accessCtx: AccessContext = {
+         planTier: ctx.planTier,
+         region: normaliseRegion(ctx.region),
++        maturity,
+       }
+       return checkAccess(input, accessCtx)
+     }),
+diff --git a/src/server/api/routers/my-list.ts b/src/server/api/routers/my-list.ts
+index 275333d..e29ecd1 100644
+--- a/src/server/api/routers/my-list.ts
++++ b/src/server/api/routers/my-list.ts
+@@ -1,8 +1,76 @@
+ import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc"
+-import { MEDIA_TYPE } from "@prisma/client"
++import { MEDIA_TYPE, type PrismaClient } from "@prisma/client"
+ import { TRPCError } from "@trpc/server"
+ import { z } from "zod"
+ 
++import { buildAccessChain, checkAccess } from "@/lib/access/policy"
++import { MaturityRule } from "@/lib/access/rules"
++
++/*
++ * CH03 refactoring (Duplicate Code):
++ * - create and update declared the same 17-field zod object twice -> showInput;
++ * - create, update and delete repeated the same "load profile with list or
++ *   NOT_FOUND" block -> findProfileWithList;
++ * - create and update copied every field into `data` one by one -> showData.
++ * Error codes/messages and stored fields are unchanged.
++ */
++
++const showInput = z.object({
++  id: z.number(),
++  profileId: z.string(),
++  name: z.string(),
++  title: z.string(),
++  original_title: z.string().optional(),
++  poster_path: z.string().optional(),
++  backdrop_path: z.string().optional(),
++  overview: z.string().optional(),
++  original_language: z.string(),
++  media_type: z.nativeEnum(MEDIA_TYPE),
++  popularity: z.number(),
++  vote_average: z.number(),
++  vote_count: z.number(),
++  release_date: z.string().optional(),
++  first_air_date: z.string().optional(),
++  adult: z.boolean().default(false),
++  video: z.boolean().default(false),
++  // CH03: used for the maturity check only; not stored
++  genre_ids: z.array(z.number()).optional(),
++})
++
++type ShowInput = z.infer<typeof showInput>
++
++function showData({ genre_ids: _genres, ...show }: ShowInput) {
++  return show
++}
++
++async function findProfileWithList(
++  prisma: Pick<PrismaClient, "profile">,
++  profileId: string
++) {
++  const profile = await prisma.profile.findUnique({
++    where: { id: profileId },
++    include: { myList: true },
++  })
++  if (!profile) {
++    throw new TRPCError({
++      code: "NOT_FOUND",
++      message: "Profile not found",
++    })
++  }
++  return profile
++}
++
++function findShowOrThrow<T extends { id: number }>(list: T[], id: number) {
++  const show = list.find((item) => item.id === id)
++  if (!show) {
++    throw new TRPCError({
++      code: "NOT_FOUND",
++      message: "Show not found",
++    })
++  }
++  return show
++}
++
+ export const myListRouter = createTRPCRouter({
+   getAll: protectedProcedure.input(z.string()).query(async ({ ctx, input }) => {
+     const shows = await ctx.prisma.myShow.findMany({
+@@ -12,38 +80,9 @@ export const myListRouter = createTRPCRouter({
+   }),
+ 
+   create: protectedProcedure
+-    .input(
+-      z.object({
+-        id: z.number(),
+-        profileId: z.string(),
+-        name: z.string(),
+-        title: z.string(),
+-        original_title: z.string().optional(),
+-        poster_path: z.string().optional(),
+-        backdrop_path: z.string().optional(),
+-        overview: z.string().optional(),
+-        original_language: z.string(),
+-        media_type: z.nativeEnum(MEDIA_TYPE),
+-        popularity: z.number(),
+-        vote_average: z.number(),
+-        vote_count: z.number(),
+-        release_date: z.string().optional(),
+-        first_air_date: z.string().optional(),
+-        adult: z.boolean().default(false),
+-        video: z.boolean().default(false),
+-      })
+-    )
++    .input(showInput)
+     .mutation(async ({ ctx, input }) => {
+-      const profile = await ctx.prisma.profile.findUnique({
+-        where: { id: input.profileId },
+-        include: { myList: true },
+-      })
+-      if (!profile) {
+-        throw new TRPCError({
+-          code: "NOT_FOUND",
+-          message: "Profile not found",
+-        })
+-      }
++      const profile = await findProfileWithList(ctx.prisma, input.profileId)
+ 
+       const show = profile.myList.find((show) => show.id === input.id)
+ 
+@@ -54,95 +93,31 @@ export const myListRouter = createTRPCRouter({
+         })
+       }
+ 
++      // CH03: a restricted profile cannot save titles it is not allowed to see
++      const decision = checkAccess(
++        input,
++        { planTier: 0, region: "", maturity: profile.maturityLevel },
++        buildAccessChain([new MaturityRule()])
++      )
++      if (!decision.allowed) {
++        throw new TRPCError({ code: "FORBIDDEN", message: decision.message })
++      }
++
+       const createdShow = await ctx.prisma.myShow.create({
+-        data: {
+-          id: input.id,
+-          profileId: input.profileId,
+-          name: input.name,
+-          title: input.title,
+-          original_title: input.original_title,
+-          poster_path: input.poster_path,
+-          backdrop_path: input.backdrop_path,
+-          overview: input.overview,
+-          original_language: input.original_language,
+-          media_type: input.media_type,
+-          popularity: input.popularity,
+-          vote_average: input.vote_average,
+-          vote_count: input.vote_count,
+-          release_date: input.release_date,
+-          first_air_date: input.first_air_date,
+-          adult: input.adult,
+-          video: input.video,
+-        },
++        data: showData(input),
+       })
+       return createdShow
+     }),
+ 
+   update: protectedProcedure
+-    .input(
+-      z.object({
+-        id: z.number(),
+-        profileId: z.string(),
+-        name: z.string(),
+-        title: z.string(),
+-        original_title: z.string().optional(),
+-        poster_path: z.string().optional(),
+-        backdrop_path: z.string().optional(),
+-        overview: z.string().optional(),
+-        original_language: z.string(),
+-        media_type: z.nativeEnum(MEDIA_TYPE),
+-        popularity: z.number(),
+-        vote_average: z.number(),
+-        vote_count: z.number(),
+-        release_date: z.string().optional(),
+-        first_air_date: z.string().optional(),
+-        adult: z.boolean().default(false),
+-        video: z.boolean().default(false),
+-      })
+-    )
++    .input(showInput)
+     .mutation(async ({ ctx, input }) => {
+-      const profile = await ctx.prisma.profile.findUnique({
+-        where: { id: input.profileId },
+-        include: { myList: true },
+-      })
+-
+-      if (!profile) {
+-        throw new TRPCError({
+-          code: "NOT_FOUND",
+-          message: "Profile not found",
+-        })
+-      }
+-
+-      const show = profile.myList.find((show) => show.id === input.id)
+-
+-      if (!show) {
+-        throw new TRPCError({
+-          code: "NOT_FOUND",
+-          message: "Show not found",
+-        })
+-      }
++      const profile = await findProfileWithList(ctx.prisma, input.profileId)
++      const show = findShowOrThrow(profile.myList, input.id)
+ 
+       const updatedShow = await ctx.prisma.myShow.update({
+         where: { showId: show.showId },
+-        data: {
+-          id: input.id,
+-          profileId: input.profileId,
+-          name: input.name,
+-          title: input.title,
+-          original_title: input.original_title,
+-          poster_path: input.poster_path,
+-          backdrop_path: input.backdrop_path,
+-          overview: input.overview,
+-          original_language: input.original_language,
+-          media_type: input.media_type,
+-          popularity: input.popularity,
+-          vote_average: input.vote_average,
+-          vote_count: input.vote_count,
+-          release_date: input.release_date,
+-          first_air_date: input.first_air_date,
+-          adult: input.adult,
+-          video: input.video,
+-        },
++        data: showData(input),
+       })
+       return updatedShow
+     }),
+@@ -155,26 +130,8 @@ export const myListRouter = createTRPCRouter({
+       })
+     )
+     .mutation(async ({ ctx, input }) => {
+-      const profile = await ctx.prisma.profile.findUnique({
+-        where: { id: input.profileId },
+-        include: { myList: true },
+-      })
+-
+-      if (!profile) {
+-        throw new TRPCError({
+-          code: "NOT_FOUND",
+-          message: "Profile not found",
+-        })
+-      }
+-
+-      const show = profile.myList.find((show) => show.id === input.id)
+-
+-      if (!show) {
+-        throw new TRPCError({
+-          code: "NOT_FOUND",
+-          message: "Show not found",
+-        })
+-      }
++      const profile = await findProfileWithList(ctx.prisma, input.profileId)
++      const show = findShowOrThrow(profile.myList, input.id)
+ 
+       const deletedShow = await ctx.prisma.myShow.delete({
+         where: { showId: show.showId },
+diff --git a/src/server/api/routers/profile.ts b/src/server/api/routers/profile.ts
+index 5f2a546..544ebaf 100644
+--- a/src/server/api/routers/profile.ts
++++ b/src/server/api/routers/profile.ts
+@@ -3,7 +3,7 @@ import {
+   protectedProcedure,
+   subscribedProcedure,
+ } from "@/server/api/trpc"
+-import { LANGUAGE } from "@prisma/client"
++import { LANGUAGE, MATURITY } from "@prisma/client"
+ import { TRPCError } from "@trpc/server"
+ import { z } from "zod"
+ 
+@@ -103,6 +103,8 @@ export const profileRouter = createTRPCRouter({
+         gameHandle: z.string().optional().nullable(),
+         email: z.string().optional().nullable(),
+         pin: z.number().optional().nullable(),
++        // CH03: parental control level
++        maturityLevel: z.nativeEnum(MATURITY).optional(),
+       })
+     )
+     .mutation(async ({ ctx, input }) => {
+@@ -152,6 +154,7 @@ export const profileRouter = createTRPCRouter({
+           gameHandle: input.gameHandle,
+           email: input.email,
+           pin: input.pin,
++          maturityLevel: input.maturityLevel,
+         },
+       })
+       return updatedProfile
+diff --git a/src/types/index.ts b/src/types/index.ts
+index d39d136..b039a6c 100644
+--- a/src/types/index.ts
++++ b/src/types/index.ts
+@@ -147,7 +147,7 @@ export type PickedIcon = Pick<Icon, "id" | "title" | "href">
+ 
+ export type PickedProfile = Pick<
+   Profile,
+-  "id" | "name" | "language" | "gameHandle" | "email" | "pin"
++  "id" | "name" | "language" | "gameHandle" | "email" | "pin" | "maturityLevel"
+ > & {
+   icon: PickedIcon
+ }
+diff --git a/tests/ch03-parental.test.ts b/tests/ch03-parental.test.ts
+new file mode 100644
+index 0000000..f025d44
+--- /dev/null
++++ b/tests/ch03-parental.test.ts
+@@ -0,0 +1,183 @@
++/** CH03 acceptance tests: parental control. */
++import { describe, expect, it, vi } from "vitest"
++
++import type { Maturity } from "@/config/maturity"
++import type { AccessCheckedShow } from "@/lib/access/types"
++import { fakePrisma, session } from "./helpers"
++
++vi.mock("@/server/db", () => ({ prisma: {} }))
++vi.mock("@/server/auth", () => ({ getServerAuthSession: vi.fn() }))
++
++const HORROR = 27,
++  THRILLER = 53,
++  ANIMATION = 16,
++  FAMILY = 10751
++
++describe("MaturityRule", () => {
++  const cases: [Maturity | undefined, Partial<AccessCheckedShow>, boolean][] = [
++    ["KIDS", { genre_ids: [ANIMATION, FAMILY] }, true],
++    ["KIDS", { genre_ids: [HORROR] }, false],
++    ["KIDS", { genre_ids: [THRILLER] }, false],
++    ["KIDS", { adult: true }, false],
++    ["TEEN", { genre_ids: [THRILLER] }, true],
++    ["TEEN", { genre_ids: [HORROR] }, false],
++    ["TEEN", { adult: true }, false],
++    ["ADULT", { genre_ids: [HORROR], adult: true }, true],
++    [undefined, { genre_ids: [HORROR] }, true],
++  ]
++  it.each(cases)(
++    "%s profile, %j -> allowed %s",
++    async (maturity, signals, allowed) => {
++      const { checkAccess } = await import("@/lib/access/policy")
++      const d = checkAccess(
++        { id: 1, ...signals },
++        { planTier: 5, region: "US", maturity }
++      )
++      expect(d.allowed).toBe(allowed)
++      if (!d.allowed)
++        expect(d).toMatchObject({
++          reason: "MATURITY_BLOCKED",
++          visibility: "hidden",
++        })
++    }
++  )
++
++  it("chain order is region -> maturity -> premium", async () => {
++    const { checkAccess } = await import("@/lib/access/policy")
++    const horrorPremium = { id: 1, isPremium: true, genre_ids: [HORROR] }
++    expect(
++      checkAccess(horrorPremium, {
++        planTier: 0,
++        region: "US",
++        maturity: "KIDS",
++      })
++    ).toMatchObject({ reason: "MATURITY_BLOCKED" })
++    expect(
++      checkAccess(
++        { ...horrorPremium, id: 550 },
++        { planTier: 0, region: "CN", maturity: "KIDS" }
++      )
++    ).toMatchObject({ reason: "REGION_BLOCKED" })
++    expect(
++      checkAccess(horrorPremium, {
++        planTier: 0,
++        region: "US",
++        maturity: "ADULT",
++      })
++    ).toMatchObject({ reason: "PREMIUM_REQUIRED" })
++  })
++
++  it("profileVisibleShows filters rows for restricted profiles only", async () => {
++    const { profileVisibleShows } = await import("@/lib/access/policy")
++    const rows = [
++      { id: 1, genre_ids: [HORROR] },
++      { id: 2, genre_ids: [ANIMATION] },
++      { id: 3, isPremium: true },
++    ]
++    expect(profileVisibleShows(rows, "ADULT")).toBe(rows)
++    expect(profileVisibleShows(rows, undefined)).toBe(rows)
++    expect(profileVisibleShows(rows, "KIDS").map((s) => s.id)).toEqual([2, 3])
++  })
++})
++
++describe("catalogue.checkAccess with a profile", () => {
++  async function caller(profile: unknown) {
++    const prisma = fakePrisma()
++    prisma.profile.findUnique.mockResolvedValue(profile)
++    const { appRouter } = await import("@/server/api/root")
++    return appRouter.createCaller({ session: session("u1"), prisma } as never)
++  }
++
++  it("applies the profile's maturity rating", async () => {
++    const c = await caller({ userId: "u1", maturityLevel: "KIDS" })
++    expect(
++      await c.catalogue.checkAccess({
++        id: 9,
++        genre_ids: [HORROR],
++        profileId: "kid",
++      })
++    ).toMatchObject({ allowed: false, reason: "MATURITY_BLOCKED" })
++    expect(
++      await c.catalogue.checkAccess({
++        id: 9,
++        genre_ids: [ANIMATION],
++        profileId: "kid",
++      })
++    ).toEqual({ allowed: true })
++  })
++
++  it("refuses another account's profile", async () => {
++    const c = await caller({ userId: "someone-else", maturityLevel: "ADULT" })
++    await expect(
++      c.catalogue.checkAccess({ id: 9, profileId: "p" })
++    ).rejects.toMatchObject({ code: "FORBIDDEN" })
++  })
++})
++
++describe("My List respects parental control", () => {
++  const show = {
++    id: 42,
++    profileId: "kid",
++    name: "N",
++    title: "T",
++    original_language: "en",
++    media_type: "movie" as const,
++    popularity: 1,
++    vote_average: 7,
++    vote_count: 3,
++  }
++
++  it("a Kids profile cannot save a horror title", async () => {
++    const prisma = fakePrisma()
++    prisma.profile.findUnique.mockResolvedValue({
++      id: "kid",
++      maturityLevel: "KIDS",
++      myList: [],
++    })
++    const { appRouter } = await import("@/server/api/root")
++    const c = appRouter.createCaller({ session: session(), prisma } as never)
++    await expect(
++      c.myList.create({ ...show, genre_ids: [HORROR] })
++    ).rejects.toMatchObject({
++      code: "FORBIDDEN",
++      message: "This title is not available on this profile.",
++    })
++    expect(prisma.myShow.create).not.toHaveBeenCalled()
++  })
++
++  it("allowed titles are saved without the genre list", async () => {
++    const prisma = fakePrisma()
++    prisma.profile.findUnique.mockResolvedValue({
++      id: "kid",
++      maturityLevel: "KIDS",
++      myList: [],
++    })
++    const { appRouter } = await import("@/server/api/root")
++    const c = appRouter.createCaller({ session: session(), prisma } as never)
++    await c.myList.create({ ...show, genre_ids: [ANIMATION] })
++    const data = prisma.myShow.create.mock.calls[0]?.[0]?.data as Record<
++      string,
++      unknown
++    >
++    expect(data).not.toHaveProperty("genre_ids")
++    expect(data).toMatchObject({ id: 42, profileId: "kid" })
++  })
++})
++
++describe("profile.update stores the maturity level", () => {
++  it("passes maturityLevel to the database", async () => {
++    const prisma = fakePrisma()
++    const { appRouter } = await import("@/server/api/root")
++    const c = appRouter.createCaller({ session: session(), prisma } as never)
++    await c.profile.update({
++      id: "p1",
++      name: "Kid",
++      iconId: "i1",
++      language: "ENGLISH",
++      maturityLevel: "KIDS",
++    })
++    expect(prisma.profile.update.mock.calls[0]?.[0]).toMatchObject({
++      data: { maturityLevel: "KIDS" },
++    })
++  })
++})
+diff --git a/tests/characterization-mylist.test.ts b/tests/characterization-mylist.test.ts
+new file mode 100644
+index 0000000..e58184b
+--- /dev/null
++++ b/tests/characterization-mylist.test.ts
+@@ -0,0 +1,85 @@
++/** Characterization of myList update/delete; verified against 676e5dd before CH03. */
++import { describe, expect, it, vi } from "vitest"
++
++import { fakePrisma, session } from "./helpers"
++
++vi.mock("@/server/db", () => ({ prisma: {} }))
++vi.mock("@/server/auth", () => ({ getServerAuthSession: vi.fn() }))
++
++const show = {
++  id: 42,
++  profileId: "p1",
++  name: "N",
++  title: "T",
++  original_language: "en",
++  media_type: "movie" as const,
++  popularity: 1,
++  vote_average: 7,
++  vote_count: 3,
++}
++
++async function callerWith(profile: unknown) {
++  const prisma = fakePrisma()
++  prisma.profile.findUnique.mockResolvedValue(profile)
++  prisma.myShow.update.mockImplementation(async (args: unknown) => args)
++  prisma.myShow.delete.mockImplementation(async (args: unknown) => args)
++  const { appRouter } = await import("@/server/api/root")
++  return {
++    prisma,
++    caller: appRouter.createCaller({ session: session(), prisma } as never),
++  }
++}
++
++describe("myList update/delete", () => {
++  it("update: unknown profile -> NOT_FOUND 'Profile not found'", async () => {
++    const { caller } = await callerWith(null)
++    await expect(caller.myList.update(show)).rejects.toMatchObject({
++      code: "NOT_FOUND",
++      message: "Profile not found",
++    })
++  })
++
++  it("update: show not in list -> NOT_FOUND 'Show not found'", async () => {
++    const { caller } = await callerWith({ id: "p1", myList: [] })
++    await expect(caller.myList.update(show)).rejects.toMatchObject({
++      code: "NOT_FOUND",
++      message: "Show not found",
++    })
++  })
++
++  it("update writes every field by showId", async () => {
++    const { caller, prisma } = await callerWith({
++      id: "p1",
++      myList: [{ id: 42, showId: "s42" }],
++    })
++    await caller.myList.update(show)
++    expect(prisma.myShow.update).toHaveBeenCalledWith({
++      where: { showId: "s42" },
++      data: {
++        ...show,
++        original_title: undefined,
++        poster_path: undefined,
++        backdrop_path: undefined,
++        overview: undefined,
++        release_date: undefined,
++        first_air_date: undefined,
++        adult: false,
++        video: false,
++      },
++    })
++  })
++
++  it("delete removes by showId and reports a missing show", async () => {
++    const { caller, prisma } = await callerWith({
++      id: "p1",
++      myList: [{ id: 42, showId: "s42" }],
++    })
++    await caller.myList.delete({ id: 42, profileId: "p1" })
++    expect(prisma.myShow.delete).toHaveBeenCalledWith({
++      where: { showId: "s42" },
++    })
++    await expect(
++      caller.myList.delete({ id: 7, profileId: "p1" })
++    ).rejects.toMatchObject({ code: "NOT_FOUND" })
++  })
++})
+-- 
+2.43.0
+

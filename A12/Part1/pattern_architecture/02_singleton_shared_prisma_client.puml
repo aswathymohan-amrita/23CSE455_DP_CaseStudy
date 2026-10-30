@@ -1,0 +1,20 @@
+@startuml
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+hide empty members
+title Singleton - Shared Prisma Database Client
+class "db.ts module" as M <<singleton holder>> {
+  -globalForPrisma : {prisma?: PrismaClient}
+  +prisma : PrismaClient = globalForPrisma.prisma ?? new PrismaClient()
+}
+class PrismaClient <<@prisma/client>>
+class createInnerTRPCContext
+class "authOptions.adapter" as AO
+class getUserSubscriptionPlan
+class "webhook POST" as W
+M --> "1" PrismaClient : creates once
+createInnerTRPCContext ..> M : import prisma
+AO ..> M
+getUserSubscriptionPlan ..> M
+W ..> M
+@enduml

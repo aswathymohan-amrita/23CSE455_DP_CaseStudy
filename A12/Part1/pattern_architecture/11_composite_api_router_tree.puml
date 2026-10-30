@@ -1,0 +1,25 @@
+@startuml
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+hide empty members
+title Composite - API Router Tree
+interface "Router record entry\nAnyRouter | AnyProcedure" as C
+class "Router\n(createTRPCRouter)" as R {
+  _def.record : {key: Router | Procedure}
+}
+class "Procedure (leaf)" as L {
+  query() / mutation()
+}
+C <|.. R
+C <|.. L
+R o--> "*" C : children
+object "appRouter" as root
+object "userRouter (4)" as u
+object "profileRouter (7)" as p
+object "iconRouter (4)" as i
+object "myListRouter (4)" as m
+root *-- u
+root *-- p
+root *-- i
+root *-- m
+@enduml

@@ -1,0 +1,5 @@
+# 09_proxy_environment_secret_guard / JavaScript - 2026-10-29 23:59:23 - Windows 11 AMD64
+# runtime: Node.js v26.13.0
+$ node testRunner.js ../cases.tsv
+10/10 passed
+exit=0

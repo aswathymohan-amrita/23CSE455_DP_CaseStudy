@@ -1,0 +1,27 @@
+@startuml
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+hide empty members
+interface "StoreApi<T>\n<<zustand>>" as Subject {
+  +getState() : T
+  +setState(partial)
+  +subscribe(listener) : unsubscribe
+}
+title Observer - Show Modal Selection
+class "useModalStore\n<<stores/modal.ts:13-20>>" as CS {
+  open : boolean
+  show : Show | null
+  play : boolean
+}
+class "ShowCard.onClick\n<<shows-carousel.tsx:93-113>>" as Pub
+class ShowsContainer <<observer>>
+class ShowModal <<observer>>
+class Hero <<observer>>
+class ShowsGrid <<observer>>
+Subject <|.. CS
+Pub --> CS : setState({show, open, play})
+CS --> ShowsContainer : notify (re-render)
+CS --> ShowModal : notify
+CS --> Hero : notify
+CS --> ShowsGrid : notify
+@enduml

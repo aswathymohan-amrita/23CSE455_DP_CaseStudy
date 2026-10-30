@@ -1,0 +1,4 @@
+Java,"Observer interface + LinkedHashSet keeps subscription order and set semantics; Consumer-style callbacks would also work; observers need explicit classes or lambdas."
+Python,"Protocol-free duck typing: any object with notify(); dict-as-ordered-set (dict.fromkeys) keeps order and uniqueness; observers are small classes."
+JavaScript,"Closest to zustand: listeners are functions in a Set (insertion-ordered); subscribe returns an unsubscribe closure; no interface needed."
+C++,"Observers are non-owning pointers to an abstract base; registration order kept in a std::vector with a duplicate check; lifetime must outlive the subject."

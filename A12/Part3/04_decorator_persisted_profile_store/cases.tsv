@@ -1,0 +1,11 @@
+d01	none;profile=Kids	state=profile=Kids&pinForm=false;storage=-;log=-
+d02	persist;profile=Kids	state=profile=Kids&pinForm=false;storage=profile=Kids&pinForm=false;log=-
+d03	devtools;profile=Kids,pinForm=true	state=profile=Kids&pinForm=true;storage=-;log=set profile=Kids,set pinForm=true
+d04	persist+devtools;profile=Kids,pinForm=true	state=profile=Kids&pinForm=true;storage=profile=Kids&pinForm=true;log=set profile=Kids,set pinForm=true
+d05	persist+devtools;profile=Kids,clear	state=profile=Kids&pinForm=false;storage=-;log=set profile=Kids
+d06	devtools;clear	ERROR:clearStorage not available
+d07	persist+devtools;-	state=profile=null&pinForm=false;storage=-;log=-
+d08	persist;profile=Kids,age=7	ERROR:unknown field age
+d09	devtools+persist;profile=A	state=profile=A&pinForm=false;storage=profile=A&pinForm=false;log=set profile=A
+d10	persist;profile=A,clear,profile=B	state=profile=B&pinForm=false;storage=profile=B&pinForm=false;log=-
+d11	cache;profile=A	ERROR:unknown decorator cache

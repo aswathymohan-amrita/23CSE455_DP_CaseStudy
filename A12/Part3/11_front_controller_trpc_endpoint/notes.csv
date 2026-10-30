@@ -1,0 +1,4 @@
+Java,"Registry is a Map<String, Procedure> of records holding BiFunction resolvers; checked TRPCError vs. unchecked RuntimeException mirrors the two error paths; context factory and error hook are injected functional interfaces."
+Python,"Registry is a plain dict of Procedure objects with lambdas; one try/except separates expected TRPCError from unexpected exceptions; context factory and onError are just callables."
+JavaScript,"Closest to tRPC: Map of procedure records, string path split for batching, instanceof TRPCError decides the code; closures count contexts/errors in the runner."
+C++,"std::map registry of structs holding std::function; std::optional<std::string> for missing user/path; exceptions derive from std::runtime_error and are caught by reference."

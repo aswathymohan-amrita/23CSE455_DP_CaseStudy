@@ -1,0 +1,4 @@
+Java,"Immutability via List.copyOf and records (Procedure is a record = frozen product); fluent methods return new ProcedureBuilder; static PUBLIC/PROTECTED constants are the shared partial builders."
+Python,"Tuples make the middleware list immutable; each method returns a new ProcedureBuilder; duck typing lets build() tell builder from product with isinstance."
+JavaScript,"Object.freeze on middleware arrays and on the Procedure; spread creates the next builder, exactly like tRPC createNewBuilder; product and builder told apart with instanceof."
+C++,"Value semantics: use() copies the vector and returns a new builder by value; only const member functions so a const builder cannot change; std::optional<Procedure> holds the product once built."

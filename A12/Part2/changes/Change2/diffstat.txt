@@ -1,0 +1,18 @@
+ src/app/(shows)/movies/page.tsx            |  36 +----
+ src/app/(shows)/new-and-popular/page.tsx   |  28 ++--
+ src/app/(shows)/page.tsx                   |  40 +-----
+ src/app/(shows)/tv-shows/page.tsx          |  36 +----
+ src/config/regions.ts                      |  28 ++++
+ src/lib/access/policy.ts                   |  22 ++-
+ src/lib/access/rules.ts                    |  29 ++++
+ src/lib/access/types.ts                    |   4 +-
+ src/lib/catalogue.ts                       |  50 +++++++
+ src/lib/fetchers.ts                        | 224 +++++++++++++++--------------
+ src/lib/region.ts                          |  15 ++
+ src/lib/server-region.ts                   |   9 ++
+ src/server/api/routers/catalogue.ts        |   8 +-
+ src/server/api/trpc.ts                     |   9 ++
+ tests/ch01-premium-plan.test.ts            |   6 +-
+ tests/ch02-region.test.ts                  | 149 +++++++++++++++++++
+ tests/characterization-new-popular.test.ts |  37 +++++
+ 17 files changed, 499 insertions(+), 231 deletions(-)

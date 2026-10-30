@@ -1,0 +1,6 @@
+snapshot,commit,src_files,src_nloc,functions,avg_ccn,max_ccn,max_ccn_function,typecheck,tests_passed,tests_total
+baseline,676e5ddd15d68fe6b83c2f9cc2494c6ece8b2258,110,6694,280,2.31,23,SiteHeader@components/layouts/site-header.tsx:35,pass,0,0
+tests_only,d68c773,110,6694,280,2.31,23,SiteHeader@components/layouts/site-header.tsx:35,pass,13,13
+CH01,3f79642,115,6829,297,2.35,25,(anonymous)@components/show-modal.tsx:212,pass,29,29
+CH02,e420dcf,119,6845,322,2.25,25,(anonymous)@components/show-modal.tsx:212,pass,45,45
+CH03,f393031,120,6916,328,2.26,25,(anonymous)@components/show-modal.tsx:219,pass,65,65

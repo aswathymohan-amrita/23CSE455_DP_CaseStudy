@@ -1,0 +1,23 @@
+@startuml
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+hide empty members
+title Chain of Responsibility - Authenticated Procedure Pipeline
+interface "MiddlewareFunction\n<<@trpc/server>>" as H {
+  +({ctx, next}) : Promise<MiddlewareResult>
+}
+class "enforceUserIsAuthed\n<<trpc.ts:109-119>>" as A {
+  +({ctx, next}) : throws UNAUTHORIZED | next({ctx: session})
+}
+class "protectedProcedure\n<<trpc.ts:129>>" as P {
+  = t.procedure.use(enforceUserIsAuthed)
+}
+class "procedure resolver\n(e.g. profile.getAll)" as R {
+  +({ctx, input})
+}
+class "createNextApiHandler\n<<[trpc].ts:8-19>>" as C
+H <|.. A
+P o--> A : first link
+A --> R : next()
+C --> P : invokes
+@enduml

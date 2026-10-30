@@ -1,0 +1,10 @@
+f01	movie;-	trending=1,topRated=2,netflix=3P,action=4,comedy=5,horror=6,romance=7,docs=8;requests=8
+f02	tv;-	trending=1,topRated=2,netflix=3P,action=4,comedy=5,horror=6,romance=7,docs=8;requests=8
+f03	movie;with_genres=27	ERROR:Failed to fetch shows;requests=8
+f04	tv;trending/tv/week?api_key=k&language=en-US	ERROR:Failed to fetch shows;requests=8
+f05	movie;trending/tv/week?api_key=k&language=en-US	trending=1,topRated=2,netflix=3P,action=4,comedy=5,horror=6,romance=7,docs=8;requests=8
+f06	newpopular;-	popularTvs=1,popularMovies=2,trendingTvs=3,trendingMovies=4;requests=4
+f07	newpopular;movie/popular	ERROR:Failed to fetch shows;requests=4
+f08	anime;-	ERROR:invalid media type;requests=0
+f09	tv;discover/tv?api_key=k&with_networks=213	ERROR:Failed to fetch shows;requests=8
+f10	movie;https://api.themoviedb.org/3/movie/top_rated?api_key=k&language=en-US	ERROR:Failed to fetch shows;requests=8

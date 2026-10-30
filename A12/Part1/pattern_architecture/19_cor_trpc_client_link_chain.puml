@@ -1,0 +1,24 @@
+@startuml
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+hide empty members
+title Chain of Responsibility - tRPC Client Link Chain
+interface "TRPCLink (Handler)\n(op, next) => Observable" as H
+class "createChain execute(index)\n<<@trpc/client splitLink-*.js:4-23>>" as Chain
+class "loggerLink({enabled})\n<<client.ts:36-40>>" as L {
+  log if dev or error; next(op)
+}
+class "httpBatchLink({url: /api/trpc})\n<<client.ts:41-43>>" as B {
+  terminal: HTTP request, no next
+}
+class "links: [loggerLink, httpBatchLink]\n<<client.ts:35-44>>" as Asm
+class "trpc.createClient in TRPCProvider\n<<createTrpcNextBeta.tsx:55-63>>" as Cl
+H <|.. L
+H <|.. B
+Chain --> H : links[index]
+L --> B : next(op)
+Asm --> L
+Asm --> B
+Cl --> Chain : every query/mutation
+note bottom of Asm : identical array in lib/api/api.ts:36-45\nis never executed (withTRPC not mounted)
+@enduml

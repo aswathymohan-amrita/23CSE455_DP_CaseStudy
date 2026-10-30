@@ -1,0 +1,24 @@
+@startuml
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+hide empty members
+title Builder - tRPC Procedure Builder
+class "ProcedureBuilder (immutable)\n<<@trpc/server index.js:326-438>>" as B {
+  +input(parser): ProcedureBuilder
+  +output(parser): ProcedureBuilder
+  +meta(m): ProcedureBuilder
+  +use(middleware): ProcedureBuilder
+  +query(resolver): Procedure
+  +mutation(resolver): Procedure
+}
+class "Procedure (Product)\ncreateProcedureCaller(_def)" as P
+object "t = initTRPC.context().create()\n<<trpc.ts:71-83>>" as T
+object "publicProcedure = t.procedure\n<<trpc.ts:106>>" as Pub
+object "protectedProcedure = t.procedure.use(enforceUserIsAuthed)\n<<trpc.ts:129>>" as Pro
+class "routers (Director)\nprotectedProcedure.input(z.string()).query(fn)\n<<profile.ts:17-28>>" as Dir
+T --> Pub : creates
+Pub ..> Pro : .use() returns new builder
+Dir --> Pro : starts from
+Dir --> B : chain steps
+B --> P : query()/mutation() build
+@enduml

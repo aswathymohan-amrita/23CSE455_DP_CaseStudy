@@ -1,0 +1,1236 @@
+From 3f796427831ea19bb00b762967869efd62e12ad2 Mon Sep 17 00:00:00 2001
+From: Team A12 <swaminadhanbs@gmail.com>
+Date: Sat, 10 Oct 2026 16:06:33 +0000
+Subject: [PATCH 2/4] CH01: premium content and Ultra subscription plan
+
+- New Ultra plan (tier 5, 7 profiles); plans get tier + maxProfiles.
+- Refactor: Shotgun Surgery / duplicated plan data. config/plans.ts (UI)
+  and config/subscriptions.ts (server) are now derived from one
+  client-safe config/plan-catalog.ts (they had already drifted).
+- Replace magic number 5 in profile.create with the plan's maxProfiles.
+- New Content Access Rule Chain (lib/access) with PremiumContentRule.
+- tRPC chain extended: attachSubscription middleware ->
+  subscribedProcedure; new catalogue.checkAccess procedure.
+- TMDB facade tags the originals row as premium; ShowModal shows an
+  upgrade button instead of Play when access is denied.
+- Checkout refuses plans without a configured Stripe price.
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01KRtMiqqrPtTNbnvsdMTnUF
+---
+ .env.example                          |   2 +
+ src/app/api/users/stripe/route.ts     |   9 +-
+ src/components/forms/billing-form.tsx |   5 +-
+ src/components/show-modal.tsx         |  73 ++++++----
+ src/config/plan-catalog.ts            |  94 +++++++++++++
+ src/config/plans.ts                   | 104 +++-----------
+ src/config/subscriptions.ts           |  64 +++------
+ src/env.mjs                           |   2 +
+ src/lib/access/policy.ts              |  28 ++++
+ src/lib/access/rules.ts               |  53 ++++++++
+ src/lib/access/types.ts               |  25 ++++
+ src/lib/fetchers.ts                   |   3 +-
+ src/lib/subscription.ts               |   5 +-
+ src/server/api/root.ts                |   2 +
+ src/server/api/routers/catalogue.ts   |  20 +++
+ src/server/api/routers/profile.ts     |  14 +-
+ src/server/api/trpc.ts                |  22 +++
+ src/types/index.ts                    |  10 +-
+ tests/ch01-premium-plan.test.ts       | 189 ++++++++++++++++++++++++++
+ tests/characterization.test.ts        |  84 +++++++++---
+ tests/helpers.ts                      |   8 +-
+ tests/subscription.test.ts            |  12 +-
+ 22 files changed, 642 insertions(+), 186 deletions(-)
+ create mode 100644 src/config/plan-catalog.ts
+ create mode 100644 src/lib/access/policy.ts
+ create mode 100644 src/lib/access/rules.ts
+ create mode 100644 src/lib/access/types.ts
+ create mode 100644 src/server/api/routers/catalogue.ts
+ create mode 100644 tests/ch01-premium-plan.test.ts
+
+diff --git a/.env.example b/.env.example
+index ec2de35..b602dad 100644
+--- a/.env.example
++++ b/.env.example
+@@ -42,3 +42,5 @@ STRIPE_MOBILE_PRICE_ID=
+ STRIPE_BASIC_PRICE_ID=
+ STRIPE_STANDARD_PRICE_ID=
+ STRIPE_PREMIUM_PRICE_ID=
++# CH01: price id of the new Ultra plan (optional until the product exists in Stripe)
++STRIPE_ULTRA_PRICE_ID=
+diff --git a/src/app/api/users/stripe/route.ts b/src/app/api/users/stripe/route.ts
+index d9a5bf1..c8fb532 100644
+--- a/src/app/api/users/stripe/route.ts
++++ b/src/app/api/users/stripe/route.ts
+@@ -15,13 +15,20 @@ export async function POST(req: Request) {
+   try {
+     // Get stripe price id from request body
+     const { planName } = (await req.json()) as { planName: string }
+-    console.log(planName)
+ 
+     // Find stripe price id from plan name
+     const stripePriceId = subscriptionPlans.find(
+       (plan) => plan.name === planName
+     )?.stripePriceId
+ 
++    // CH01: a plan without a configured Stripe price (e.g. Ultra before the
++    // product exists) cannot be checked out.
++    if (!stripePriceId) {
++      return new Response(JSON.stringify({ error: "Plan not available" }), {
++        status: 400,
++      })
++    }
++
+     const session = await getServerSession(authOptions)
+ 
+     if (!session?.user || !session?.user.email) {
+diff --git a/src/components/forms/billing-form.tsx b/src/components/forms/billing-form.tsx
+index 58318af..dc65404 100644
+--- a/src/components/forms/billing-form.tsx
++++ b/src/components/forms/billing-form.tsx
+@@ -95,8 +95,9 @@ const BillingForm = ({ subscriptionPlan, isCanceled }: BillingFormProps) => {
+           </p>
+           <p>
+             Only people who live with you may use your account. Watch on 4
+-            different devices at the same time with Premium, 2 with Standard,
+-            and 1 with Basic and Mobile.
++            different devices at the same time with Premium and Ultra, 2 with
++            Standard, and 1 with Basic and Mobile. Premium titles are included
++            from Standard upwards; Ultra allows up to 7 profiles.
+           </p>
+         </div>
+       </div>
+diff --git a/src/components/show-modal.tsx b/src/components/show-modal.tsx
+index 75399a8..d7781db 100644
+--- a/src/components/show-modal.tsx
++++ b/src/components/show-modal.tsx
+@@ -94,6 +94,14 @@ const ShowModal = ({ open, setOpen }: ShowModalProps) => {
+     refetchOnWindowFocus: false,
+   })
+ 
++  // CH01: content access decision for the selected title
++  const accessQuery = api.catalogue.checkAccess.useQuery(
++    { id: modalStore.show?.id ?? 0, isPremium: modalStore.show?.isPremium },
++    { enabled: !!userQuery.data && !!modalStore.show }
++  )
++  const denial =
++    accessQuery.data && !accessQuery.data.allowed ? accessQuery.data : null
++
+   // my shows query
+   const myShowsQuery = profileStore.profile
+     ? api.myList.getAll.useQuery(profileStore.profile.id, {
+@@ -161,29 +169,40 @@ const ShowModal = ({ open, setOpen }: ShowModalProps) => {
+           />
+           <div className="absolute bottom-6 z-20 flex w-full items-center justify-between gap-2 px-10">
+             <div className="flex items-center gap-2.5">
+-              <Button
+-                aria-label={`${isPlaying ? "Pause" : "Play"} show`}
+-                className="group h-auto rounded py-1.5"
+-                onClick={() => setIsPlaying(!isPlaying)}
+-              >
+-                {isPlaying ? (
+-                  <>
+-                    <Icons.pause
+-                      className="mr-1.5 h-6 w-6 fill-current"
+-                      aria-hidden="true"
+-                    />
+-                    Pause
+-                  </>
+-                ) : (
+-                  <>
+-                    <Icons.play
+-                      className="mr-1.5 h-6 w-6 fill-current"
+-                      aria-hidden="true"
+-                    />
+-                    Play
+-                  </>
+-                )}
+-              </Button>
++              {denial ? (
++                <Button
++                  aria-label="Upgrade plan to watch"
++                  className="group h-auto rounded py-1.5"
++                  onClick={() => router.push("/login/plans")}
++                >
++                  <Icons.lock className="mr-1.5 h-5 w-5" aria-hidden="true" />
++                  Upgrade to watch
++                </Button>
++              ) : (
++                <Button
++                  aria-label={`${isPlaying ? "Pause" : "Play"} show`}
++                  className="group h-auto rounded py-1.5"
++                  onClick={() => setIsPlaying(!isPlaying)}
++                >
++                  {isPlaying ? (
++                    <>
++                      <Icons.pause
++                        className="mr-1.5 h-6 w-6 fill-current"
++                        aria-hidden="true"
++                      />
++                      Pause
++                    </>
++                  ) : (
++                    <>
++                      <Icons.play
++                        className="mr-1.5 h-6 w-6 fill-current"
++                        aria-hidden="true"
++                      />
++                      Play
++                    </>
++                  )}
++                </Button>
++              )}
+               <DynamicTooltip
+                 text={isAdded ? "Remove from My List" : "Add to My List"}
+               >
+@@ -276,12 +295,20 @@ const ShowModal = ({ open, setOpen }: ShowModalProps) => {
+             ) : modalStore.show?.first_air_date ? (
+               <p>{getYear(modalStore.show?.first_air_date)}</p>
+             ) : null}
++            {modalStore.show?.isPremium && (
++              <span className="rounded bg-red-600 px-1.5 text-xs font-bold">
++                PREMIUM
++              </span>
++            )}
+             {modalStore.show?.original_language && (
+               <span className="grid h-4 w-7 place-items-center text-xs font-bold text-neutral-400 ring-1 ring-neutral-400">
+                 {modalStore.show.original_language.toUpperCase()}
+               </span>
+             )}
+           </div>
++          {denial && (
++            <p className="text-sm text-yellow-400">{denial.message}</p>
++          )}
+           <DialogDescription className="line-clamp-3 text-xs text-slate-50 dark:text-slate-50 sm:text-sm">
+             {modalStore.show?.overview ?? "-"}
+           </DialogDescription>
+diff --git a/src/config/plan-catalog.ts b/src/config/plan-catalog.ts
+new file mode 100644
+index 0000000..e9c1117
+--- /dev/null
++++ b/src/config/plan-catalog.ts
+@@ -0,0 +1,94 @@
++/**
++ * Single source of truth for subscription plans (CH01 refactoring).
++ *
++ * Before CH01 the same plan data lived in two parallel lists: config/plans.ts (UI,
++ * client-safe) and config/subscriptions.ts (server, needs Stripe price ids from the
++ * env Protection Proxy, which throws when read in the browser). Adding a plan meant
++ * editing both, and they had already drifted (Basic devices differed). This module
++ * holds only client-safe data; both lists are now derived from it.
++ */
++
++export type PlanName = "Mobile" | "Basic" | "Standard" | "Premium" | "Ultra"
++export type DeviceName = "Phone" | "Tablet" | "Computer" | "TV"
++
++export type PlanCatalogEntry = {
++  name: PlanName
++  description: string
++  /** Ordering used for entitlements; higher tier includes everything below. */
++  tier: number
++  monthlyPrice: number
++  videoQuality: "Good" | "Better" | "Best"
++  resolution: "480p" | "720p" | "1080p" | "4K+HDR"
++  devices: DeviceName[]
++  maxProfiles: number
++}
++
++/** Minimum plan tier that unlocks titles marked as premium (Netflix originals row). */
++export const PREMIUM_CONTENT_MIN_TIER = 3
++
++/** Profile limit for accounts without an active plan (baseline behaviour). */
++export const DEFAULT_MAX_PROFILES = 5
++
++const ALL_DEVICES: DeviceName[] = ["Phone", "Tablet", "Computer", "TV"]
++
++export const planCatalog: PlanCatalogEntry[] = [
++  {
++    name: "Mobile",
++    description: "The plan is suitable for mobile devices.",
++    tier: 1,
++    monthlyPrice: 2.99,
++    videoQuality: "Good",
++    resolution: "480p",
++    devices: ["Phone", "Tablet"],
++    maxProfiles: 5,
++  },
++  {
++    name: "Basic",
++    description: "The plan is suitable for basic devices.",
++    tier: 2,
++    monthlyPrice: 3.99,
++    videoQuality: "Good",
++    resolution: "720p",
++    devices: ["Phone", "Tablet", "Computer"],
++    maxProfiles: 5,
++  },
++  {
++    name: "Standard",
++    description: "The plan is suitable for standard devices.",
++    tier: 3,
++    monthlyPrice: 7.99,
++    videoQuality: "Better",
++    resolution: "1080p",
++    devices: ALL_DEVICES,
++    maxProfiles: 5,
++  },
++  {
++    name: "Premium",
++    description: "The plan is suitable for premium devices.",
++    tier: 4,
++    monthlyPrice: 9.99,
++    videoQuality: "Best",
++    resolution: "4K+HDR",
++    devices: ALL_DEVICES,
++    maxProfiles: 5,
++  },
++  {
++    name: "Ultra",
++    description:
++      "Everything in Premium, plus up to 7 profiles for larger households.",
++    tier: 5,
++    monthlyPrice: 12.99,
++    videoQuality: "Best",
++    resolution: "4K+HDR",
++    devices: ALL_DEVICES,
++    maxProfiles: 7,
++  },
++]
++
++export function findPlan(name: string): PlanCatalogEntry | undefined {
++  return planCatalog.find((plan) => plan.name === name)
++}
++
++export function unlocksPremium(tier: number): boolean {
++  return tier >= PREMIUM_CONTENT_MIN_TIER
++}
+diff --git a/src/config/plans.ts b/src/config/plans.ts
+index 97f90a3..c3cba60 100644
+--- a/src/config/plans.ts
++++ b/src/config/plans.ts
+@@ -1,97 +1,29 @@
+ import type { PlansConfig } from "@/types"
+ 
++import { planCatalog, type DeviceName } from "@/config/plan-catalog"
+ import { Icons } from "@/components/icons"
+ 
++const deviceIcons: Record<
++  DeviceName,
++  PlansConfig["plans"][number]["devices"][number]["icon"]
++> = {
++  Phone: Icons.phone,
++  Tablet: Icons.tablet,
++  Computer: Icons.computer,
++  TV: Icons.tv,
++}
++
+ export const plansConfig: PlansConfig = {
+   perks: [
+     "Watch on your phone, tablet, laptop, and TV",
+     "Unlimited movies and TV shows",
+     "Change or cancel your plan anytime",
+   ],
+-  plans: [
+-    {
+-      name: "Mobile",
+-      price: 2.99,
+-      videoQuality: "Good",
+-      resolution: "480p",
+-      devices: [
+-        {
+-          title: "Phone",
+-          icon: Icons.phone,
+-        },
+-        {
+-          title: "Tablet",
+-          icon: Icons.tablet,
+-        },
+-      ],
+-    },
+-    {
+-      name: "Basic",
+-      price: 3.99,
+-      videoQuality: "Good",
+-      resolution: "720p",
+-      devices: [
+-        {
+-          title: "Phone",
+-          icon: Icons.phone,
+-        },
+-        {
+-          title: "Tablet",
+-          icon: Icons.tablet,
+-        },
+-        {
+-          title: "Computer",
+-          icon: Icons.computer,
+-        },
+-      ],
+-    },
+-    {
+-      name: "Standard",
+-      price: 7.99,
+-      videoQuality: "Better",
+-      resolution: "1080p",
+-      devices: [
+-        {
+-          title: "Phone",
+-          icon: Icons.phone,
+-        },
+-        {
+-          title: "Tablet",
+-          icon: Icons.tablet,
+-        },
+-        {
+-          title: "Computer",
+-          icon: Icons.computer,
+-        },
+-        {
+-          title: "TV",
+-          icon: Icons.tv,
+-        },
+-      ],
+-    },
+-    {
+-      name: "Premium",
+-      price: 9.99,
+-      videoQuality: "Best",
+-      resolution: "4K+HDR",
+-      devices: [
+-        {
+-          title: "Phone",
+-          icon: Icons.phone,
+-        },
+-        {
+-          title: "Tablet",
+-          icon: Icons.tablet,
+-        },
+-        {
+-          title: "Computer",
+-          icon: Icons.computer,
+-        },
+-        {
+-          title: "TV",
+-          icon: Icons.tv,
+-        },
+-      ],
+-    },
+-  ],
++  plans: planCatalog.map((plan) => ({
++    name: plan.name,
++    price: plan.monthlyPrice,
++    videoQuality: plan.videoQuality,
++    resolution: plan.resolution,
++    devices: plan.devices.map((title) => ({ title, icon: deviceIcons[title] })),
++  })),
+ }
+diff --git a/src/config/subscriptions.ts b/src/config/subscriptions.ts
+index cae57f5..1ed27e4 100644
+--- a/src/config/subscriptions.ts
++++ b/src/config/subscriptions.ts
+@@ -1,49 +1,27 @@
+ import { env } from "@/env.mjs"
+ import type { SubscriptionPlan } from "@/types"
+ 
+-export const mobilePlan: SubscriptionPlan = {
+-  name: "Mobile",
+-  description: "The plan is suitable for mobile devices.",
+-  stripePriceId: env.STRIPE_MOBILE_PRICE_ID ?? "",
+-  monthlyPrice: 2.99,
+-  videoQuality: "Good",
+-  resolution: "480p",
+-  devices: "Phone, Tablet",
+-}
+-
+-export const basicPlan: SubscriptionPlan = {
+-  name: "Basic",
+-  description: "The plan is suitable for basic devices.",
+-  stripePriceId: env.STRIPE_BASIC_PRICE_ID ?? "",
+-  monthlyPrice: 3.99,
+-  videoQuality: "Good",
+-  resolution: "720p",
+-  devices: "Phone, Tablet, Computer, TV",
+-}
+-
+-export const standardPlan: SubscriptionPlan = {
+-  name: "Standard",
+-  description: "The plan is suitable for standard devices.",
+-  stripePriceId: env.STRIPE_STANDARD_PRICE_ID ?? "",
+-  monthlyPrice: 7.99,
+-  videoQuality: "Better",
+-  resolution: "1080p",
+-  devices: "Phone, Tablet, Computer, TV",
+-}
++import { planCatalog, type PlanName } from "@/config/plan-catalog"
+ 
+-export const premiumPlan: SubscriptionPlan = {
+-  name: "Premium",
+-  description: "The plan is suitable for premium devices.",
+-  stripePriceId: env.STRIPE_PREMIUM_PRICE_ID ?? "",
+-  monthlyPrice: 9.99,
+-  videoQuality: "Best",
+-  resolution: "4K+HDR",
+-  devices: "Phone, Tablet, Computer, TV",
++// Server-only: Stripe price ids come from secret env vars.
++const stripePriceIds: Record<PlanName, string | undefined> = {
++  Mobile: env.STRIPE_MOBILE_PRICE_ID,
++  Basic: env.STRIPE_BASIC_PRICE_ID,
++  Standard: env.STRIPE_STANDARD_PRICE_ID,
++  Premium: env.STRIPE_PREMIUM_PRICE_ID,
++  Ultra: env.STRIPE_ULTRA_PRICE_ID,
+ }
+ 
+-export const subscriptionPlans = [
+-  mobilePlan,
+-  basicPlan,
+-  standardPlan,
+-  premiumPlan,
+-]
++export const subscriptionPlans: SubscriptionPlan[] = planCatalog.map(
++  (plan) => ({
++    name: plan.name,
++    description: plan.description,
++    stripePriceId: stripePriceIds[plan.name] ?? "",
++    monthlyPrice: plan.monthlyPrice,
++    videoQuality: plan.videoQuality,
++    resolution: plan.resolution,
++    devices: plan.devices.join(", "),
++    tier: plan.tier,
++    maxProfiles: plan.maxProfiles,
++  })
++)
+diff --git a/src/env.mjs b/src/env.mjs
+index 5c28de1..35acbc4 100644
+--- a/src/env.mjs
++++ b/src/env.mjs
+@@ -27,6 +27,7 @@ const server = z.object({
+   STRIPE_BASIC_PRICE_ID: z.string(),
+   STRIPE_STANDARD_PRICE_ID: z.string(),
+   STRIPE_PREMIUM_PRICE_ID: z.string(),
++  STRIPE_ULTRA_PRICE_ID: z.string().optional(),
+ })
+ 
+ /**
+@@ -59,6 +60,7 @@ const processEnv = {
+   STRIPE_BASIC_PRICE_ID: process.env.STRIPE_BASIC_PRICE_ID,
+   STRIPE_STANDARD_PRICE_ID: process.env.STRIPE_STANDARD_PRICE_ID,
+   STRIPE_PREMIUM_PRICE_ID: process.env.STRIPE_PREMIUM_PRICE_ID,
++  STRIPE_ULTRA_PRICE_ID: process.env.STRIPE_ULTRA_PRICE_ID,
+ }
+ 
+ // Don't touch the part below
+diff --git a/src/lib/access/policy.ts b/src/lib/access/policy.ts
+new file mode 100644
+index 0000000..f6e85ce
+--- /dev/null
++++ b/src/lib/access/policy.ts
+@@ -0,0 +1,28 @@
++import { AccessRule, PremiumContentRule } from "./rules"
++import {
++  ALLOW,
++  type AccessCheckedShow,
++  type AccessContext,
++  type AccessDecision,
++} from "./types"
++
++/** Links the rules in order and returns the head of the chain (null for no rules). */
++export function buildAccessChain(rules: AccessRule[]): AccessRule | null {
++  const [head, ...rest] = rules
++  if (!head) return null
++  rest.reduce<AccessRule>((link, rule) => link.setNext(rule), head)
++  return head
++}
++
++/** The rule order used by the application. */
++export function contentAccessChain(): AccessRule | null {
++  return buildAccessChain([new PremiumContentRule()])
++}
++
++export function checkAccess(
++  show: AccessCheckedShow,
++  ctx: AccessContext,
++  chain: AccessRule | null = contentAccessChain()
++): AccessDecision {
++  return chain ? chain.check(show, ctx) : ALLOW
++}
+diff --git a/src/lib/access/rules.ts b/src/lib/access/rules.ts
+new file mode 100644
+index 0000000..64ba630
+--- /dev/null
++++ b/src/lib/access/rules.ts
+@@ -0,0 +1,53 @@
++import { PREMIUM_CONTENT_MIN_TIER } from "@/config/plan-catalog"
++import {
++  ALLOW,
++  type AccessCheckedShow,
++  type AccessContext,
++  type AccessDecision,
++} from "./types"
++
++/**
++ * Chain of Responsibility: each rule either denies access (and stops the chain) or
++ * passes the request to the next rule. A chain with no denial allows the title.
++ */
++export abstract class AccessRule {
++  private next: AccessRule | null = null
++
++  /** Links `rule` after this one and returns it, so links can be chained. */
++  setNext(rule: AccessRule): AccessRule {
++    this.next = rule
++    return rule
++  }
++
++  check(show: AccessCheckedShow, ctx: AccessContext): AccessDecision {
++    const denial = this.evaluate(show, ctx)
++    if (denial) return denial
++    return this.next ? this.next.check(show, ctx) : ALLOW
++  }
++
++  /** Return a denial, or null to pass the request on. */
++  protected abstract evaluate(
++    show: AccessCheckedShow,
++    ctx: AccessContext
++  ): AccessDecision | null
++}
++
++/** CH01: premium titles need a plan whose tier unlocks premium content. */
++export class PremiumContentRule extends AccessRule {
++  constructor(private readonly minTier: number = PREMIUM_CONTENT_MIN_TIER) {
++    super()
++  }
++
++  protected evaluate(
++    show: AccessCheckedShow,
++    ctx: AccessContext
++  ): AccessDecision | null {
++    if (!show.isPremium || ctx.planTier >= this.minTier) return null
++    return {
++      allowed: false,
++      reason: "PREMIUM_REQUIRED",
++      message: "This title is included with Standard, Premium and Ultra plans.",
++      visibility: "locked",
++    }
++  }
++}
+diff --git a/src/lib/access/types.ts b/src/lib/access/types.ts
+new file mode 100644
+index 0000000..f218ff2
+--- /dev/null
++++ b/src/lib/access/types.ts
+@@ -0,0 +1,25 @@
++import type { Show } from "@/types"
++
++/** What the access chain needs to know about the viewer. Built once per request. */
++export interface AccessContext {
++  /** 0 = no active plan; otherwise PlanCatalogEntry.tier */
++  planTier: number
++}
++
++/** The subset of a TMDB show the rules look at. */
++export type AccessCheckedShow = Pick<Show, "id"> &
++  Partial<Pick<Show, "isPremium" | "adult" | "genre_ids" | "original_language">>
++
++export type DenialReason = "PREMIUM_REQUIRED"
++
++export type AccessDecision =
++  | { allowed: true }
++  | {
++      allowed: false
++      reason: DenialReason
++      message: string
++      /** "locked": show the title with an upgrade prompt; "hidden": remove it from rows */
++      visibility: "locked" | "hidden"
++    }
++
++export const ALLOW: AccessDecision = { allowed: true }
+diff --git a/src/lib/fetchers.ts b/src/lib/fetchers.ts
+index dc91574..fcf61a8 100644
+--- a/src/lib/fetchers.ts
++++ b/src/lib/fetchers.ts
+@@ -67,7 +67,8 @@ export async function getShows(mediaType: MEDIA_TYPE) {
+   return {
+     trending: trending?.results,
+     topRated: topRated?.results,
+-    netflix: netflix?.results,
++    // CH01: originals (TMDB network 213) are premium titles
++    netflix: netflix?.results?.map((show) => ({ ...show, isPremium: true })),
+     action: action?.results,
+     comedy: comedy?.results,
+     horror: horror?.results,
+diff --git a/src/lib/subscription.ts b/src/lib/subscription.ts
+index 5d475b4..e3afa9a 100644
+--- a/src/lib/subscription.ts
++++ b/src/lib/subscription.ts
+@@ -4,9 +4,10 @@ import type { UserSubscriptionPlan } from "@/types"
+ import { subscriptionPlans } from "@/config/subscriptions"
+ 
+ export async function getUserSubscriptionPlan(
+-  userId: string
++  userId: string,
++  db: Pick<typeof prisma, "user"> = prisma
+ ): Promise<UserSubscriptionPlan | null> {
+-  const user = await prisma.user.findFirst({
++  const user = await db.user.findFirst({
+     where: {
+       id: userId,
+     },
+diff --git a/src/server/api/root.ts b/src/server/api/root.ts
+index 3a1b44a..8b84027 100644
+--- a/src/server/api/root.ts
++++ b/src/server/api/root.ts
+@@ -1,3 +1,4 @@
++import { catalogueRouter } from "@/server/api/routers/catalogue"
+ import { iconRouter } from "@/server/api/routers/icon"
+ import { myListRouter } from "@/server/api/routers/my-list"
+ import { profileRouter } from "@/server/api/routers/profile"
+@@ -14,6 +15,7 @@ export const appRouter = createTRPCRouter({
+   profile: profileRouter,
+   icon: iconRouter,
+   myList: myListRouter,
++  catalogue: catalogueRouter,
+ })
+ 
+ // export type definition of API
+diff --git a/src/server/api/routers/catalogue.ts b/src/server/api/routers/catalogue.ts
+new file mode 100644
+index 0000000..d1df7a0
+--- /dev/null
++++ b/src/server/api/routers/catalogue.ts
+@@ -0,0 +1,20 @@
++import { createTRPCRouter, subscribedProcedure } from "@/server/api/trpc"
++import { z } from "zod"
++
++import { checkAccess } from "@/lib/access/policy"
++import type { AccessContext } from "@/lib/access/types"
++
++export const showAccessInput = z.object({
++  id: z.number(),
++  isPremium: z.boolean().optional(),
++})
++
++export const catalogueRouter = createTRPCRouter({
++  /** CH01: may the current viewer play this title? Returns the first denial, if any. */
++  checkAccess: subscribedProcedure
++    .input(showAccessInput)
++    .query(({ ctx, input }) => {
++      const accessCtx: AccessContext = { planTier: ctx.planTier }
++      return checkAccess(input, accessCtx)
++    }),
++})
+diff --git a/src/server/api/routers/profile.ts b/src/server/api/routers/profile.ts
+index 7e1c38c..5f2a546 100644
+--- a/src/server/api/routers/profile.ts
++++ b/src/server/api/routers/profile.ts
+@@ -1,4 +1,8 @@
+-import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc"
++import {
++  createTRPCRouter,
++  protectedProcedure,
++  subscribedProcedure,
++} from "@/server/api/trpc"
+ import { LANGUAGE } from "@prisma/client"
+ import { TRPCError } from "@trpc/server"
+ import { z } from "zod"
+@@ -37,7 +41,7 @@ export const profileRouter = createTRPCRouter({
+     return profile
+   }),
+ 
+-  create: protectedProcedure
++  create: subscribedProcedure
+     .input(
+       z.object({
+         name: z.string(),
+@@ -45,14 +49,14 @@ export const profileRouter = createTRPCRouter({
+       })
+     )
+     .mutation(async ({ ctx, input }) => {
+-      // check if user has 5 profiles already
++      // check the profile limit of the caller's plan (5 unless the plan says otherwise)
+       const profiles = await ctx.prisma.profile.findMany({
+         where: { userId: ctx.session.user.id },
+       })
+-      if (profiles.length >= 5) {
++      if (profiles.length >= ctx.maxProfiles) {
+         throw new TRPCError({
+           code: "FORBIDDEN",
+-          message: "You can only have 5 profiles",
++          message: `You can only have ${ctx.maxProfiles} profiles`,
+         })
+       }
+ 
+diff --git a/src/server/api/trpc.ts b/src/server/api/trpc.ts
+index 87219de..3b89b1d 100644
+--- a/src/server/api/trpc.ts
++++ b/src/server/api/trpc.ts
+@@ -30,6 +30,9 @@ import { type Session } from "next-auth"
+ import superjson from "superjson"
+ import { ZodError } from "zod"
+ 
++import { DEFAULT_MAX_PROFILES } from "@/config/plan-catalog"
++import { getUserSubscriptionPlan } from "@/lib/subscription"
++
+ type CreateContextOptions = {
+   session: Session | null
+ }
+@@ -127,3 +130,22 @@ const enforceUserIsAuthed = t.middleware(({ ctx, next }) => {
+  * @see https://trpc.io/docs/procedures
+  */
+ export const protectedProcedure = t.procedure.use(enforceUserIsAuthed)
++
++/**
++ * CH01: second link of the chain. Loads the caller's active plan once per request and
++ * exposes its entitlements (tier, profile limit) to resolvers. No plan => tier 0.
++ */
++const attachSubscription = t.middleware(async ({ ctx, next }) => {
++  const userId = ctx.session?.user?.id
++  const plan = userId ? await getUserSubscriptionPlan(userId, ctx.prisma) : null
++  return next({
++    ctx: {
++      subscription: plan,
++      planTier: plan?.tier ?? 0,
++      maxProfiles: plan?.maxProfiles ?? DEFAULT_MAX_PROFILES,
++    },
++  })
++})
++
++/** Signed-in procedure that also knows the caller's plan entitlements. */
++export const subscribedProcedure = protectedProcedure.use(attachSubscription)
+diff --git a/src/types/index.ts b/src/types/index.ts
+index 39ca35e..d39d136 100644
+--- a/src/types/index.ts
++++ b/src/types/index.ts
+@@ -1,5 +1,7 @@
+ import type { Icon, MEDIA_TYPE, Profile, User } from "@prisma/client"
+ 
++import type { PlanName } from "@/config/plan-catalog"
++
+ export type SetState<T> = React.Dispatch<React.SetStateAction<T>>
+ 
+ export type NavItem = {
+@@ -29,7 +31,7 @@ export type SiteConfig = {
+ export type PlansConfig = {
+   perks: string[]
+   plans: {
+-    name: "Mobile" | "Basic" | "Standard" | "Premium"
++    name: PlanName
+     price: number
+     videoQuality: "Good" | "Better" | "Best"
+     resolution: "480p" | "720p" | "1080p" | "4K+HDR"
+@@ -94,6 +96,10 @@ export type Show = {
+   video: boolean
+   vote_average: number
+   vote_count: number
++  /** Set by the TMDB facade for titles that need a premium-tier plan (CH01). */
++  isPremium?: boolean
++  /** TMDB list results carry genre ids. */
++  genre_ids?: number[]
+ }
+ 
+ export type ShowWithGenreAndVideo = Show & {
+@@ -124,6 +130,8 @@ export type SubscriptionPlan = {
+   videoQuality?: string
+   resolution?: string
+   devices?: string
++  tier?: number
++  maxProfiles?: number
+ }
+ 
+ export type UserSubscriptionPlan = SubscriptionPlan &
+diff --git a/tests/ch01-premium-plan.test.ts b/tests/ch01-premium-plan.test.ts
+new file mode 100644
+index 0000000..c29cc93
+--- /dev/null
++++ b/tests/ch01-premium-plan.test.ts
+@@ -0,0 +1,189 @@
++/** CH01 acceptance tests: premium content + new Ultra subscription plan. */
++import { afterEach, describe, expect, it, vi } from "vitest"
++
++import { fakePrisma, mockFetch, session } from "./helpers"
++
++vi.mock("@/server/db", () => ({ prisma: {} }))
++vi.mock("@/server/auth", () => ({ getServerAuthSession: vi.fn() }))
++
++afterEach(() => {
++  vi.unstubAllGlobals()
++})
++
++const DAY = 86_400_000
++const userWithPlan = (priceId: string | null) => ({
++  stripeSubscriptionId: priceId ? "sub_1" : null,
++  stripePriceId: priceId,
++  stripeCustomerId: "cus_1",
++  stripeCurrentPeriodEnd: new Date(Date.now() + 10 * DAY),
++})
++
++describe("plan catalogue (single source of truth)", () => {
++  it("offers five plans including Ultra with 7 profiles", async () => {
++    const { planCatalog } = await import("@/config/plan-catalog")
++    expect(planCatalog.map((p) => p.name)).toEqual([
++      "Mobile",
++      "Basic",
++      "Standard",
++      "Premium",
++      "Ultra",
++    ])
++    const ultra = planCatalog.at(-1)
++    expect(ultra).toMatchObject({
++      tier: 5,
++      maxProfiles: 7,
++      monthlyPrice: 12.99,
++    })
++  })
++
++  it("UI and server plan lists cannot drift apart", async () => {
++    vi.mock("@/components/icons", () => ({
++      Icons: new Proxy({}, { get: () => () => null }),
++    }))
++    const { plansConfig } = await import("@/config/plans")
++    const { subscriptionPlans } = await import("@/config/subscriptions")
++    const ui = plansConfig.plans.map((p) => [
++      p.name,
++      p.price,
++      p.resolution,
++      p.devices.map((d) => d.title).join(", "),
++    ])
++    const server = subscriptionPlans.map((p) => [
++      p.name,
++      p.monthlyPrice,
++      p.resolution,
++      p.devices,
++    ])
++    expect(ui).toEqual(server)
++  })
++})
++
++describe("Content Access Rule Chain - PremiumContentRule", () => {
++  it.each([
++    [0, false],
++    [1, false],
++    [2, false],
++    [3, true],
++    [4, true],
++    [5, true],
++  ])("premium title with plan tier %i -> allowed %s", async (tier, allowed) => {
++    const { checkAccess } = await import("@/lib/access/policy")
++    const d = checkAccess({ id: 1, isPremium: true }, { planTier: tier })
++    expect(d.allowed).toBe(allowed)
++    if (!d.allowed)
++      expect(d).toMatchObject({
++        reason: "PREMIUM_REQUIRED",
++        visibility: "locked",
++      })
++  })
++
++  it("regular titles are always allowed", async () => {
++    const { checkAccess } = await import("@/lib/access/policy")
++    expect(checkAccess({ id: 1 }, { planTier: 0 }).allowed).toBe(true)
++  })
++
++  it("an empty chain allows everything", async () => {
++    const { buildAccessChain, checkAccess } = await import(
++      "@/lib/access/policy"
++    )
++    expect(
++      checkAccess(
++        { id: 1, isPremium: true },
++        { planTier: 0 },
++        buildAccessChain([])
++      )
++    ).toEqual({ allowed: true })
++  })
++})
++
++describe("tRPC: subscribedProcedure + catalogue.checkAccess", () => {
++  it("locks a premium title for a Basic subscriber", async () => {
++    const prisma = fakePrisma()
++    prisma.user.findFirst.mockResolvedValue(userWithPlan("price_basic"))
++    const { appRouter } = await import("@/server/api/root")
++    const caller = appRouter.createCaller({
++      session: session(),
++      prisma,
++    } as never)
++    const d = await caller.catalogue.checkAccess({ id: 7, isPremium: true })
++    expect(d).toMatchObject({ allowed: false, reason: "PREMIUM_REQUIRED" })
++  })
++
++  it("allows a premium title for a Standard subscriber", async () => {
++    const prisma = fakePrisma()
++    prisma.user.findFirst.mockResolvedValue(userWithPlan("price_standard"))
++    const { appRouter } = await import("@/server/api/root")
++    const caller = appRouter.createCaller({
++      session: session(),
++      prisma,
++    } as never)
++    expect(
++      await caller.catalogue.checkAccess({ id: 7, isPremium: true })
++    ).toEqual({ allowed: true })
++  })
++
++  it("still rejects anonymous callers first", async () => {
++    const { appRouter } = await import("@/server/api/root")
++    const caller = appRouter.createCaller({
++      session: null,
++      prisma: fakePrisma(),
++    } as never)
++    await expect(caller.catalogue.checkAccess({ id: 7 })).rejects.toMatchObject(
++      { code: "UNAUTHORIZED" }
++    )
++  })
++})
++
++describe("profile limit follows the plan", () => {
++  const existing = (n: number) =>
++    Array.from({ length: n }, (_, i) => ({
++      id: `p${i}`,
++      name: `P${i}`,
++      iconId: `i${i}`,
++    }))
++
++  it("Ultra accounts can create a 6th and 7th profile", async () => {
++    const prisma = fakePrisma()
++    prisma.user.findFirst.mockResolvedValue(userWithPlan("price_ultra"))
++    prisma.profile.findMany.mockResolvedValue(existing(6))
++    vi.stubEnv("STRIPE_ULTRA_PRICE_ID", "price_ultra")
++    vi.resetModules()
++    const { appRouter } = await import("@/server/api/root")
++    const caller = appRouter.createCaller({
++      session: session(),
++      prisma,
++    } as never)
++    await expect(
++      caller.profile.create({ name: "Seven", iconId: "i9" })
++    ).resolves.toMatchObject({ name: "Seven" })
++    prisma.profile.findMany.mockResolvedValue(existing(7))
++    await expect(
++      caller.profile.create({ name: "Eight", iconId: "i8" })
++    ).rejects.toThrow("You can only have 7 profiles")
++    vi.unstubAllEnvs()
++  })
++
++  it("Standard accounts keep the limit of 5", async () => {
++    const prisma = fakePrisma()
++    prisma.user.findFirst.mockResolvedValue(userWithPlan("price_standard"))
++    prisma.profile.findMany.mockResolvedValue(existing(5))
++    const { appRouter } = await import("@/server/api/root")
++    const caller = appRouter.createCaller({
++      session: session(),
++      prisma,
++    } as never)
++    await expect(
++      caller.profile.create({ name: "Six", iconId: "i9" })
++    ).rejects.toThrow("You can only have 5 profiles")
++  })
++})
++
++describe("TMDB facade tags premium titles", () => {
++  it("marks only the originals row as premium", async () => {
++    mockFetch()
++    const { getShows } = await import("@/lib/fetchers")
++    const rows = await getShows("movie")
++    expect(rows.netflix?.every((s) => s.isPremium === true)).toBe(true)
++    expect(rows.trending?.some((s) => s.isPremium)).toBe(false)
++  })
++})
+diff --git a/tests/characterization.test.ts b/tests/characterization.test.ts
+index f0b8886..fec3035 100644
+--- a/tests/characterization.test.ts
++++ b/tests/characterization.test.ts
+@@ -30,7 +30,14 @@ describe("TMDB Catalogue Facade (lib/fetchers.ts)", () => {
+       "https://api.themoviedb.org/3/discover/movie?api_key=test-key&with_genres=99",
+     ])
+     expect(Object.keys(rows)).toEqual([
+-      "trending", "topRated", "netflix", "action", "comedy", "horror", "romance", "docs",
++      "trending",
++      "topRated",
++      "netflix",
++      "action",
++      "comedy",
++      "horror",
++      "romance",
++      "docs",
+     ])
+     expect(rows.trending?.[0]?.id).toBe(1)
+     expect(rows.docs?.[0]?.id).toBe(8)
+@@ -46,21 +53,31 @@ describe("TMDB Catalogue Facade (lib/fetchers.ts)", () => {
+     const urls = mockFetch()
+     const { searchShows } = await import("@/lib/fetchers")
+     await searchShows("tom & jerry")
+-    expect(urls[0]).toContain("search/multi?api_key=test-key&query=tom%20%26%20jerry")
++    expect(urls[0]).toContain(
++      "search/multi?api_key=test-key&query=tom%20%26%20jerry"
++    )
+   })
+ })
+ 
+ describe("Authenticated Procedure Pipeline (trpc.ts)", () => {
+   it("rejects anonymous callers with UNAUTHORIZED", async () => {
+     const { appRouter } = await import("@/server/api/root")
+-    const caller = appRouter.createCaller({ session: null, prisma: fakePrisma() } as never)
+-    await expect(caller.profile.getAll()).rejects.toMatchObject({ code: "UNAUTHORIZED" })
++    const caller = appRouter.createCaller({
++      session: null,
++      prisma: fakePrisma(),
++    } as never)
++    await expect(caller.profile.getAll()).rejects.toMatchObject({
++      code: "UNAUTHORIZED",
++    })
+   })
+ 
+   it("passes signed-in callers to the resolver with their user id", async () => {
+     const prisma = fakePrisma()
+     const { appRouter } = await import("@/server/api/root")
+-    const caller = appRouter.createCaller({ session: session("u9"), prisma } as never)
++    const caller = appRouter.createCaller({
++      session: session("u9"),
++      prisma,
++    } as never)
+     await caller.profile.getAll()
+     expect(prisma.profile.findMany).toHaveBeenCalledWith({
+       where: { userId: "u9" },
+@@ -70,18 +87,30 @@ describe("Authenticated Procedure Pipeline (trpc.ts)", () => {
+ 
+   it("leaves public procedures open", async () => {
+     const { appRouter } = await import("@/server/api/root")
+-    const caller = appRouter.createCaller({ session: null, prisma: fakePrisma() } as never)
++    const caller = appRouter.createCaller({
++      session: null,
++      prisma: fakePrisma(),
++    } as never)
+     await expect(caller.user.getSession()).resolves.toBeNull()
+   })
+ 
+   it("limits an account to 5 profiles", async () => {
+     const prisma = fakePrisma()
+     prisma.profile.findMany.mockResolvedValue(
+-      Array.from({ length: 5 }, (_, i) => ({ id: `p${i}`, name: `P${i}`, iconId: `i${i}` }))
++      Array.from({ length: 5 }, (_, i) => ({
++        id: `p${i}`,
++        name: `P${i}`,
++        iconId: `i${i}`,
++      }))
+     )
+     const { appRouter } = await import("@/server/api/root")
+-    const caller = appRouter.createCaller({ session: session(), prisma } as never)
+-    await expect(caller.profile.create({ name: "Six", iconId: "i9" })).rejects.toMatchObject({
++    const caller = appRouter.createCaller({
++      session: session(),
++      prisma,
++    } as never)
++    await expect(
++      caller.profile.create({ name: "Six", iconId: "i9" })
++    ).rejects.toMatchObject({
+       code: "FORBIDDEN",
+     })
+   })
+@@ -89,24 +118,47 @@ describe("Authenticated Procedure Pipeline (trpc.ts)", () => {
+ 
+ describe("My List procedures (routers/my-list.ts)", () => {
+   const show = {
+-    id: 42, profileId: "p1", name: "N", title: "T", original_language: "en",
+-    media_type: "movie" as const, popularity: 1, vote_average: 7, vote_count: 3,
++    id: 42,
++    profileId: "p1",
++    name: "N",
++    title: "T",
++    original_language: "en",
++    media_type: "movie" as const,
++    popularity: 1,
++    vote_average: 7,
++    vote_count: 3,
+   }
+ 
+   it("adds a show that is not yet in the list", async () => {
+     const prisma = fakePrisma()
+     prisma.profile.findUnique.mockResolvedValue({ id: "p1", myList: [] })
+     const { appRouter } = await import("@/server/api/root")
+-    const caller = appRouter.createCaller({ session: session(), prisma } as never)
++    const caller = appRouter.createCaller({
++      session: session(),
++      prisma,
++    } as never)
+     const created = await caller.myList.create(show)
+-    expect(created).toMatchObject({ id: 42, profileId: "p1", adult: false, video: false })
++    expect(created).toMatchObject({
++      id: 42,
++      profileId: "p1",
++      adult: false,
++      video: false,
++    })
+   })
+ 
+   it("refuses duplicates", async () => {
+     const prisma = fakePrisma()
+-    prisma.profile.findUnique.mockResolvedValue({ id: "p1", myList: [{ id: 42 }] })
++    prisma.profile.findUnique.mockResolvedValue({
++      id: "p1",
++      myList: [{ id: 42 }],
++    })
+     const { appRouter } = await import("@/server/api/root")
+-    const caller = appRouter.createCaller({ session: session(), prisma } as never)
+-    await expect(caller.myList.create(show)).rejects.toMatchObject({ code: "FORBIDDEN" })
++    const caller = appRouter.createCaller({
++      session: session(),
++      prisma,
++    } as never)
++    await expect(caller.myList.create(show)).rejects.toMatchObject({
++      code: "FORBIDDEN",
++    })
+   })
+ })
+diff --git a/tests/helpers.ts b/tests/helpers.ts
+index 4928ae1..68046d5 100644
+--- a/tests/helpers.ts
++++ b/tests/helpers.ts
+@@ -7,13 +7,17 @@ export function fakePrisma(overrides: Record<string, unknown> = {}) {
+       findMany: vi.fn().mockResolvedValue([]),
+       findUnique: vi.fn().mockResolvedValue(null),
+       findFirst: vi.fn().mockResolvedValue(null),
+-      create: vi.fn(async ({ data }: { data: unknown }) => ({ id: "new", ...(data as object) })),
++      create: vi.fn(async ({ data }: { data: unknown }) => ({
++        id: "new",
++        ...(data as object),
++      })),
+       update: vi.fn(async ({ data }: { data: unknown }) => data),
+       delete: vi.fn(),
+     },
+     user: {
+       findUnique: vi.fn().mockResolvedValue(null),
+-      findFirst: vi.fn().mockResolvedValue(null),
++      // CH01: a signed-in user always has a User row; default = no subscription
++      findFirst: vi.fn().mockResolvedValue({ stripeSubscriptionId: null }),
+       update: vi.fn(),
+     },
+     myShow: {
+diff --git a/tests/subscription.test.ts b/tests/subscription.test.ts
+index 808e9ec..5e74c16 100644
+--- a/tests/subscription.test.ts
++++ b/tests/subscription.test.ts
+@@ -15,8 +15,10 @@ describe("getUserSubscriptionPlan", () => {
+ 
+   it("returns null when the period ended more than a day ago", async () => {
+     findFirst.mockResolvedValue({
+-      stripeSubscriptionId: "sub", stripePriceId: "price_basic",
+-      stripeCurrentPeriodEnd: new Date(Date.now() - 2 * DAY), stripeCustomerId: "c",
++      stripeSubscriptionId: "sub",
++      stripePriceId: "price_basic",
++      stripeCurrentPeriodEnd: new Date(Date.now() - 2 * DAY),
++      stripeCustomerId: "c",
+     })
+     const { getUserSubscriptionPlan } = await import("@/lib/subscription")
+     expect(await getUserSubscriptionPlan("u")).toBeNull()
+@@ -24,8 +26,10 @@ describe("getUserSubscriptionPlan", () => {
+ 
+   it("maps an active price id to its plan", async () => {
+     findFirst.mockResolvedValue({
+-      stripeSubscriptionId: "sub", stripePriceId: "price_standard",
+-      stripeCurrentPeriodEnd: new Date(Date.now() + 10 * DAY), stripeCustomerId: "c",
++      stripeSubscriptionId: "sub",
++      stripePriceId: "price_standard",
++      stripeCurrentPeriodEnd: new Date(Date.now() + 10 * DAY),
++      stripeCustomerId: "c",
+     })
+     const { getUserSubscriptionPlan } = await import("@/lib/subscription")
+     const plan = await getUserSubscriptionPlan("u")
+-- 
+2.43.0
+

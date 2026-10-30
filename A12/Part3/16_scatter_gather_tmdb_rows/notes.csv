@@ -1,0 +1,4 @@
+Java,"CompletableFuture.supplyAsync per row (scatter) and allOf().join() (gather) on the common ForkJoinPool; request order kept by joining the futures list in order."
+Python,"asyncio.gather is the direct analogue of Promise.all and preserves argument order; the latency is simulated so the result is deterministic."
+JavaScript,"Promise.all over async recipients is exactly the source code idiom (lib/fetchers.ts); Object.fromEntries rebuilds the keyed result."
+C++,"std::async(std::launch::async) starts one thread per row; futures are collected in request order with get(); real OS threads make this the heaviest variant at run time."

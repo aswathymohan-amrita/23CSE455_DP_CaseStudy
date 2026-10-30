@@ -1,0 +1,157 @@
+ok Authenticated Procedure Pipe data/code/src/server/api/trpc.ts:109 | const enforceUserIsAuthed = t.middleware(({ ctx, next }) => {
+ok Authenticated Procedure Pipe data/code/src/server/api/trpc.ts:129 | export const protectedProcedure = t.procedure.use(enforceUserIsAuthed)
+ok Authenticated Procedure Pipe data/code/src/server/api/routers/profile.ts:7 | getAll: protectedProcedure.query(async ({ ctx }) => {
+ok Authenticated Procedure Pipe data/code/src/pages/api/trpc/[trpc].ts:8 | export default createNextApiHandler({
+ok Shared Prisma Database Clien data/code/src/server/db.ts:9 | export const prisma =
+ok Shared Prisma Database Clien data/code/src/server/db.ts:5 | const globalForPrisma = globalThis as unknown as {
+ok Shared Prisma Database Clien data/code/src/server/db.ts:16 | if (env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
+ok Shared Prisma Database Clien data/code/src/server/api/trpc.ts:47 | const createInnerTRPCContext = (opts: CreateContextOptions) => {
+ok Shared Prisma Database Clien data/code/src/server/auth.ts:48 | adapter: PrismaAdapter(prisma),
+ok Shared Prisma Database Clien data/code/src/lib/subscription.ts:6 | export async function getUserSubscriptionPlan(
+ok Shared Prisma Database Clien data/code/src/app/api/webhooks/stripe/route.ts:8 | export async function POST(req: Request) {
+ok Stripe API Client            data/code/src/lib/stripe.ts:4 | export const stripe = new Stripe(env.STRIPE_API_KEY ?? "", {
+ok Stripe API Client            data/code/src/app/api/webhooks/stripe/route.ts:8 | export async function POST(req: Request) {
+ok Stripe API Client            data/code/src/app/api/users/stripe/route.ts:14 | export async function POST(req: Request) {
+ok Stripe API Client            data/code/src/app/(auth)/login/plans/page.tsx:17 | export default async function PlansPage() {
+ok Stripe API Client            data/code/src/app/(dashboard)/account/page.tsx:16 | export default async function AccountPage() {
+ok Show Modal Selection         data/code/src/stores/modal.ts:13 | export const useModalStore = create<ModalState>()((set) => ({
+ok Show Modal Selection         data/code/src/components/shows-carousel.tsx:93 | const ShowCard = ({ show }: { show: Show }) => {
+ok Show Modal Selection         data/code/src/components/shows-container.tsx:22 | const ShowsContainer = ({ user, shows }: ShowsContainerProps) => {
+ok Show Modal Selection         data/code/src/components/show-modal.tsx:30 | const ShowModal = ({ open, setOpen }: ShowModalProps) => {
+ok Show Modal Selection         data/code/src/components/hero.tsx:17 | const Hero = ({ shows }: HeroProps) => {
+ok Show Modal Selection         data/code/src/components/shows-grid.tsx:13 | const ShowsGrid = ({ shows }: SearchedShowsProps) => {
+ok Active Profile Selection     data/code/src/stores/profile.ts:12 | export const useProfileStore = create<ProfileState>()(
+ok Active Profile Selection     data/code/src/components/screens/profiles-screen.tsx:86 | onClick={() => {
+ok Active Profile Selection     data/code/src/components/layouts/site-header.tsx:150 | onClick={() => {
+ok Active Profile Selection     data/code/src/config/site.ts:57 | onClick: () => useProfileStore.setState({ profile: null }),
+ok Active Profile Selection     data/code/src/components/screens/profiles-screen.tsx:24 | const ProfilesScreen = ({ session, children }: ProfilesScreenProps) =>
+ok Active Profile Selection     data/code/src/components/forms/pin-form.tsx:10 | const PinForm = () => {
+ok Active Profile Selection     data/code/src/components/shows-container.tsx:22 | const ShowsContainer = ({ user, shows }: ShowsContainerProps) => {
+ok Active Profile Selection     data/code/src/components/show-modal.tsx:30 | const ShowModal = ({ open, setOpen }: ShowModalProps) => {
+ok Active Profile Selection     data/code/src/components/layouts/site-header.tsx:35 | const SiteHeader = ({ session }: SiteHeaderProps) => {
+ok Active Profile Selection     data/code/src/components/my-shows.tsx:16 | const MyShows = ({ user }: MyShowsProps) => {
+ok Search Results Broadcast     data/code/src/stores/search.ts:11 | export const useSearchStore = create<SearchState>()((set) => ({
+ok Search Results Broadcast     data/code/src/components/layouts/site-header.tsx:51 | async function searchShowsByQuery(value: string) {
+ok Search Results Broadcast     data/code/src/components/layouts/site-header.tsx:35 | const SiteHeader = ({ session }: SiteHeaderProps) => {
+ok Search Results Broadcast     data/code/src/components/shows-container.tsx:22 | const ShowsContainer = ({ user, shows }: ShowsContainerProps) => {
+ok Search Results Broadcast     data/code/src/components/hero.tsx:17 | const Hero = ({ shows }: HeroProps) => {
+ok Search Results Broadcast     data/code/src/components/layouts/main-nav.tsx:24 | export function MainNav({ items }: MainNavProps) {
+ok Search Results Broadcast     data/code/src/components/my-shows.tsx:16 | const MyShows = ({ user }: MyShowsProps) => {
+ok Persisted Profile Store      data/code/src/stores/profile.ts:15 | (set) => ({
+ok Persisted Profile Store      data/code/src/stores/profile.ts:14 | persist(
+ok Persisted Profile Store      data/code/src/stores/profile.ts:13 | devtools(
+ok Persisted Profile Store      data/code/src/stores/profile.ts:12 | export const useProfileStore = create<ProfileState>()(
+ok NextAuth Prisma Persistence  data/code/src/server/db.ts:9 | export const prisma =
+ok NextAuth Prisma Persistence  data/code/src/server/auth.ts:38 | export const authOptions: NextAuthOptions = {
+ok NextAuth Prisma Persistence  data/code/src/pages/api/auth/[...nextauth].ts:4 | export default NextAuth(authOptions);
+ok Sign-in Provider Strategy    data/code/src/server/auth.ts:50 | GoogleProvider({
+ok Sign-in Provider Strategy    data/code/src/server/auth.ts:38 | export const authOptions: NextAuthOptions = {
+ok Sign-in Provider Strategy    data/code/src/pages/api/auth/[...nextauth].ts:4 | export default NextAuth(authOptions);
+ok TMDB Catalogue Facade        data/code/src/lib/fetchers.ts:5 | export async function getShows(mediaType: MEDIA_TYPE) {
+ok TMDB Catalogue Facade        data/code/src/lib/fetchers.ts:82 | export async function getNewAndPopularShows() {
+ok TMDB Catalogue Facade        data/code/src/lib/fetchers.ts:124 | export async function searchShows(query: string) {
+ok TMDB Catalogue Facade        data/code/src/lib/fetchers.ts:15 | ] = await Promise.all([
+ok TMDB Catalogue Facade        data/code/src/app/(shows)/page.tsx:8 | export default async function Home() {
+ok TMDB Catalogue Facade        data/code/src/app/(shows)/movies/page.tsx:13 | export default async function MoviesPage() {
+ok TMDB Catalogue Facade        data/code/src/app/(shows)/tv-shows/page.tsx:12 | export default async function TVShowsPage() {
+ok TMDB Catalogue Facade        data/code/src/app/(shows)/new-and-popular/page.tsx:12 | export default async function NewAndPopularPage() {
+ok TMDB Catalogue Facade        data/code/src/components/layouts/site-header.tsx:51 | async function searchShowsByQuery(value: string) {
+ok API Router Tree              data/code/src/server/api/root.ts:12 | export const appRouter = createTRPCRouter({
+ok API Router Tree              data/code/src/server/api/routers/user.ts:9 | export const userRouter = createTRPCRouter({
+ok API Router Tree              data/code/src/server/api/routers/profile.ts:6 | export const profileRouter = createTRPCRouter({
+ok API Router Tree              data/code/src/server/api/routers/icon.ts:5 | export const iconRouter = createTRPCRouter({
+ok API Router Tree              data/code/src/server/api/routers/my-list.ts:6 | export const myListRouter = createTRPCRouter({
+ok API Router Tree              data/code/src/server/api/routers/profile.ts:7 | getAll: protectedProcedure.query(async ({ ctx }) => {
+ok API Router Tree              data/code/src/server/api/trpc.ts:97 | export const createTRPCRouter = t.router
+ok Pages-Router tRPC Client Pro data/code/src/server/api/root.ts:20 | export type AppRouter = typeof appRouter
+ok Pages-Router tRPC Client Pro data/code/src/pages/api/trpc/[trpc].ts:8 | export default createNextApiHandler({
+ok Pages-Router tRPC Client Pro data/code/src/lib/api/api.ts:21 | export const api = createTRPCNext<AppRouter>({
+ok Pages-Router tRPC Client Pro data/code/src/lib/api/client.ts:35 | links: [
+ok Pages-Router tRPC Client Pro data/code/src/components/shows-container.tsx:32 | const myShowsQuery = profileStore.profile
+ok Pages-Router tRPC Client Pro data/code/src/components/show-modal.tsx:93 | const userQuery = api.user.getCurrent.useQuery(undefined, {
+ok App-Router tRPC Client Proxy data/code/src/server/api/root.ts:20 | export type AppRouter = typeof appRouter
+ok App-Router tRPC Client Proxy data/code/src/pages/api/trpc/[trpc].ts:8 | export default createNextApiHandler({
+ok App-Router tRPC Client Proxy data/code/src/lib/api/client.ts:22 | export const api = createTRPCNextBeta<AppRouter>({
+ok App-Router tRPC Client Proxy data/code/src/@trpc/next-layout/client/createTrpcNextBeta.tsx:48 | export function createTRPCNextBeta<TRouter extends AnyRouter, TFlags =
+ok App-Router tRPC Client Proxy data/code/src/context/trpc-provider.tsx:7 | const TRPCProvider = ({ children }: PropsWithChildren) => {
+ok App-Router tRPC Client Proxy data/code/src/app/layout.tsx:80 | <TRPCProvider>
+ok App-Router tRPC Client Proxy data/code/src/components/forms/add-profile-form.tsx:13 | import { api } from "@/lib/api/client"
+ok App-Router tRPC Client Proxy data/code/src/components/forms/edit-profile-form.tsx:15 | import { api } from "@/lib/api/client"
+ok Environment Secret Guard     data/code/src/env.mjs:67 | const merged = server.merge(client)
+ok Environment Secret Guard     data/code/src/env.mjs:75 | if (!!process.env.SKIP_ENV_VALIDATION == false) {
+ok Environment Secret Guard     data/code/src/env.mjs:92 | env = new Proxy(parsed.data, {
+ok Environment Secret Guard     data/code/src/lib/stripe.ts:1 | import { env } from "@/env.mjs"
+ok Environment Secret Guard     data/code/src/server/db.ts:3 | import { env } from "@/env.mjs";
+ok My List Query Cache          data/code/src/@trpc/next-layout/client/createTrpcNextBeta.tsx:55 | const TRPCProvider = ({ children }: { children: React.ReactNode }) => 
+ok My List Query Cache          data/code/src/lib/api/client.ts:24 | queryClientConfig: {
+ok My List Query Cache          data/code/src/server/api/routers/my-list.ts:7 | getAll: protectedProcedure.input(z.string()).query(async ({ ctx, input
+ok My List Query Cache          data/code/src/components/shows-container.tsx:32 | const myShowsQuery = profileStore.profile
+ok My List Query Cache          data/code/src/components/show-modal.tsx:98 | const myShowsQuery = profileStore.profile
+ok My List Query Cache          data/code/src/components/show-modal.tsx:127 | const mutationCount = useIsMutating()
+ok tRPC API Front Controller    data/code/src/pages/api/trpc/[trpc].ts:8 | export default createNextApiHandler({
+ok tRPC API Front Controller    data/code/src/server/api/trpc.ts:60 | export const createTRPCContext = async (opts: CreateNextContextOptions
+ok tRPC API Front Controller    data/code/src/pages/api/trpc/[trpc].ts:11 | onError:
+ok tRPC API Front Controller    data/code/src/server/api/root.ts:12 | export const appRouter = createTRPCRouter({
+ok tRPC API Front Controller    data/code/src/server/api/routers/profile.ts:7 | getAll: protectedProcedure.query(async ({ ctx }) => {
+ok tRPC API Front Controller    data/code/src/lib/api/client.ts:41 | httpBatchLink({
+ok NextAuth Auth Route Front Co data/code/src/pages/api/auth/[...nextauth].ts:4 | export default NextAuth(authOptions);
+ok NextAuth Auth Route Front Co data/code/src/server/auth.ts:38 | export const authOptions: NextAuthOptions = {
+ok NextAuth Auth Route Front Co data/code/src/components/login-button.tsx:13 | const loginWithGoogle = async () => {
+ok NextAuth Auth Route Front Co data/code/src/components/layouts/site-header.tsx:230 | onClick={() => void signOut()}
+ok tRPC Next.js API Handler Ada data/code/src/server/api/trpc.ts:28 | import { type CreateNextContextOptions } from "@trpc/server/adapters/n
+ok tRPC Next.js API Handler Ada data/code/src/server/api/trpc.ts:60 | export const createTRPCContext = async (opts: CreateNextContextOptions
+ok tRPC Next.js API Handler Ada data/code/src/pages/api/trpc/[trpc].ts:8 | export default createNextApiHandler({
+ok tRPC Client Link Chain       data/code/src/lib/api/client.ts:36 | loggerLink({
+ok tRPC Client Link Chain       data/code/src/lib/api/client.ts:41 | httpBatchLink({
+ok tRPC Client Link Chain       data/code/src/lib/api/client.ts:35 | links: [
+ok tRPC Client Link Chain       data/code/src/@trpc/next-layout/client/createTrpcNextBeta.tsx:55 | const TRPCProvider = ({ children }: { children: React.ReactNode }) => 
+ok tRPC Procedure Builder       data/code/src/server/api/trpc.ts:71 | const t = initTRPC.context<typeof createTRPCContext>().create({
+ok tRPC Procedure Builder       data/code/src/server/api/trpc.ts:106 | export const publicProcedure = t.procedure
+ok tRPC Procedure Builder       data/code/src/server/api/trpc.ts:129 | export const protectedProcedure = t.procedure.use(enforceUserIsAuthed)
+ok tRPC Procedure Builder       data/code/src/server/api/routers/profile.ts:17 | getOthers: protectedProcedure
+ok tRPC Request Context         data/code/src/server/api/trpc.ts:60 | export const createTRPCContext = async (opts: CreateNextContextOptions
+ok tRPC Request Context         data/code/src/server/api/trpc.ts:47 | const createInnerTRPCContext = (opts: CreateContextOptions) => {
+ok tRPC Request Context         data/code/src/server/api/trpc.ts:33 | type CreateContextOptions = {
+ok tRPC Request Context         data/code/src/server/api/trpc.ts:71 | const t = initTRPC.context<typeof createTRPCContext>().create({
+ok tRPC Request Context         data/code/src/server/api/trpc.ts:109 | const enforceUserIsAuthed = t.middleware(({ ctx, next }) => {
+ok tRPC Request Context         data/code/src/server/api/routers/profile.ts:7 | getAll: protectedProcedure.query(async ({ ctx }) => {
+ok Wire Serialization Transform data/code/src/server/api/trpc.ts:30 | import superjson from "superjson"
+ok Wire Serialization Transform data/code/src/server/api/trpc.ts:71 | const t = initTRPC.context<typeof createTRPCContext>().create({
+ok Wire Serialization Transform data/code/src/lib/api/client.ts:22 | export const api = createTRPCNextBeta<AppRouter>({
+ok Wire Serialization Transform data/code/src/lib/api/client.ts:51 | export const HydrateClient = createHydrateClient({
+ok Search Input DOM Event Liste data/code/src/hooks/use-on-click-outside.ts:15 | document.addEventListener("mousedown", listener)
+ok Search Input DOM Event Liste data/code/src/components/debounced-input.tsx:69 | window.addEventListener("keydown", handleKeyDown)
+ok Search Input DOM Event Liste data/code/src/hooks/use-on-click-outside.ts:8 | const listener = (e: Event) => {
+ok Search Input DOM Event Liste data/code/src/components/debounced-input.tsx:53 | React.useEffect(() => {
+ok Search Input DOM Event Liste data/code/src/hooks/use-on-click-outside.ts:7 | React.useEffect(() => {
+ok Search Input DOM Event Liste data/code/src/components/debounced-input.tsx:69 | window.addEventListener("keydown", handleKeyDown)
+ok Search Input DOM Event Liste data/code/src/components/debounced-input.tsx:36 | const closeInput = React.useCallback(() => setIsOpen(false), [])
+ok Search Input DOM Event Liste data/code/src/components/layouts/site-header.tsx:80 | <DebouncedInput
+ok Shows Segment Error Boundary data/code/src/app/(shows)/error.tsx:10 | const Error = ({ error, reset }: ErrorProps) => {
+ok Shows Segment Error Boundary data/code/src/components/screens/error-screen.tsx:9 | const ErrorScreen = ({ error, reset }: ErrorScreenProps) => {
+ok Shows Segment Error Boundary data/code/src/app/(shows)/layout.tsx:8 | export default async function ShowsLayout({ children }: ShowsLayotutPr
+ok Shows Segment Error Boundary data/code/src/lib/fetchers.ts:42 | if (
+ok Root Global Error Boundary   data/code/src/app/global-error.tsx:10 | const GlobalError = ({ error, reset }: GlobalErrorProps) => {
+ok Root Global Error Boundary   data/code/src/components/screens/error-screen.tsx:9 | const ErrorScreen = ({ error, reset }: ErrorScreenProps) => {
+ok Root Global Error Boundary   data/code/src/app/layout.tsx:78 | export default function RootLayout({ children }: RootLayoutProps) {
+ok Shows Loading Placeholder    data/code/src/app/(shows)/loading.tsx:3 | export default function ShowsLoading() {
+ok Shows Loading Placeholder    data/code/src/app/(shows)/page.tsx:8 | export default async function Home() {
+ok TMDB Row Scatter-Gather      data/code/src/lib/fetchers.ts:6 | const [
+ok TMDB Row Scatter-Gather      data/code/src/lib/fetchers.ts:42 | if (
+ok TMDB Row Scatter-Gather      data/code/src/lib/fetchers.ts:83 | const [popularTvRes, popularMovieRes, trendingTvRes, trendingMovieRes]
+ok TMDB Row Scatter-Gather      data/code/src/lib/fetchers.ts:99 | if (
+ok TMDB Row Scatter-Gather      data/code/src/app/(shows)/page.tsx:8 | export default async function Home() {
+ok TMDB Row Scatter-Gather      data/code/src/app/(shows)/new-and-popular/page.tsx:12 | export default async function NewAndPopularPage() {
+ok Profile and Account Query Ca data/code/src/@trpc/next-layout/client/createTrpcNextBeta.tsx:55 | const TRPCProvider = ({ children }: { children: React.ReactNode }) => 
+ok Profile and Account Query Ca data/code/src/server/api/routers/profile.ts:7 | getAll: protectedProcedure.query(async ({ ctx }) => {
+ok Profile and Account Query Ca data/code/src/components/screens/profiles-screen.tsx:29 | const profilesQuery = api.profile.getAll.useQuery(undefined, {
+ok Profile and Account Query Ca data/code/src/components/manage-profiles.tsx:20 | const profilesQuery = api.profile.getAll.useQuery()
+ok Profile and Account Query Ca data/code/src/components/layouts/site-header.tsx:62 | const otherProfilesQuery = profileStore.profile
+ok Profile and Account Query Ca data/code/src/components/forms/account-form.tsx:81 | const userQuery = api.user.getCurrentWithProfile.useQuery()
+ok Profile and Account Query Ca data/code/src/components/icon-picker.tsx:31 | const userQuery = api.user.getCurrent.useQuery()
+ok Profile and Account Query Ca data/code/src/components/forms/add-profile-form.tsx:41 | const createProfileMutation = api.profile.create.useMutation({
+ok Profile and Account Query Ca data/code/src/components/forms/edit-profile-form.tsx:88 | React.useEffect(() => {
+ok Profile and Account Query Ca data/code/src/components/forms/reset-pin-form.tsx:44 | const updatePinMutation = api.profile.updatePin.useMutation({
+ok Profile and Account Query Ca data/code/src/components/forms/account-form.tsx:245 | const updateProfileMutation = api.profile.update.useMutation({
+ok Profile and Account Query Ca data/code/src/components/forms/edit-user-form.tsx:40 | const updateUserMutation = api.user.update.useMutation({
+problems: 0

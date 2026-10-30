@@ -1,0 +1,28 @@
+@startuml
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+hide empty members
+interface "StoreApi<T>\n<<zustand>>" as Subject {
+  +getState() : T
+  +setState(partial)
+  +subscribe(listener) : unsubscribe
+}
+title Observer - Search Results Broadcast
+class "useSearchStore\n<<stores/search.ts:11-16>>" as CS {
+  query : string
+  shows : Show[]
+}
+class "SiteHeader.searchShowsByQuery\n<<site-header.tsx:51-55>>" as Pub
+class SiteHeader <<observer>>
+class ShowsContainer <<observer>>
+class Hero <<observer>>
+class MainNav <<observer>>
+class MyShows <<observer>>
+Subject <|.. CS
+Pub --> CS : setQuery / setShows
+CS --> SiteHeader
+CS --> ShowsContainer
+CS --> Hero
+CS --> MainNav
+CS --> MyShows
+@enduml

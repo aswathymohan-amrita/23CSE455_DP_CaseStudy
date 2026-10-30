@@ -1,0 +1,19 @@
+@startuml
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+hide empty members
+title Singleton (module) - Stripe API Client
+class "lib/stripe.ts" as S <<module singleton>> {
+  +stripe : Stripe = new Stripe(key, {apiVersion: 2022-11-15})
+}
+class Stripe <<stripe@12>>
+class "webhooks/stripe POST" as A
+class "users/stripe POST" as B
+class PlansPage
+class AccountPage
+S --> "1" Stripe
+A ..> S
+B ..> S
+PlansPage ..> S
+AccountPage ..> S
+@enduml

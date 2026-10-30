@@ -1,0 +1,18 @@
+@startuml
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+hide empty members
+title Proxy - App-Router tRPC Client Proxy
+class "AppRouter (type)\n<<root.ts:20>>" as S
+class "appRouter via createNextApiHandler\n<<[trpc].ts:8-19>>" as RS
+class "api = createTRPCNextBeta<AppRouter>\n<<lib/api/client.ts:22-45>>" as P
+class "createFlatProxy(key => ...)\n<<createTrpcNextBeta.tsx:76-92>>" as FP
+class "TRPCProvider\n<<context/trpc-provider.tsx>>" as Prov
+class "AddProfileForm, EditProfileForm" as Cl
+S <|.. RS
+S <|.. P : typed as
+P --> FP : built by
+FP --> RS : hooks -> HTTP batch
+Prov --> P : api.Provider
+Cl --> P
+@enduml

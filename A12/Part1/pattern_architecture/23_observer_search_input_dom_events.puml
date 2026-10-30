@@ -1,0 +1,21 @@
+@startuml
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+hide empty members
+title Observer - Search Input DOM Event Listeners
+interface "EventTarget (Subject)\naddEventListener / removeEventListener" as S
+class "document\n(mousedown, touchstart)" as Doc
+class "window\n(keydown)" as Win
+interface "EventListener (Observer)" as O
+class "useOnClickOutside listener\n<<use-on-click-outside.ts:8-14>>" as L1
+class "DebouncedInput handleKeyDown\n<<debounced-input.tsx:53-71>>" as L2
+class "DebouncedInput (rendered by SiteHeader)\nregisters in useEffect, cleanup unregisters" as C
+S <|.. Doc
+S <|.. Win
+O <|.. L1
+O <|.. L2
+Doc o--> "*" O : notifies
+Win o--> "*" O : notifies
+C --> L1 : useOnClickOutside(ref, closeInput)
+C --> L2
+@enduml

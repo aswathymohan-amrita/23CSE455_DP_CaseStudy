@@ -1,0 +1,5 @@
+# 15_suspense_boundary_loading_placeholder / Python - 2026-10-29 23:59:49 - Windows 11 AMD64
+# runtime: Python 3.12.10
+$ python -B test_runner.py ../cases.tsv
+10/10 passed
+exit=0

@@ -1,0 +1,28 @@
+@startuml
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+hide empty members
+title Template Method - Access Rule Evaluation Template (student-added CH01)
+abstract class AccessRule {
+  +check(show, ctx) <<template method>>
+  #{abstract} evaluate(show, ctx) <<primitive>>
+}
+note right of AccessRule
+  check():
+    denial = evaluate(show, ctx)
+    if denial: return denial
+    return next ? next.check() : ALLOW
+end note
+class RegionRule {
+  #evaluate()
+}
+class MaturityRule {
+  #evaluate()
+}
+class PremiumContentRule {
+  #evaluate()
+}
+AccessRule <|-- RegionRule
+AccessRule <|-- MaturityRule
+AccessRule <|-- PremiumContentRule
+@enduml

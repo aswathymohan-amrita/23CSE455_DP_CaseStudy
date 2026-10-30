@@ -1,0 +1,19 @@
+source_version,summary,pattern_name,count
+original@676e5dd,per_pattern,Chain of Responsibility,2
+original@676e5dd,per_pattern,Singleton,2
+original@676e5dd,per_pattern,Observer,4
+original@676e5dd,per_pattern,Decorator,1
+original@676e5dd,per_pattern,Adapter,2
+original@676e5dd,per_pattern,Strategy,2
+original@676e5dd,per_pattern,Facade,1
+original@676e5dd,per_pattern,Composite,1
+original@676e5dd,per_pattern,Proxy,3
+original@676e5dd,per_pattern,Read-Through Cache,2
+original@676e5dd,per_pattern,Front Controller,2
+original@676e5dd,per_pattern,Builder,1
+original@676e5dd,per_pattern,Context Object,1
+original@676e5dd,per_pattern,Error Boundary,2
+original@676e5dd,per_pattern,Suspense Boundary,1
+original@676e5dd,per_pattern,Scatter-Gather,1
+original@676e5dd,total_pattern_types,,16
+original@676e5dd,total_pattern_instances,,28

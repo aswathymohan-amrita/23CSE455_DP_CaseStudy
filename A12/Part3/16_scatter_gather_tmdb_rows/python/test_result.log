@@ -1,0 +1,5 @@
+# 16_scatter_gather_tmdb_rows / Python - 2026-10-29 23:59:53 - Windows 11 AMD64
+# runtime: Python 3.12.10
+$ python -B test_runner.py ../cases.tsv
+8/8 passed
+exit=0

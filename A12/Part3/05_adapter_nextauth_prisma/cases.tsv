@@ -1,0 +1,9 @@
+a01	create a@x.com Ann	u1
+a02	create a@x.com Ann;get a@x.com	u1|u1:Ann
+a03	get b@x.com	null
+a04	create a@x.com Ann;link u1 google	u1|a1:u1:google
+a05	link u9 github	ERROR:foreign key
+a06	create a@x.com Ann;create a@x.com Bob	u1|ERROR:unique email
+a07	create a@x.com Ann;create b@x.com Bob;get b@x.com;link u2 google;link u2 github	u1|u2|u2:Bob|a1:u2:google|a2:u2:github
+a08	frob x	ERROR:unknown operation
+a09	create a@x.com Ann;create a@x.com Bob;create c@x.com Cy	u1|ERROR:unique email|u2

@@ -1,0 +1,4 @@
+Java,"Holder is an explicit ProcessGlobals object (Java has no globalThis); idiomatic Java would use a static holder / enum singleton, which cannot be reset per test case."
+Python,"Module-level objects are already singletons via the import cache; the holder mirrors globalThis with a plain object; 'or' expresses ??."
+JavaScript,"Closest to the source: ?? for reuse-or-create and an object standing in for globalThis; module cache gives the singleton in real code."
+C++,"Holder owns the client through std::shared_ptr so identity (pointer equality) survives reloads; a function-local static (Meyers singleton) is the usual C++ form."

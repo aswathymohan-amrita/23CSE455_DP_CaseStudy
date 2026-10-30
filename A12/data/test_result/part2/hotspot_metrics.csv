@@ -1,0 +1,25 @@
+file_group,snapshot,files_present,nloc,functions,max_ccn
+plan data (plans.ts + subscriptions.ts + plan-catalog.ts),baseline,2,139,0,0
+plan data (plans.ts + subscriptions.ts + plan-catalog.ts),CH01,3,123,6,3
+plan data (plans.ts + subscriptions.ts + plan-catalog.ts),CH02,3,123,6,3
+plan data (plans.ts + subscriptions.ts + plan-catalog.ts),CH03,3,123,6,3
+TMDB facade (lib/fetchers.ts),baseline,1,126,4,9
+TMDB facade (lib/fetchers.ts),CH01,1,126,5,9
+TMDB facade (lib/fetchers.ts),CH02,1,120,20,3
+TMDB facade (lib/fetchers.ts),CH03,1,120,20,3
+row pages (4 shows pages + lib/catalogue.ts),baseline,4,174,4,3
+row pages (4 shows pages + lib/catalogue.ts),CH01,4,174,4,3
+row pages (4 shows pages + lib/catalogue.ts),CH02,5,116,6,3
+row pages (4 shows pages + lib/catalogue.ts),CH03,5,116,6,3
+my-list router (routers/my-list.ts),baseline,1,169,7,3
+my-list router (routers/my-list.ts),CH01,1,169,7,3
+my-list router (routers/my-list.ts),CH02,1,169,7,3
+my-list router (routers/my-list.ts),CH03,1,114,7,3
+access chain (lib/access/*),baseline,0,0,0,0
+access chain (lib/access/*),CH01,3,79,6,3
+access chain (lib/access/*),CH02,3,116,9,7
+access chain (lib/access/*),CH03,3,168,12,7
+tRPC pipeline (server/api/trpc.ts),baseline,1,49,4,3
+tRPC pipeline (server/api/trpc.ts),CH01,1,63,5,6
+tRPC pipeline (server/api/trpc.ts),CH02,1,71,6,6
+tRPC pipeline (server/api/trpc.ts),CH03,1,71,6,6

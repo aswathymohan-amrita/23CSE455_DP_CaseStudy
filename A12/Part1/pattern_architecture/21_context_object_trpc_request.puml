@@ -1,0 +1,20 @@
+@startuml
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+hide empty members
+title Context Object - tRPC Request Context
+class "createTRPCContext({req, res})\n(ContextFactory) <<trpc.ts:60-69>>" as F
+class "createInnerTRPCContext({session})\n<<trpc.ts:47-52>>" as I
+class "ctx (Context Object)" as C {
+  session: Session | null
+  prisma: PrismaClient
+}
+class "enforceUserIsAuthed\nnext({ctx: {session: non-null}})\n<<trpc.ts:109-119>>" as R
+class "resolvers\nctx.prisma / ctx.session.user.id\n<<routers/*.ts>>" as U
+class "getServerAuthSession(req, res)\n<<auth.ts:71-76>>" as S
+F --> S : once per request
+F --> I
+I --> C : builds
+R --> C : refines (copy)
+U --> C : reads only ctx
+@enduml

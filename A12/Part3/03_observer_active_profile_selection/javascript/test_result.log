@@ -1,0 +1,5 @@
+# 03_observer_active_profile_selection / JavaScript - 2026-10-29 23:59:00 - Windows 11 AMD64
+# runtime: Node.js v26.13.0
+$ node testRunner.js ../cases.tsv
+11/11 passed
+exit=0

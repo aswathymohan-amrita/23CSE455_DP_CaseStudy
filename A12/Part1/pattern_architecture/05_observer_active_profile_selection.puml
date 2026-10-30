@@ -1,0 +1,30 @@
+@startuml
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+hide empty members
+interface "StoreApi<T>\n<<zustand>>" as Subject {
+  +getState() : T
+  +setState(partial)
+  +subscribe(listener) : unsubscribe
+}
+title Observer - Active Profile Selection
+class "useProfileStore\n<<stores/profile.ts:12-27>>" as CS {
+  profile : ProfileWithIcon | null
+  pinForm : boolean
+}
+class "publishers:\nProfilesScreen button, SiteHeader menu,\nsiteConfig sign-out" as Pub
+class ProfilesScreen <<observer>>
+class PinForm <<observer>>
+class ShowsContainer <<observer>>
+class ShowModal <<observer>>
+class SiteHeader <<observer>>
+class MyShows <<observer>>
+Subject <|.. CS
+Pub --> CS : setState({profile, pinForm})
+CS --> ProfilesScreen
+CS --> PinForm
+CS --> ShowsContainer
+CS --> ShowModal
+CS --> SiteHeader
+CS --> MyShows
+@enduml

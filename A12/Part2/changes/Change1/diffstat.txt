@@ -1,0 +1,23 @@
+ .env.example                          |   2 +
+ src/app/api/users/stripe/route.ts     |   9 +-
+ src/components/forms/billing-form.tsx |   5 +-
+ src/components/show-modal.tsx         |  73 ++++++++-----
+ src/config/plan-catalog.ts            |  94 +++++++++++++++++
+ src/config/plans.ts                   | 104 ++++---------------
+ src/config/subscriptions.ts           |  64 ++++--------
+ src/env.mjs                           |   2 +
+ src/lib/access/policy.ts              |  28 +++++
+ src/lib/access/rules.ts               |  53 ++++++++++
+ src/lib/access/types.ts               |  25 +++++
+ src/lib/fetchers.ts                   |   3 +-
+ src/lib/subscription.ts               |   5 +-
+ src/server/api/root.ts                |   2 +
+ src/server/api/routers/catalogue.ts   |  20 ++++
+ src/server/api/routers/profile.ts     |  14 ++-
+ src/server/api/trpc.ts                |  22 ++++
+ src/types/index.ts                    |  10 +-
+ tests/ch01-premium-plan.test.ts       | 189 ++++++++++++++++++++++++++++++++++
+ tests/characterization.test.ts        |  84 ++++++++++++---
+ tests/helpers.ts                      |   8 +-
+ tests/subscription.test.ts            |  12 ++-
+ 22 files changed, 642 insertions(+), 186 deletions(-)

@@ -1,0 +1,10 @@
+p01	google;google;g-123	OK:google:123
+p02	google;google;x-123	ERR:invalid credentials
+p03	google;github;gh-9	ERR:unknown provider
+p04	google,github,email;github;gh-9	OK:github:9
+p05	google,github,email;email;Ann@Example.com	OK:email:ann@example.com
+p06	google,github,email;email;not-an-email	ERR:invalid credentials
+p07	email;email;a@b	ERR:invalid credentials
+p08	github,google;google;g-7	OK:google:7
+p09	apple;apple;x	ERROR:unsupported provider apple
+p10	google,github;github;g-1	ERR:invalid credentials

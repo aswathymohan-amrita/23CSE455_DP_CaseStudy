@@ -1,0 +1,19 @@
+@startuml
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+hide empty members
+title Read-Through Cache - My List Query Cache
+class "QueryClient\n<<createTrpcNextBeta.tsx:55-63>>" as Q {
+  staleTime = Infinity, cacheTime = Infinity
+  +fetchQuery(key, loader)
+  +invalidateQueries(key)
+}
+class "ShowsContainer.myShowsQuery" as R1
+class "ShowModal.myShowsQuery" as R2
+class "ShowModal effect\ninvalidate on mutation" as I
+class "myList.getAll (loader)\n<<my-list.ts:7-12>>" as L
+R1 --> Q : useQuery(profileId)
+R2 --> Q : useQuery(profileId)
+I --> Q : invalidate
+Q --> L : on miss / after invalidate
+@enduml

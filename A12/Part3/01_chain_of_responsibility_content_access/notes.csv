@@ -1,0 +1,4 @@
+Java,"Abstract class + final check() (template method); records for Show/Viewer/Decision; immutable Map.of/Set.of tables; static typing catches a wrong rule signature at compile time."
+Python,"ABC + @abstractmethod enforces evaluate(); frozen dataclasses; set intersection (show.genres & blocked) replaces the loop; links are checked only at run time."
+JavaScript,"ES2022 class with private #next field and static tables; 'abstract' evaluate() can only throw at run time; decisions are plain object literals."
+C++,"Ownership of the chain via std::unique_ptr (each link owns the next); std::optional<Decision> as 'pass on' signal; virtual dispatch; header-only."

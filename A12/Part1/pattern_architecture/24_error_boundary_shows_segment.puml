@@ -1,0 +1,19 @@
+@startuml
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+hide empty members
+title Error Boundary - Shows Segment Error Boundary
+class "ErrorBoundaryHandler\n<<next@13.4.4 error-boundary.js:53-110>>" as B {
+  getDerivedStateFromError(e)
+  reset()
+}
+class "(shows)/error.tsx Error\n<<error.tsx:10-12>>" as F
+class "ErrorScreen(error, reset)\n<<error-screen.tsx:9-31>>" as V
+class "ShowsLayout children\nHome / Movies / TV / New & Popular / My List" as P
+class "getShows throws 'Failed to fetch shows'\n<<fetchers.ts:42-53>>" as E
+B --> P : renders children
+P ..> E : may throw
+B --> F : on error renders fallback
+F --> V
+V ..> B : Retry -> reset()
+@enduml

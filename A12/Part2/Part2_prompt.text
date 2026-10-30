@@ -1,0 +1,61 @@
+Team A12 - Part 2 (evolution and refactoring) - prompts given to the LLM
+Model and dates: see Part2/llm.csv. Each prompt below is self-contained.
+
+==================================================================================================
+PROMPT 1 - implement three changes and study pattern evolution
+==================================================================================================
+Input: data/code/ = sadmann7/netflx-web @ 676e5ddd15d68fe6b83c2f9cc2494c6ece8b2258 (Next.js 13
+app router, tRPC 10, NextAuth 4, Prisma 4 / MySQL, Stripe, Zustand, React Query), the Part 1
+datasets Part1/patterns.csv and Part1/Pattern_count.csv, and the assignment files
+(DP_Csestudy1.pdf, casestudy.tex).
+
+Work on a branch of a local clone, one commit per step:
+0. Add a test harness first (vitest + an in-memory fake of the Prisma client) and write
+   characterization tests that pin the current behaviour of every module you will touch. Run
+   them against the untouched baseline - they must pass before any production change.
+1. CH01 - premium content + a new subscription plan (Ultra): premium titles can only be played
+   on a plan of tier 3 or higher; the new plan must appear in plans/billing pages and checkout;
+   the number of profiles depends on the plan.
+2. CH02 - regional restrictions: titles licensed per territory; the viewer's region comes from
+   the request (geo headers); titles not licensed for the region are hidden, server side.
+3. CH03 - parental control: every profile has a maturity rating; titles above it are hidden or
+   blocked for that profile, including adding them to My List.
+For each change:
+- state the requirement and observable acceptance criteria, and write automated tests for them;
+- implement it so that existing pattern collaborations are reused or extended where that is the
+  right design (say so explicitly when you introduce a new pattern and why);
+- find one REAL code smell in the touched code and refactor it (name the smell and technique),
+  with the characterization tests proving behaviour is preserved;
+- record: exact before/after commits, changed files, diff, test command and actual result,
+  typecheck result, LOC/complexity before and after measured with the same tool and scope
+  (lizard, src/, tests excluded);
+- for every Part 1 instance give its status after the change: preserved / modified / extended /
+  replaced / removed / newly_introduced, with the reason.
+Datasets (format of DP_Csestudy1.pdf): pattern_evalution.csv = patterns.csv columns +
+status_after_change, change_description, one row per instance per snapshot (keep the instance
+name of continuing collaborations, keep removed rows); Pattern_count.csv with one block per
+snapshot. Draw updated PlantUML diagrams for every instance that changed.
+
+Output: the commits as patches, per-change folders (requirement, diff, test result), the two
+CSV files, updated diagrams, and a metrics table per snapshot.
+
+==================================================================================================
+PROMPT 2 - track the instances added by the Part 1 second pass
+==================================================================================================
+Input: Part1/patterns.csv after the Part 1 second pass (28 instances, 16 types), the four
+snapshots of the a12-evolution branch (patches in data/test_result/part2/0001-*.patch and
+Part2/changes/Change1..3/000*.patch), and the existing Part2/pattern_evalution.csv.
+
+1. For each of the 13 instances added in the second pass (tRPC API Front Controller, NextAuth
+   Auth Route Front Controller, tRPC Next.js API Handler Adapter, tRPC Client Link Chain, tRPC
+   Procedure Builder, tRPC Request Context, Wire Serialization Transformer, Search Input DOM
+   Event Listeners, Shows Segment Error Boundary, Root Global Error Boundary, Shows Loading
+   Placeholder, TMDB Row Scatter-Gather, Profile and Account Query Cache) inspect CH01, CH02 and
+   CH03 and decide the status after each change with the reason.
+2. Locate every participant in every snapshot with anchors (no hand-typed line numbers) and add
+   the rows to pattern_evalution.csv; regenerate Pattern_count.csv for all snapshots.
+3. Add the new effects to Part2/changes/ChangeN/README.md and draw updated UML for each new
+   instance whose status is extended or modified.
+4. Re-run the location check over the CH03 snapshot (Part2/code) - 0 problems expected.
+
+Output: updated CSVs, change READMEs, new diagrams, and the per-snapshot totals.

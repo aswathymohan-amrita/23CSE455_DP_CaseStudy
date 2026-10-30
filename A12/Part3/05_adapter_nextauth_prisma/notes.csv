@@ -1,0 +1,4 @@
+Java,"Object adapter: class implements the Target interface and holds the adaptee; the ORM's map-based arguments (Map.of(...)) must be built explicitly; Optional for 'no user'."
+Python,"Object adapter with plain dicts as the ORM's data/where arguments; returning None for 'no user'; duck typing means the Target is only a convention (could add typing.Protocol)."
+JavaScript,"Like the real @next-auth/prisma-adapter: a factory returns an object literal whose methods translate to orm.user.create({data}) etc.; no class or interface."
+C++,"Target is an abstract class; the adapter holds the adaptee by reference; std::optional for 'no user'; ORM errors are exceptions."

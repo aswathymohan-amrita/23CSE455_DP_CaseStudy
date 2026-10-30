@@ -1,0 +1,6 @@
+# 16_scatter_gather_tmdb_rows / Java - 2026-10-29 23:59:52 - Windows 11 AMD64
+# runtime: javac 21.0.12.1 / openjdk version "21.0.12.1" 2026-08-18 LTS
+$ javac -d build *.java
+$ java -cp build Runner ../cases.tsv
+8/8 passed
+exit=0

@@ -1,0 +1,24 @@
+@startuml
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+hide empty members
+title Active Profile Selection - extended in CH03
+class "useProfileStore" as CS {
+  profile : ProfileWithIcon (+ maturityLevel)
+  pinForm : boolean
+}
+class ProfilesScreen
+class PinForm
+class "ShowsContainer\nfilters rows, search, My List" as SC
+class "ShowModal\nsends profileId to checkAccess" as SM
+class SiteHeader
+class MyShows
+class "Hero <<new observer, CH03>>\nselector: profile?.maturityLevel" as H #ffe4e1
+CS --> ProfilesScreen
+CS --> PinForm
+CS --> SC
+CS --> SM
+CS --> SiteHeader
+CS --> MyShows
+CS --> H
+@enduml

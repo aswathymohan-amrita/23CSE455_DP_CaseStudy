@@ -1,0 +1,11 @@
+* text=auto eol=lf
+# upstream application snapshots, patches and diffs keep their original bytes (upstream uses CRLF)
+data/code/** -text
+Part2/code/** -text
+*.patch -text
+*.diff -text
+*.png binary
+*.pdf binary
+*.ico binary
+*.jpg binary
+*.xlsx binary

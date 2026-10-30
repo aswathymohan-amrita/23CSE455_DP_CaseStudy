@@ -1,0 +1,72 @@
+Team A12 - Part 1 (pattern discovery) - prompts given to the LLM
+Model and dates: see Part1/llm.csv. Attachments given with prompt 1: casestudy.tex (report
+template), DP_Csestudy1.pdf (dataset instructions), DP_Csestudy2.pdf (report template).
+Each prompt below is self-contained; the output of prompt 1 was the input of prompt 2.
+
+==================================================================================================
+PROMPT 1 - select the application and find its design patterns
+==================================================================================================
+Role: you are a software-design reviewer helping a university team with the course
+23CSE455 Design Patterns.
+
+Case study (team A12): "Design Pattern Analysis in a Next.js-Based Video Streaming Application"
+- domain: OTT / video streaming, framework: React / Next.js.
+- areas to investigate: user management, video catalogue, subscription, recommendation,
+  authentication, content access, caching.
+
+Tasks
+1. Find one real, open-source Next.js video-streaming application on GitHub that covers as many
+   of the seven areas as possible. Report URL, stars, last commit, licence and which areas it
+   covers. Pin the exact baseline commit hash you will analyse.
+2. Read the source of that commit (not only file names). For every design pattern you find
+   (GoF, GRASP, architectural, concurrency or framework idiom) give:
+   - exact pattern name and category,
+   - a meaningful instance name (e.g. "Active Profile Selection", not just "Observer"),
+   - every participant role mapped to the actual class / function / module / object, with
+     file path and 1-based inclusive line range (roles played by a dependency: package@version
+     and file),
+   - intent and evidence: the problem solved and the calls/delegation that prove the pattern.
+   Count one instance per independent collaboration. If a role is combined or absent, say so;
+   do not invent classes for function- or module-based code.
+3. List every candidate you rejected or are uncertain about, with the file location and reason.
+   A class name, comment or annotation alone is not evidence.
+4. Produce the datasets exactly in the format of DP_Csestudy1.pdf:
+   - patterns.csv: source_version, pattern_name, pattern_type, instance_name,
+     participant_roles, source_locations, intent_and_evidence
+   - Pattern_count.csv: source_version, summary (per_pattern | total_pattern_types |
+     total_pattern_instances), pattern_name, count
+   UTF-8, one header row, quote cells containing commas, paths relative to the team folder
+   (the application source is stored in data/code/).
+5. Draw one component diagram of the application architecture and one editable PlantUML class
+   diagram per pattern instance.
+6. Write a small script that checks every cited file:line range exists, and run it.
+
+Output: the two CSV files, the candidate list (confirmed / rejected / uncertain with counts),
+the PlantUML sources, and the totals: distinct pattern types, instances, concrete participant
+classes, unique participant symbols.
+
+==================================================================================================
+PROMPT 2 - exhaustive second pass (find every remaining pattern)
+==================================================================================================
+Input: data/code/ (netflx-web @ 676e5ddd15d68fe6b83c2f9cc2494c6ece8b2258), Part1/patterns.csv
+(15 instances, 10 types) and data/test_result/part1/candidates.md from prompt 1.
+
+The first pass only followed the entry files of the seven case-study areas. Now make sure that
+EVERY design pattern present in the application is recorded.
+1. Read every file under data/code/src (except the generated components/ui kit, styles, public,
+   static docs pages and the Open Graph image route) from top to bottom.
+2. Check each file against: all 23 GoF patterns; architectural patterns (Front Controller,
+   Context Object, Service Layer, Repository, MVC, ...); concurrency / integration patterns
+   (Scatter-Gather, Fork-Join, Publish-Subscribe, ...); React / Next.js idioms (Provider, Error
+   Boundary, Suspense boundary, Container/Presentational, custom hooks).
+3. For roles that live in dependencies, download the exact versions pinned in yarn.lock
+   (npm pack @trpc/server@10.28.0 @trpc/client@10.28.0 @trpc/react-query@10.28.0
+   @trpc/next@10.28.0 next-auth@4.22.1 next@13.4.4) and cite file:line inside the package.
+   Confirm a dependency-implemented role only if the application really configures or calls it.
+4. Re-check the existing 15 records against the dependency source and correct any wrong role.
+5. Add the new instances to patterns.csv / Pattern_count.csv in the same format, extend the
+   candidate list (rejected / uncertain with reasons), add one PlantUML diagram per new instance,
+   update the architecture diagram, and re-run the location check (must report 0 problems).
+
+Output: updated CSVs, updated candidates.md, new diagrams, location-check log, and a short list
+of what was added, what was corrected and why.
