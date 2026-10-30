@@ -1,9 +1,0 @@
-source_version,summary,pattern_name,count
-Original code,per_pattern,API Gateway,1
-Original code,per_pattern,Service Registry and Discovery,1
-Original code,per_pattern,Client-side Load Balancing,3
-Original code,per_pattern,Repository,3
-Original code,per_pattern,Intercepting Filter,1
-Original code,per_pattern,Remote Procedure Invocation,2
-Original code,total_pattern_types,,6
-Original code,total_pattern_instances,,11

@@ -1,7 +1,0 @@
-source_version,summary,pattern_name,count
-baseline,total_pattern_types,,4
-baseline,total_pattern_instances,,4
-baseline,per_pattern,Builder,1
-baseline,per_pattern,Singleton,1
-baseline,per_pattern,Repository,1
-baseline,per_pattern,Proxy,1

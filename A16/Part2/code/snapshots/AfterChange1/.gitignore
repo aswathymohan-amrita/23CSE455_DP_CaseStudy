@@ -1,8 +1,0 @@
-# Local secrets and developer configuration
-.env
-**/.env
-**/application-local.properties
-# Build output
-**/target/
-*.class
-*.jar

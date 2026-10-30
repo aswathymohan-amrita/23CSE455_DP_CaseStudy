@@ -1,5 +1,0 @@
-Part 2 task brief (reconstructed, not a verbatim prompt)
-
-Based on the approved project scope, evolve the hospital-management microservices application in three reviewable changes. Add Doctor, Pharmacy, Laboratory, Billing and Notification features. Integrate Doctor validation into appointment creation; route new services through the gateway and service discovery. Add a Billing payment-provider boundary with an external HTTP adapter, local deterministic provider for safe verification, timeouts and failure resilience. Add best-effort notifications for appointment and billing outcomes. Record requirements, implementation diffs, tests, updated diagrams, pattern evolution and counts. Do not claim real payment, email or SMS delivery.
-
-This brief summarizes the authorized scope and completed work. It is not the original full user prompt or an exported model transcript.
