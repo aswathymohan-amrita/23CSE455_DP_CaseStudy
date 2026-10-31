@@ -1,4 +1,4 @@
-"""In-memory auth subject, observer, and unsubscribe lifecycle."""
+"""Send saved auth events to a listener and support unsubscribe."""
 
 from __future__ import annotations
 

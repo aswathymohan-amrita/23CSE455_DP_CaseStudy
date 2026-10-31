@@ -1,21 +1,9 @@
-classDiagram
-    class StreamingContext {
-        +run(input)
-    }
-    class StreamingStrategy {
-        <<implicit contract>>
-        +stream(events) chunks
-    }
-    class ClaudeStrategy {
-        +stream_claude(events)
-    }
-    class OpenAIStrategy {
-        +stream_openai(events)
-    }
-    class GeminiStrategy {
-        +stream_gemini(events)
-    }
-    StreamingContext ..> StreamingStrategy : selects by provider
-    ClaudeStrategy ..|> StreamingStrategy : same contract
-    OpenAIStrategy ..|> StreamingStrategy : same contract
-    GeminiStrategy ..|> StreamingStrategy : same contract
+flowchart LR
+    Client["Test runner or command line"] --> Run["run(input)"]
+    Run --> Lookup{"provider lookup"}
+    Lookup -- claude --> Claude["stream_claude / streamClaude"]
+    Lookup -- openai --> OpenAI["stream_openai / streamOpenAI"]
+    Lookup -- gemini --> Gemini["stream_gemini / streamGemini"]
+    Claude --> Result["text chunks and joined text"]
+    OpenAI --> Result
+    Gemini --> Result

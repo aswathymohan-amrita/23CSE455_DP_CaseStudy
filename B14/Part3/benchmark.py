@@ -1,4 +1,4 @@
-"""Measure one warm-up and five whole-process runs per local implementation."""
+"""Time each example program once for warm-up and five more times."""
 
 from __future__ import annotations
 

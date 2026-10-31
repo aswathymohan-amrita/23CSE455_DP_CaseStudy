@@ -1,21 +1,7 @@
-# Part 3 prompt and checks
+# Part 3 LLM use and checks
 
-The full task prompt is saved in `govind_prompt.txt`. I also used the course
-instructions, the report template, the original app code in `../../code/`, and
-the Part 1 pattern records in `../../Part1/`. Later messages confirmed that I
-only needed two patterns. I did not change the original app code.
+`govind_prompt.txt` is the saved task prompt for Govind's Python and JavaScript work. The course instructions, report template, Part 1 pattern records and original application source were used as reference material. The original application copy under `B14/code/` was not changed for Part 3.
 
-The Python and JavaScript files, specifications, tests and fixtures in
-`Part3/` are the work from this task. I checked the two pattern names against
-`Part1/patterns.csv` and the source files named in `../README.md`.
+The prompt helped plan and draft the two examples. The resulting pattern names can be checked against `B14/Part1/patterns.csv` and its source paths. The saved test logs show 11/11 Strategy cases and 15/15 Observer cases in each of Python and JavaScript. `B14/Part3/evidence/tests/cross_language_process.log` records 26/26 matching process results. Static measurements and raw run times are in `B14/Part3/evidence/`.
 
-The test logs in `../evidence/tests/` show 11/11 Strategy cases and 15/15
-Observer cases in each language. The separate process check passed all 26
-shared cases. Code line counts and complexity are in
-`../evidence/static_metrics.json`. The five run times for each program are in
-`../evidence/timings/process_timings.json`.
-
-I do not have an export of the full chat output or a reliable displayed model
-name, so I have not filled those in. The team still needs to review this work,
-check Soorya's Java and C++ files, and add the final prompt record to its
-`llm.csv`.
+The full raw assistant output, displayed model name and interaction date were not archived with this work. The partial row in `llm.csv` says so. It does not claim a complete transcript or completed human review. A team member should check this summary against any saved chat history and add only information that can be verified.
